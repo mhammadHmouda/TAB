@@ -1,0 +1,16 @@
+D:\Foothill\TAB\TAB\bin\Debug\TAB.WebApi.deps.json
+D:\Foothill\TAB\TAB\bin\Debug\TAB.WebApi.runtimeconfig.json
+D:\Foothill\TAB\TAB\bin\Debug\appsettings.Development.json
+D:\Foothill\TAB\TAB\bin\Debug\appsettings.json
+D:\Foothill\TAB\TAB\bin\Debug\TAB.WebApi.exe
+D:\Foothill\TAB\TAB\bin\Debug\TAB.WebApi.dll
+D:\Foothill\TAB\TAB\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Foothill\TAB\TAB\bin\Debug\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Foothill\TAB\TAB\bin\Debug\Swashbuckle.AspNetCore.Swagger.dll
+D:\Foothill\TAB\TAB\bin\Debug\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Foothill\TAB\TAB\bin\Debug\Microsoft.AspNetCore.OpenApi.dll
+D:\Foothill\TAB\TAB\bin\Debug\Microsoft.OpenApi.dll
+D:\Foothill\TAB\TAB\bin\Debug\TAB.WebApi.pdb
+D:\Foothill\TAB\TAB\obj\Debug\docker-compose.dcproj.AssemblyReference.cache
+D:\Foothill\TAB\TAB\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
+D:\Foothill\TAB\TAB\obj\Debug\docker-compose.dcproj.CopyComplete

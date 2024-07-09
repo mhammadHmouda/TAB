@@ -1,0 +1,17 @@
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Infrastructure.deps.json
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Infrastructure.dll
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Infrastructure.pdb
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Application.dll
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Domain.dll
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Application.pdb
+D:\Foothill\TAB\TAB\TAB.Infrastructure\bin\Debug\net7.0\TAB.Domain.pdb
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.csproj.AssemblyReference.cache
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.AssemblyInfoInputs.cache
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.AssemblyInfo.cs
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.csproj.CopyComplete
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.dll
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\refint\TAB.Infrastructure.dll
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\TAB.Infrastructure.pdb
+D:\Foothill\TAB\TAB\TAB.Infrastructure\obj\Debug\net7.0\ref\TAB.Infrastructure.dll

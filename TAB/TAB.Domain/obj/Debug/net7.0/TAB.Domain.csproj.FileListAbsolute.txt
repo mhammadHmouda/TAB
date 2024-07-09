@@ -1,0 +1,11 @@
+D:\Foothill\TAB\TAB\TAB.Domain\bin\Debug\net7.0\TAB.Domain.deps.json
+D:\Foothill\TAB\TAB\TAB.Domain\bin\Debug\net7.0\TAB.Domain.dll
+D:\Foothill\TAB\TAB\TAB.Domain\bin\Debug\net7.0\TAB.Domain.pdb
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.AssemblyInfoInputs.cache
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.AssemblyInfo.cs
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.csproj.CoreCompileInputs.cache
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.dll
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\refint\TAB.Domain.dll
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\TAB.Domain.pdb
+D:\Foothill\TAB\TAB\TAB.Domain\obj\Debug\net7.0\ref\TAB.Domain.dll
