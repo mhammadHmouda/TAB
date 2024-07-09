@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TAB.Application\TAB.Application.csproj" />
+    <ProjectReference Include="..\..\src\TAB.Application\TAB.Application.csproj" />
   </ItemGroup>
 
 </Project>

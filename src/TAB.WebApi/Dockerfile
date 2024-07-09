@@ -7,15 +7,15 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["TAB.WebApi/TAB.WebApi.csproj", "TAB.WebApi/"]
-COPY ["TAB.Infrastructure/TAB.Infrastructure.csproj", "TAB.Infrastructure/"]
-COPY ["TAB.Application/TAB.Application.csproj", "TAB.Application/"]
-COPY ["TAB.Contracts/TAB.Contracts.csproj", "TAB.Contracts/"]
-COPY ["TAB.Domain/TAB.Domain.csproj", "TAB.Domain/"]
-COPY ["TAB.Persistence/TAB.Persistence.csproj", "TAB.Persistence/"]
-RUN dotnet restore "TAB.WebApi/TAB.WebApi.csproj"
+COPY ["src/TAB.WebApi/TAB.WebApi.csproj", "src/TAB.WebApi/"]
+COPY ["src/TAB.Infrastructure/TAB.Infrastructure.csproj", "src/TAB.Infrastructure/"]
+COPY ["src/TAB.Application/TAB.Application.csproj", "src/TAB.Application/"]
+COPY ["src/TAB.Contracts/TAB.Contracts.csproj", "src/TAB.Contracts/"]
+COPY ["src/TAB.Domain/TAB.Domain.csproj", "src/TAB.Domain/"]
+COPY ["src/TAB.Persistence/TAB.Persistence.csproj", "src/TAB.Persistence/"]
+RUN dotnet restore "src/TAB.WebApi/TAB.WebApi.csproj"
 COPY . .
-WORKDIR "/src/TAB.WebApi"
+WORKDIR "/src/src/TAB.WebApi"
 RUN dotnet build "TAB.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
