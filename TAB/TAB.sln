@@ -7,21 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{68FBE68F-2CF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2392F1D7-2A24-4432-9CF9-9D66452D800C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Domain", "TAB.Domain\TAB.Domain.csproj", "{FFCD1C24-5214-4D83-B811-7BC5335C3ECB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Domain", "src\TAB.Domain\TAB.Domain.csproj", "{FFCD1C24-5214-4D83-B811-7BC5335C3ECB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Application", "TAB.Application\TAB.Application.csproj", "{ED4BEFFE-E5F6-4D1B-B54B-B5DF415BE057}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Application", "src\TAB.Application\TAB.Application.csproj", "{ED4BEFFE-E5F6-4D1B-B54B-B5DF415BE057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Infrastructure", "TAB.Infrastructure\TAB.Infrastructure.csproj", "{C61BB015-F31C-4F36-9F65-97F5FB6EF175}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Infrastructure", "src\TAB.Infrastructure\TAB.Infrastructure.csproj", "{C61BB015-F31C-4F36-9F65-97F5FB6EF175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Persistence", "TAB.Persistence\TAB.Persistence.csproj", "{213A5356-07F7-4EA3-8AB6-D3C614B3C8A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Persistence", "src\TAB.Persistence\TAB.Persistence.csproj", "{213A5356-07F7-4EA3-8AB6-D3C614B3C8A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.WebApi", "TAB.WebApi\TAB.WebApi.csproj", "{D25C5B43-BBA9-4A9C-8D49-C5EE46BCD8F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.WebApi", "src\TAB.WebApi\TAB.WebApi.csproj", "{D25C5B43-BBA9-4A9C-8D49-C5EE46BCD8F3}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A71F505C-D1E9-49CE-AF5F-9C8ACCCA1AC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{59E74035-197A-4EAF-98DE-8D12E8D7F363}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "tests\Application.UnitTests\Application.UnitTests.csproj", "{59E74035-197A-4EAF-98DE-8D12E8D7F363}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Contracts", "TAB.Contracts\TAB.Contracts.csproj", "{1A1DB867-899A-4BD3-AB99-9C96B4AD7DA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAB.Contracts", "src\TAB.Contracts\TAB.Contracts.csproj", "{1A1DB867-899A-4BD3-AB99-9C96B4AD7DA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
