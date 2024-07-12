@@ -14,6 +14,7 @@ public static class DependencyInjection
         services.AddMediatR(m =>
         {
             m.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            m.AddOpenBehavior(typeof(TransactionBehaviour<,>));
             m.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
 
