@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using TAB.Application.Core.Exceptions;
+using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Exceptions;
+using TAB.Domain.Core.Primitives;
+using TAB.WebApi.Contracts;
 
 namespace TAB.WebApi.Middlewares;
 
@@ -29,18 +34,27 @@ public class ExceptionHandlingMiddleware
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        var problemDetails = new ProblemDetails
-        {
-            Status = StatusCodes.Status500InternalServerError,
-            Title = "An error occurred",
-            Detail = exception.Message,
-            Type = "https://httpstatuses.com/500"
-        };
+        var (statusCode, errors) = GetHttpStatusCodeAndError(ex);
 
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.StatusCode = (int)statusCode;
 
-        return context.Response.WriteAsJsonAsync(problemDetails);
+        var response = new ApiResponse { Errors = errors, StatusCode = statusCode };
+
+        await context.Response.WriteAsJsonAsync(response);
     }
+
+    private static (
+        HttpStatusCode statusCode,
+        IReadOnlyCollection<Error> errors
+    ) GetHttpStatusCodeAndError(Exception exception) =>
+        exception switch
+        {
+            ValidationException validationException
+                => (HttpStatusCode.BadRequest, validationException.Errors),
+            DomainException domainException
+                => (HttpStatusCode.BadRequest, new[] { domainException.Error }),
+            _ => (HttpStatusCode.InternalServerError, new[] { DomainErrors.General.ServerError })
+        };
 }

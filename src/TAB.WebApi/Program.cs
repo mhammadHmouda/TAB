@@ -15,7 +15,9 @@ builder.Host.UseSerilog(
     }
 );
 
-builder.Services.AddWebApi().AddApplication().AddInfrastructure().AddPersistence();
+var configuration = builder.Configuration;
+
+builder.Services.AddWebApi().AddApplication().AddInfrastructure().AddPersistence(configuration);
 
 var app = builder.Build();
 
@@ -28,8 +30,13 @@ if (app.Environment.IsDevelopment())
     app.AddSwagger();
 }
 
-app.MapControllers();
-
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
