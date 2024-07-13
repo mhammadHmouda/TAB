@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using TAB.Application.Core.Abstractions;
+using TAB.Application.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
-using TAB.Domain.Core.Primitives.Maybe;
+using TAB.Domain.Core.Shared.Maybe;
 
 namespace TAB.Persistence.Repositories;
 

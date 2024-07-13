@@ -1,4 +1,4 @@
-﻿using TAB.Application.Core.Abstractions;
+﻿using TAB.Application.Core.Interfaces;
 using TAB.Domain.Features.Todos;
 
 namespace TAB.Persistence.Repositories;

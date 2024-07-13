@@ -2,7 +2,7 @@
 using TAB.Application.Core.Exceptions;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Exceptions;
-using TAB.Domain.Core.Primitives;
+using TAB.Domain.Core.Shared;
 using TAB.WebApi.Contracts;
 
 namespace TAB.WebApi.Middlewares;

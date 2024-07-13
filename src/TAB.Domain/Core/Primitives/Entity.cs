@@ -1,4 +1,4 @@
-﻿using TAB.Domain.Core.Utils;
+﻿using TAB.Domain.Core.Shared;
 
 namespace TAB.Domain.Core.Primitives;
 

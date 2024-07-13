@@ -1,7 +1,7 @@
-﻿using TAB.Domain.Core.Abstractions;
-using TAB.Domain.Core.Errors;
+﻿using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
-using TAB.Domain.Core.Primitives.Result;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Features.Todos;
 

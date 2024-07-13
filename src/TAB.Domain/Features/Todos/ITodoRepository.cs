@@ -1,4 +1,4 @@
-﻿using TAB.Domain.Core.Primitives.Maybe;
+﻿using TAB.Domain.Core.Shared.Maybe;
 
 namespace TAB.Domain.Features.Todos;
 

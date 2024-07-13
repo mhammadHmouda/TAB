@@ -1,7 +1,7 @@
-﻿using TAB.Application.Features.Abstractions;
+﻿using TAB.Application.Core.Contracts;
 using TAB.Domain.Core.Errors;
-using TAB.Domain.Core.Primitives.Maybe;
-using TAB.Domain.Core.Primitives.Result;
+using TAB.Domain.Core.Shared.Maybe;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.Todos;
 
 namespace TAB.Application.Features.Todos;

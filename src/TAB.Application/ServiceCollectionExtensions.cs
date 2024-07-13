@@ -5,11 +5,11 @@ using TAB.Application.Core.Behaviours;
 
 namespace TAB.Application;
 
-public static class DependencyInjection
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        var assembly = typeof(DependencyInjection).Assembly;
+        var assembly = typeof(ServiceCollectionExtensions).Assembly;
 
         services.AddMediatR(m =>
         {

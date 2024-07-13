@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 
 namespace TAB.WebApi;
 
-public static class DependencyInjection
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddWebApi(this IServiceCollection services)
     {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TAB.Application.Core.Abstractions;
-using TAB.Application.Features.Abstractions;
-using TAB.Domain.Core.Primitives.Result;
+using TAB.Application.Core.Contracts;
+using TAB.Application.Core.Interfaces;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.Todos;
 
 namespace TAB.Application.Features.Todos;

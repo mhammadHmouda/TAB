@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using TAB.Application.Core.Abstractions;
-using TAB.Domain.Core.Abstractions;
+using TAB.Application.Core.Interfaces;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 
 namespace TAB.Persistence;

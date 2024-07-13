@@ -3,7 +3,6 @@ using TAB.Application;
 using TAB.Infrastructure;
 using TAB.Persistence;
 using TAB.WebApi;
-using TAB.WebApi.Extensions;
 using TAB.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +26,8 @@ app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
-    app.AddSwagger();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

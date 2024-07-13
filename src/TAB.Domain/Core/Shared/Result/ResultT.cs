@@ -1,4 +1,4 @@
-﻿namespace TAB.Domain.Core.Primitives.Result;
+﻿namespace TAB.Domain.Core.Shared.Result;
 
 public class Result<TValue> : Result
 {

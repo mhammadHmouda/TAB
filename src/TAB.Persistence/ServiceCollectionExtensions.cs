@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TAB.Application.Core.Abstractions;
+using TAB.Application.Core.Interfaces;
 using TAB.Domain.Features.Todos;
 using TAB.Persistence.Infrastructure;
 using TAB.Persistence.Repositories;
 
 namespace TAB.Persistence;
 
-public static class DependencyInjection
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddPersistence(
         this IServiceCollection services,

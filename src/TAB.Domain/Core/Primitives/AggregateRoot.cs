@@ -1,8 +1,8 @@
-﻿using TAB.Domain.Core.Events;
+﻿using TAB.Domain.Core.Primitives.Events;
 
 namespace TAB.Domain.Core.Primitives;
 
-public class AggregateRoot : Entity
+public abstract class AggregateRoot : Entity
 {
     protected AggregateRoot(int id)
         : base(id) { }

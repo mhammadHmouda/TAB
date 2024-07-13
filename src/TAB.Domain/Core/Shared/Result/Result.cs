@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace TAB.Domain.Core.Primitives.Result;
+namespace TAB.Domain.Core.Shared.Result;
 
 public class Result
 {

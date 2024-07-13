@@ -2,10 +2,10 @@
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TAB.Domain.Core.Primitives;
+using TAB.Domain.Core.Shared;
 using TAB.WebApi.Contracts;
 
-namespace TAB.WebApi.Infrastructure;
+namespace TAB.WebApi.Abstractions;
 
 /// <summary>
 /// Represents an API controller.
@@ -14,7 +14,7 @@ namespace TAB.WebApi.Infrastructure;
 [Produces("application/json")]
 [Route("api/v{version:ApiVersion}")]
 [ApiVersion("1.0")]
-public class ApiController : ControllerBase
+public abstract class ApiController : ControllerBase
 {
     private IMediator? _mediator;
     protected IMediator Mediator =>

@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace TAB.Domain.Core.Events;
+namespace TAB.Domain.Core.Primitives.Events;
 
 public interface IDomainEvent : INotification { }

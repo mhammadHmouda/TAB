@@ -1,4 +1,4 @@
-﻿using TAB.Domain.Core.Events;
+﻿using TAB.Domain.Core.Primitives.Events;
 using TAB.Domain.Features.Todos;
 
 namespace TAB.Application.Features.Todos;

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TAB.Domain.Core.Primitives;
+using TAB.Domain.Core.Shared;
 
 namespace TAB.Application.Core.Extensions;
 

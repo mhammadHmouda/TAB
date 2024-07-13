@@ -1,4 +1,4 @@
-﻿namespace TAB.Domain.Core.Abstractions;
+﻿namespace TAB.Domain.Core.Interfaces;
 
 public interface IDateTimeProvider
 {

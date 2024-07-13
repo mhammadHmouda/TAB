@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.Todos;
+using TAB.WebApi.Abstractions;
 using TAB.WebApi.Contracts;
-using TAB.WebApi.Infrastructure;
 
 namespace TAB.WebApi.Controllers;
 
 public class TodoController : ApiController
 {
-    // I need to implement the following endpoints:
-    // - Post /todos
-    // - Get /todos/{id}
-    // - Post /todos/{id}/done
-
     // <summary>
     // This is a simple POST endpoint that creates a new todo.
     // </summary>

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using TAB.Application.Core.Abstractions;
-using TAB.Application.Features.Abstractions;
+using TAB.Application.Core.Contracts;
+using TAB.Application.Core.Interfaces;
 
 namespace TAB.Application.Core.Behaviours;
 

@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 using TAB.Domain.Core.Primitives;
-using TAB.Domain.Core.Primitives.Maybe;
+using TAB.Domain.Core.Shared.Maybe;
 
-namespace TAB.Application.Core.Abstractions;
+namespace TAB.Application.Core.Interfaces;
 
 public interface IRepository<TEntity>
     where TEntity : Entity

@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace TAB.Application.Features.Abstractions;
+namespace TAB.Application.Core.Contracts;
 
 public interface ICommand<out TResponse> : IRequest<TResponse> { }

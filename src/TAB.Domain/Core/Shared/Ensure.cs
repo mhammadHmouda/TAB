@@ -1,7 +1,7 @@
 ﻿using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Exceptions;
 
-namespace TAB.Domain.Core.Utils;
+namespace TAB.Domain.Core.Shared;
 
 public static class Ensure
 {

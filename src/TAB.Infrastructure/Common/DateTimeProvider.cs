@@ -1,5 +1,5 @@
 ﻿using System;
-using TAB.Domain.Core.Abstractions;
+using TAB.Domain.Core.Interfaces;
 
 namespace TAB.Infrastructure.Common;
 

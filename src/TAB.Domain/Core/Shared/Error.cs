@@ -1,4 +1,4 @@
-﻿namespace TAB.Domain.Core.Primitives;
+﻿namespace TAB.Domain.Core.Shared;
 
 public class Error
 {

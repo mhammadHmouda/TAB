@@ -1,4 +1,4 @@
-﻿namespace TAB.Domain.Core.Primitives.Maybe;
+﻿namespace TAB.Domain.Core.Shared.Maybe;
 
 public static class MaybeExtensions
 {
