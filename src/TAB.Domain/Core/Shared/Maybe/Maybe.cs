@@ -23,7 +23,8 @@ public class Maybe<TValue> : IEquatable<Maybe<TValue>>
 
     public static implicit operator Maybe<TValue>(TValue value) => From(value);
 
-    public static implicit operator TValue(Maybe<TValue> maybe) => maybe.Value;
+    public static implicit operator TValue(Maybe<TValue> maybe) =>
+        maybe.HasValue ? maybe.Value : default!;
 
     public bool Equals(Maybe<TValue>? other)
     {
