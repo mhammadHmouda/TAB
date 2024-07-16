@@ -41,4 +41,14 @@ public static class Ensure
             throw new DomainException(DomainErrors.General.NotNull.WithMessage(error));
         }
     }
+
+    public static void NotDefault<TValue>(TValue value, string? message, string? argumentName)
+    {
+        var error = $"{argumentName} {message}";
+
+        if (EqualityComparer<TValue>.Default.Equals(value, default))
+        {
+            throw new DomainException(DomainErrors.General.NotDefault.WithMessage(error));
+        }
+    }
 }

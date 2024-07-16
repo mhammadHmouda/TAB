@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TAB.Application.Core.Interfaces;
-using TAB.Domain.Features.Todos;
+using TAB.Domain.Features.Users.Repositories;
 using TAB.Persistence.Infrastructure;
 using TAB.Persistence.Repositories;
 
@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<ITodoRepository, TodoRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

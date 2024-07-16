@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace TAB.Domain.Core.Shared.Result;
+﻿namespace TAB.Domain.Core.Shared.Result;
 
 public class Result
 {
@@ -28,4 +26,6 @@ public class Result
     public static Result Failure(Error error) => new(false, error);
 
     public static Result<TValue?> Failure<TValue>(Error error) => new(default, false, error);
+
+    public static Result<TIn> Create<TIn>(TIn value) => new(value, true, Error.None);
 }
