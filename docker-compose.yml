@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   tab.webapi:
     image: ${DOCKER_REGISTRY-}tabwebapi
@@ -5,24 +7,25 @@ services:
       context: .
       dockerfile: src/TAB.WebApi/Dockerfile
     environment:
-    - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Development
     networks:
-    - tab
+      - tab
     ports:
-    - "7194:80"
+      - "7194:80"
     depends_on:
-    - tab.sqlserver
+      - tab.sqlserver
+
   tab.sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     ports:
-    - "1433:1433"
+      - "1433:1433"
     networks:
-    - tab
+      - tab
     environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=hamood12344321#
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Hamood123!
     volumes:  
-    - tab.sqlserver:/var/opt/mssql
+      - tab.sqlserver:/var/opt/mssql
 
 volumes:
   tab.sqlserver:
