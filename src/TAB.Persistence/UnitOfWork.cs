@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using TAB.Application.Core.Interfaces;
+using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 
@@ -48,7 +48,10 @@ public class UnitOfWork : IUnitOfWork
                 entityEntry.Property(nameof(IAuditableEntity.CreatedAtUtc)).CurrentValue = utcNow;
             }
 
-            entityEntry.Property(nameof(IAuditableEntity.UpdatedAtUtc)).CurrentValue = utcNow;
+            if (entityEntry.State == EntityState.Modified)
+            {
+                entityEntry.Property(nameof(IAuditableEntity.UpdatedAtUtc)).CurrentValue = utcNow;
+            }
         });
     }
 

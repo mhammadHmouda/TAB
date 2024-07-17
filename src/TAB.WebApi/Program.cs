@@ -3,6 +3,7 @@ using TAB.Application;
 using TAB.Infrastructure;
 using TAB.Persistence;
 using TAB.WebApi;
+using TAB.WebApi.Extensions;
 using TAB.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

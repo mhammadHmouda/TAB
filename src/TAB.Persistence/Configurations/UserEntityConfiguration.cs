@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TAB.Domain.Features.Users;
-using TAB.Domain.Features.Users.Entities;
-using TAB.Domain.Features.Users.ValueObjects;
+using TAB.Domain.Features.UserManagement.Entities;
+using TAB.Domain.Features.UserManagement.ValueObjects;
 
 namespace TAB.Persistence.Configurations;
 
@@ -20,14 +19,9 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(Email.MaxLength)
             .IsRequired();
 
-        builder
-            .Property(x => x.Password)
-            .HasConversion(x => x.Value, x => Password.Create(x).Value)
-            .HasMaxLength(Password.MaxLength)
-            .IsRequired();
-
-        builder.Property(x => x.FirstName).HasMaxLength(100);
-        builder.Property(x => x.LastName).HasMaxLength(100);
+        builder.Property(x => x.Password).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Role).IsRequired();
         builder.Property(x => x.IsActive).IsRequired();
         builder.Property(x => x.CreatedAtUtc).IsRequired();

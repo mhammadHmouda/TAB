@@ -3,7 +3,7 @@ using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
 using TAB.Domain.Core.Shared.Result;
 
-namespace TAB.Domain.Features.Users.ValueObjects;
+namespace TAB.Domain.Features.UserManagement.ValueObjects;
 
 public sealed class Password : ValueObject
 {

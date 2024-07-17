@@ -1,6 +1,6 @@
 ﻿using TAB.Domain.Core.Primitives;
 
-namespace TAB.Domain.Features.Users.Entities;
+namespace TAB.Domain.Features.UserManagement.Entities;
 
 public class Token : Entity
 {

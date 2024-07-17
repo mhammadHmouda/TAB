@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
-using TAB.Application.Core.Interfaces;
+using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Primitives;
 
 namespace TAB.Persistence;

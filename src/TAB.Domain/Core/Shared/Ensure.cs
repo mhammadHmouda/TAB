@@ -7,9 +7,11 @@ public static class Ensure
 {
     public static void NotEmpty(string value, string? message, string? argumentName)
     {
+        var error = $"{argumentName} {message}";
+
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentException(message, argumentName);
+            throw new DomainException(DomainErrors.General.NotEmpty.WithMessage(error));
         }
     }
 
