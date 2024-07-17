@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Persistence.Infrastructure;
-using TAB.Persistence.Repositories;
+using TAB.Persistence.Repositories.UserManagement;
 
 namespace TAB.Persistence;
 

@@ -24,6 +24,20 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Role).IsRequired();
         builder.Property(x => x.IsActive).IsRequired();
+
+        builder.OwnsOne(
+            user => user.ActivationCode,
+            activationCode =>
+            {
+                activationCode.WithOwner();
+
+                activationCode.Property(x => x.Value).HasColumnName("ActivationCode");
+                activationCode
+                    .Property(x => x.ExpiresAtUtc)
+                    .HasColumnName("ActivationCodeExpiresAt");
+            }
+        );
+
         builder.Property(x => x.CreatedAtUtc).IsRequired();
         builder.Property(x => x.UpdatedAtUtc);
 

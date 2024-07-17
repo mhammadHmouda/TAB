@@ -1,4 +1,6 @@
-﻿using TAB.Domain.Core.Shared;
+﻿using MediatR;
+using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -8,6 +10,10 @@ public static class DomainErrors
     {
         public static Error UserNotFound => new("User.NotFound", "User not found.");
         public static Error UserAlreadyExists => new("User.AlreadyExist", "User already exists.");
+        public static Error UserAlreadyActive =>
+            new("User.AlreadyActive", "User is already active.");
+        public static Error ActivationCodeExpired =>
+            new("User.ActivationCodeExpired", "The activation code has expired.");
     }
 
     public static class Email
@@ -61,5 +67,8 @@ public static class DomainErrors
 
         public static Error NotEmpty => new("General.NotEmpty", "The value is not empty.");
         public static Error NotDefault => new("General.NotDefault", "The value is not default.");
+        public static Error NotFuture =>
+            new("General.NotFuture", "The value is not in the future.");
+        public static Error NotPast => new("General.NotPast", "The value is not in the past.");
     }
 }
