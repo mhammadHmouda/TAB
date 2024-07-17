@@ -17,7 +17,11 @@ builder.Host.UseSerilog(
 
 var configuration = builder.Configuration;
 
-builder.Services.AddWebApi().AddApplication().AddInfrastructure().AddPersistence(configuration);
+builder
+    .Services.AddWebApi()
+    .AddApplication()
+    .AddInfrastructure(configuration)
+    .AddPersistence(configuration);
 
 var app = builder.Build();
 
