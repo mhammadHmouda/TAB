@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using TAB.Application.Core.Contracts;
-using TAB.Application.Core.Interfaces;
+using TAB.Application.Core.Interfaces.Data;
 
 namespace TAB.Application.Core.Behaviours;
 

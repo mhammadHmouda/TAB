@@ -1,7 +1,19 @@
-﻿namespace TAB.WebApi.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using TAB.Persistence;
+
+namespace TAB.WebApi.Extensions;
 
 public static class WebApplicationExtensions
 {
+    public static WebApplication ApplyMigrations(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TabDbContext>();
+        dbContext.Database.Migrate();
+
+        return app;
+    }
+
     public static WebApplication AddSwagger(this WebApplication app)
     {
         app.UseSwagger();

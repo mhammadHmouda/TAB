@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TAB.Domain.Features.Users.Entities;
+using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Persistence.Configurations;
 

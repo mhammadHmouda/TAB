@@ -4,7 +4,7 @@ using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
 using TAB.Domain.Core.Shared.Result;
 
-namespace TAB.Domain.Features.Users;
+namespace TAB.Domain.Features.UserManagement.ValueObjects;
 
 public partial class Email : ValueObject
 {

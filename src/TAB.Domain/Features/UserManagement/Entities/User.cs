@@ -1,17 +1,17 @@
 ﻿using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
-using TAB.Domain.Features.Users.Enums;
-using TAB.Domain.Features.Users.ValueObjects;
+using TAB.Domain.Features.UserManagement.Enums;
+using TAB.Domain.Features.UserManagement.ValueObjects;
 
-namespace TAB.Domain.Features.Users.Entities;
+namespace TAB.Domain.Features.UserManagement.Entities;
 
 public class User : AggregateRoot, IAuditableEntity
 {
     public Email Email { get; private set; }
-    public Password Password { get; private set; }
-    public string? FirstName { get; private set; }
-    public string? LastName { get; private set; }
+    public string Password { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
     public UserRole Role { get; private set; }
     public bool IsActive { get; private set; }
 
@@ -21,7 +21,7 @@ public class User : AggregateRoot, IAuditableEntity
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
-    private User(Email email, string firstName, string lastName, Password password, UserRole role)
+    private User(Email email, string firstName, string lastName, string password, UserRole role)
     {
         Email = email;
         FirstName = firstName;
@@ -35,7 +35,7 @@ public class User : AggregateRoot, IAuditableEntity
         Email email,
         string firstName,
         string lastName,
-        Password password,
+        string password,
         UserRole role
     )
     {

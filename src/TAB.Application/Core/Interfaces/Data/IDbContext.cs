@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using TAB.Domain.Core.Primitives;
 
-namespace TAB.Application.Core.Interfaces;
+namespace TAB.Application.Core.Interfaces.Data;
 
 public interface IDbContext
 {

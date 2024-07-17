@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using TAB.Application.Core.Interfaces;
+using TAB.Application.Core.Interfaces.Data;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared.Maybe;
 
-namespace TAB.Persistence.Repositories;
+namespace TAB.Persistence.Repositories.Abstractions;
 
 public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     where TEntity : Entity
@@ -34,10 +34,4 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     public void Update(TEntity entity) => DbContext.Set<TEntity>().Update(entity);
 
     public void Remove(TEntity entity) => DbContext.Set<TEntity>().Remove(entity);
-
-    public async Task<int> ExecuteSqlAsync(
-        string sql,
-        IEnumerable<SqlParameter> parameters,
-        CancellationToken cancellationToken = default
-    ) => await DbContext.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
 }

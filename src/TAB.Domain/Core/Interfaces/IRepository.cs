@@ -1,9 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.Data.SqlClient;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared.Maybe;
 
-namespace TAB.Application.Core.Interfaces;
+namespace TAB.Domain.Core.Interfaces;
 
 public interface IRepository<TEntity>
     where TEntity : Entity
@@ -17,9 +16,4 @@ public interface IRepository<TEntity>
     Task InsertRangeAsync(IReadOnlyCollection<TEntity> entities);
     void Update(TEntity entity);
     void Remove(TEntity entity);
-    Task<int> ExecuteSqlAsync(
-        string sql,
-        IEnumerable<SqlParameter> parameters,
-        CancellationToken cancellationToken = default
-    );
 }
