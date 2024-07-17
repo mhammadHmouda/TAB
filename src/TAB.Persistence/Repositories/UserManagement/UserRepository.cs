@@ -18,4 +18,13 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
         return user ?? Maybe<User>.None;
     }
+
+    public async Task<Maybe<User>> GetByActivationTokenAsync(string token)
+    {
+        var user = await DbContext
+            .Set<User>()
+            .FirstOrDefaultAsync(user => user.ActivationCode.Value == token);
+
+        return user ?? Maybe<User>.None;
+    }
 }

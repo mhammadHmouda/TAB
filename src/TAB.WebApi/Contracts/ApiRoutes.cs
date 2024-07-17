@@ -2,9 +2,10 @@
 
 public static class ApiRoutes
 {
-    public static class Users
+    public static class Auth
     {
-        private const string Base = "users";
+        private const string Base = "auth";
         public const string Register = Base + "/register";
+        public const string Activate = Base + "/activate";
     }
 }

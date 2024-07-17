@@ -53,4 +53,23 @@ public static class Ensure
             throw new DomainException(DomainErrors.General.NotDefault.WithMessage(error));
         }
     }
+
+    public static void NotFuture(DateTime value, string? message, string? argumentName)
+    {
+        var error = $"{argumentName} {message}";
+
+        if (value > DateTime.UtcNow)
+        {
+            throw new DomainException(DomainErrors.General.NotFuture.WithMessage(error));
+        }
+    }
+
+    public static void NotPast(DateTime value, string? message, string? argumentName)
+    {
+        var error = $"{argumentName} {message}";
+        if (value < DateTime.UtcNow)
+        {
+            throw new DomainException(DomainErrors.General.NotPast.WithMessage(error));
+        }
+    }
 }

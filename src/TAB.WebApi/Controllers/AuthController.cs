@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TAB.Application.Features.UserManagement.Activation;
 using TAB.Application.Features.UserManagement.Register;
 using TAB.Contracts.Features.UserManagement;
 using TAB.Domain.Core.Shared.Result;
@@ -20,7 +21,7 @@ public class AuthController : ApiController
     /// <response code="400">The user already exists.</response>
     /// <response code="400"> The user details are invalid.</response>
     /// <returns>The creation user result.</returns>
-    [HttpPost(ApiRoutes.Users.Register)]
+    [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Create(CreateUserRequest createUserRequest) =>
         await Result
             .Create(createUserRequest)
@@ -40,4 +41,19 @@ public class AuthController : ApiController
                     ),
                 BadRequest
             );
+
+    /// <summary>
+    /// Activates a user account.
+    /// </summary>
+    /// <param name="token">The activation token.</param>
+    /// <response code="200">The user account was activated successfully.</response>
+    /// <response code="400">The activation token is invalid.</response>
+    /// <returns>The activation result.</returns>
+    [HttpGet(ApiRoutes.Auth.Activate)]
+    public async Task<IActionResult> Activate([FromQuery] string token) =>
+        await Result
+            .Create(token)
+            .Map(t => new UserActivationCommand(t))
+            .Bind(command => Mediator.Send(command))
+            .Match(_ => Ok("Account Activated Successfully. You can now login."), BadRequest);
 }
