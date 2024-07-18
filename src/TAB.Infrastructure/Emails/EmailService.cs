@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using TAB.Application.Core.Interfaces.Email;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Email;
 using TAB.Infrastructure.Emails.Options;
 
 namespace TAB.Infrastructure.Emails;

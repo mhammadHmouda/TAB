@@ -27,4 +27,14 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
         return user ?? Maybe<User>.None;
     }
+
+    public async Task<Maybe<User>> GetByTokenAsync(string token)
+    {
+        var user = await DbContext
+            .Set<User>()
+            .Include(user => user.Tokens)
+            .FirstOrDefaultAsync(user => user.Tokens.Any(t => t.Value == token));
+
+        return user ?? Maybe<User>.None;
+    }
 }

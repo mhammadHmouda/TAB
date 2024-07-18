@@ -1,6 +1,7 @@
 ﻿using MediatR;
+using TAB.Application.Core.Contracts;
 using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Application.Features.UserManagement.Activation;
 
-public record UserActivationCommand(string Token) : IRequest<Result<Unit>>;
+public record ActivateUserCommand(string Token) : ICommand<Result<Unit>>;

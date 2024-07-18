@@ -1,4 +1,4 @@
-﻿using TAB.Contracts.Features.UserManagement;
+﻿using TAB.Contracts.Features.UserManagement.Email;
 
 namespace TAB.Application.Core.Interfaces.Email;
 

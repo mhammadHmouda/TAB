@@ -26,6 +26,7 @@ builder
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<TokenValidationMiddleware>();
 
 app.UseSerilogRequestLogging();
 

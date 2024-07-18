@@ -9,16 +9,16 @@ public class Token : Entity
     public int UserId { get; }
     public DateTime ExpiresAt { get; }
 
-    private Token(string value, bool isRevoked, int userId, DateTime expiresAt)
+    private Token(string value, int userId, DateTime expiresAt)
     {
         Value = value;
-        IsRevoked = isRevoked;
+        IsRevoked = false;
         UserId = userId;
         ExpiresAt = expiresAt;
     }
 
     public static Token Create(string value, int userId, DateTime expiresAt) =>
-        new(value, false, userId, expiresAt);
+        new(value, userId, expiresAt);
 
     public void Revoke() => IsRevoked = true;
 }

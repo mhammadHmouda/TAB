@@ -14,6 +14,11 @@ public static class DomainErrors
             new("User.AlreadyActive", "User is already active.");
         public static Error ActivationCodeExpired =>
             new("User.ActivationCodeExpired", "The activation code has expired.");
+        public static Error EmailOrPasswordIncorrect =>
+            new("User.EmailOrPasswordIncorrect", "The email or password is incorrect.");
+        public static Error UserNotActivated =>
+            new("User.NotActivated", "The user account is not activated.");
+        public static Error InvalidToken => new("User.InvalidToken", "The token is invalid.");
     }
 
     public static class Email
