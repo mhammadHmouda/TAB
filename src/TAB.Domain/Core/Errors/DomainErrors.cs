@@ -1,6 +1,4 @@
-﻿using MediatR;
-using TAB.Domain.Core.Shared;
-using TAB.Domain.Core.Shared.Result;
+﻿using TAB.Domain.Core.Shared;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -14,6 +12,10 @@ public static class DomainErrors
             new("User.AlreadyActive", "User is already active.");
         public static Error ActivationCodeExpired =>
             new("User.ActivationCodeExpired", "The activation code has expired.");
+        public static Error EmailOrPasswordIncorrect =>
+            new("User.EmailOrPasswordIncorrect", "The email or password is incorrect.");
+        public static Error UserNotActivated =>
+            new("User.NotActivated", "The user account is not activated.");
     }
 
     public static class Email

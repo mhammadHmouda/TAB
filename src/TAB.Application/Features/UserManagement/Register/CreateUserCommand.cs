@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using TAB.Application.Core.Contracts;
 using TAB.Contracts.Features.UserManagement;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.UserManagement.Enums;
@@ -11,4 +11,4 @@ public record CreateUserCommand(
     string FirstName,
     string LastName,
     UserRole Role
-) : IRequest<Result<UserResponse>>;
+) : ICommand<Result<UserResponse>>;

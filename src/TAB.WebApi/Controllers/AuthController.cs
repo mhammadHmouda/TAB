@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.UserManagement.Activation;
+using TAB.Application.Features.UserManagement.Login;
 using TAB.Application.Features.UserManagement.Register;
 using TAB.Contracts.Features.UserManagement;
 using TAB.Domain.Core.Shared.Result;
@@ -53,7 +55,26 @@ public class AuthController : ApiController
     public async Task<IActionResult> Activate([FromQuery] string token) =>
         await Result
             .Create(token)
-            .Map(t => new UserActivationCommand(t))
+            .Map(t => new ActivateUserCommand(t))
             .Bind(command => Mediator.Send(command))
             .Match(_ => Ok("Account Activated Successfully. You can now login."), BadRequest);
+
+    /// <summary>
+    /// Logs in a user.
+    /// </summary>
+    /// <param name="loginRequest">The login request.</param>
+    /// <response code="200">The user was logged in successfully.</response>
+    /// <response code="400">The user email or password are invalid.</response>
+    /// <returns>The login result.</returns>
+    [HttpPost(ApiRoutes.Auth.Login)]
+    public async Task<IActionResult> Login(LoginRequest loginRequest) =>
+        await Result
+            .Create(loginRequest)
+            .Map(request => new LoginUserCommand(request.Email, request.Password))
+            .Bind(command => Mediator.Send(command))
+            .Match(user => Ok(user, "Logged in successfully."), BadRequest);
+
+    [Authorize]
+    [HttpGet("test")]
+    public IActionResult Test() => Ok("Test");
 }

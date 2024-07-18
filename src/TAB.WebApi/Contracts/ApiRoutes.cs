@@ -7,5 +7,6 @@ public static class ApiRoutes
         private const string Base = "auth";
         public const string Register = Base + "/register";
         public const string Activate = Base + "/activate";
+        public const string Login = Base + "/login";
     }
 }

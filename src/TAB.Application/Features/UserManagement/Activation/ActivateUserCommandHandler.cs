@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
@@ -6,19 +7,19 @@ using TAB.Domain.Features.UserManagement.Repositories;
 
 namespace TAB.Application.Features.UserManagement.Activation;
 
-public class UserActivationCommandHandler : IRequestHandler<UserActivationCommand, Result<Unit>>
+public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, Result<Unit>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UserActivationCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public ActivateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Unit>> Handle(
-        UserActivationCommand request,
+        ActivateUserCommand request,
         CancellationToken cancellationToken
     )
     {

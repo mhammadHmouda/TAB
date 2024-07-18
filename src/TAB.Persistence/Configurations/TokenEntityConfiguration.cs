@@ -12,7 +12,7 @@ public class TokenEntityConfiguration : IEntityTypeConfiguration<Token>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Value).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.Value).HasMaxLength(1024).IsRequired();
         builder.Property(x => x.IsRevoked).IsRequired();
         builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.ExpiresAt).IsRequired();

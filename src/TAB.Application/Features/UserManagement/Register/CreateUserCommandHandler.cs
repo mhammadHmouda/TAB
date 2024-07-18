@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
@@ -12,7 +12,7 @@ using TAB.Domain.Features.UserManagement.ValueObjects;
 
 namespace TAB.Application.Features.UserManagement.Register;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<UserResponse>>
+public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Result<UserResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;

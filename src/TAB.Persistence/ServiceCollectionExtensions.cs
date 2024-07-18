@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
 
         return services;
     }
