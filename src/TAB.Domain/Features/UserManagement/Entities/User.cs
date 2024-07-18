@@ -90,6 +90,16 @@ public class User : AggregateRoot, IAuditableEntity
         _tokens.Add(token);
     }
 
+    public void ClearToken(string tokenValue)
+    {
+        var token = _tokens.FirstOrDefault(t => t.Value == tokenValue);
+
+        if (token is { })
+        {
+            _tokens.Remove(token);
+        }
+    }
+
     private void SetActivationCode(ActivationCode activationCode)
     {
         ActivationCode = activationCode ?? throw new ArgumentNullException(nameof(activationCode));

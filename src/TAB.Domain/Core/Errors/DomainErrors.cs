@@ -1,4 +1,6 @@
-﻿using TAB.Domain.Core.Shared;
+﻿using MediatR;
+using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -16,6 +18,7 @@ public static class DomainErrors
             new("User.EmailOrPasswordIncorrect", "The email or password is incorrect.");
         public static Error UserNotActivated =>
             new("User.NotActivated", "The user account is not activated.");
+        public static Error InvalidToken => new("User.InvalidToken", "The token is invalid.");
     }
 
     public static class Email

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.UserManagement.Activation;
 using TAB.Application.Features.UserManagement.Login;
+using TAB.Application.Features.UserManagement.Logout;
 using TAB.Application.Features.UserManagement.Register;
 using TAB.Contracts.Features.UserManagement;
 using TAB.Domain.Core.Shared.Result;
@@ -74,7 +75,18 @@ public class AuthController : ApiController
             .Bind(command => Mediator.Send(command))
             .Match(user => Ok(user, "Logged in successfully."), BadRequest);
 
+    /// <summary>
+    /// Logs out a user.
+    /// </summary>
+    /// <response code="200">The user was logged out successfully.</response>
+    /// <response code="400">The logout token is invalid.</response>
+    /// <returns>The logout result.</returns>
+    [HttpPost(ApiRoutes.Auth.Logout)]
     [Authorize]
-    [HttpGet("test")]
-    public IActionResult Test() => Ok("Test");
+    public async Task<IActionResult> Logout([FromQuery] string token) =>
+        await Result
+            .Create(token)
+            .Map(t => new LogoutUserCommand(t))
+            .Bind(command => Mediator.Send(command))
+            .Match(_ => Ok("Logged out successfully."), BadRequest);
 }
