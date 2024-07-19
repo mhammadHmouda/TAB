@@ -1,7 +1,7 @@
 ﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Auth;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.UserManagement.Repositories;
@@ -30,7 +30,10 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<
         CancellationToken cancellationToken
     )
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByAsync(
+            user => user.Email == request.Email,
+            cancellationToken
+        );
 
         if (user.HasNoValue)
         {

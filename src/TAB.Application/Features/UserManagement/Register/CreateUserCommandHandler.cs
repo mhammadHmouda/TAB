@@ -2,7 +2,7 @@
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Core;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Result;
@@ -40,7 +40,10 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userExists = await _userRepository.GetByEmailAsync(request.Email);
+        var userExists = await _userRepository.GetByAsync(
+            user => user.Email == request.Email,
+            cancellationToken
+        );
 
         if (userExists.HasValue)
         {

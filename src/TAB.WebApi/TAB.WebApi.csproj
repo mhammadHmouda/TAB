@@ -31,8 +31,4 @@
     <ProjectReference Include="..\TAB.Infrastructure\TAB.Infrastructure.csproj" />
     <ProjectReference Include="..\TAB.Persistence\TAB.Persistence.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
 </Project>

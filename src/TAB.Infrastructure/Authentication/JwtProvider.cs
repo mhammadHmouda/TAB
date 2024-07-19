@@ -1,10 +1,10 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TAB.Application.Core.Interfaces.Common;
+using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Features.UserManagement.Entities;
 using TAB.Infrastructure.Authentication.Options;
@@ -15,10 +15,16 @@ public class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _jwtOptions;
     private readonly IDateTimeProvider _dateTime;
+    private readonly IPasswordHasher _hasher;
 
-    public JwtProvider(IOptions<JwtOptions> jwtOptions, IDateTimeProvider dateTime)
+    public JwtProvider(
+        IOptions<JwtOptions> jwtOptions,
+        IDateTimeProvider dateTime,
+        IPasswordHasher hasher
+    )
     {
         _dateTime = dateTime;
+        _hasher = hasher;
         _jwtOptions = jwtOptions.Value;
     }
 
@@ -48,7 +54,7 @@ public class JwtProvider : IJwtProvider
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var token = tokenHandler.WriteToken(tokenSettings);
-        user.AddToken(token, tokenExpirationDate);
+        user.AddToken(_hasher.HashPassword(token), tokenExpirationDate);
 
         return token;
     }

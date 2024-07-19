@@ -19,6 +19,4 @@ public class Token : Entity
 
     public static Token Create(string value, int userId, DateTime expiresAt) =>
         new(value, userId, expiresAt);
-
-    public void Revoke() => IsRevoked = true;
 }

@@ -6,7 +6,5 @@ namespace TAB.Domain.Features.UserManagement.Repositories;
 
 public interface IUserRepository : IRepository<User>
 {
-    Task<Maybe<User>> GetByEmailAsync(string email);
-    Task<Maybe<User>> GetByActivationTokenAsync(string token);
     Task<Maybe<User>> GetByTokenAsync(string token);
 }

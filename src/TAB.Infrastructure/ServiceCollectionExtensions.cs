@@ -8,6 +8,7 @@ using TAB.Application.Core.Interfaces.Notifications;
 using TAB.Domain.Core.Interfaces;
 using TAB.Infrastructure.Authentication;
 using TAB.Infrastructure.Authentication.Options;
+using TAB.Infrastructure.Background;
 using TAB.Infrastructure.Common;
 using TAB.Infrastructure.Cryptography;
 using TAB.Infrastructure.Emails;
@@ -32,6 +33,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenGenerator, GuidTokenGenerator>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ITokenValidationService, TokenValidationService>();
+        services.AddScoped<IUserContext, UserContext>();
+
+        services.AddHostedService<TokenCleanupService>();
 
         services.AddAuthentication(configuration);
 

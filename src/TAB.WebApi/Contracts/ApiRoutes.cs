@@ -10,4 +10,10 @@ public static class ApiRoutes
         public const string Login = Base + "/login";
         public const string Logout = Base + "/logout";
     }
+
+    public static class Users
+    {
+        private const string Base = "users";
+        public const string Update = Base + "/{id}";
+    }
 }
