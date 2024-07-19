@@ -40,7 +40,10 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userExists = await _userRepository.GetByEmailAsync(request.Email);
+        var userExists = await _userRepository.GetByAsync(
+            user => user.Email == request.Email,
+            cancellationToken
+        );
 
         if (userExists.HasValue)
         {

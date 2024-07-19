@@ -3,4 +3,7 @@ using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Domain.Features.UserManagement.Repositories;
 
-public interface ITokenRepository : IRepository<Token> { }
+public interface ITokenRepository : IRepository<Token>
+{
+    void RemoveExpiredTokens();
+}

@@ -23,7 +23,10 @@ public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, R
         CancellationToken cancellationToken
     )
     {
-        var user = await _userRepository.GetByActivationTokenAsync(request.Token);
+        var user = await _userRepository.GetByAsync(
+            user => user.ActivationCode.Value == request.Token,
+            cancellationToken
+        );
 
         if (user.HasNoValue)
         {
