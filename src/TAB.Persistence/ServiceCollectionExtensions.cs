@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TAB.Application.Core.Interfaces.Data;
+using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Persistence.Infrastructure;
+using TAB.Persistence.Repositories.HotelManagement;
 using TAB.Persistence.Repositories.UserManagement;
 
 namespace TAB.Persistence;
@@ -29,6 +31,8 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
+        services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<IHotelRepository, HotelRepository>();
 
         return services;
     }

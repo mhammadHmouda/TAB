@@ -89,4 +89,10 @@ public static class DomainErrors
         public static Error LongitudeOutOfRange =>
             new("Location.Longitude out of range", "Longitude must be between -180 and 180.");
     }
+
+    public static class Hotel
+    {
+        public static Error CityNotFound => new("Hotel.CityNotFound", "City not found.");
+        public static Error OwnerNotFound => new("Hotel.OwnerNotFound", "Owner not found.");
+    }
 }
