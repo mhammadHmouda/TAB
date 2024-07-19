@@ -1,5 +1,4 @@
-﻿using MediatR;
-using TAB.Application.Core.Contracts;
+﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Errors;
@@ -8,7 +7,7 @@ using TAB.Domain.Features.UserManagement.Repositories;
 
 namespace TAB.Application.Features.UserManagement.Logout;
 
-public class LogoutUserCommandHandler : ICommandHandler<LogoutUserCommand, Result<Unit>>
+public class LogoutUserCommandHandler : ICommandHandler<LogoutUserCommand, Result>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,10 +24,7 @@ public class LogoutUserCommandHandler : ICommandHandler<LogoutUserCommand, Resul
         _hasher = hasher;
     }
 
-    public async Task<Result<Unit>> Handle(
-        LogoutUserCommand request,
-        CancellationToken cancellationToken
-    )
+    public async Task<Result> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
     {
         var hashedToken = _hasher.HashPassword(request.Token);
 
@@ -42,6 +38,6 @@ public class LogoutUserCommandHandler : ICommandHandler<LogoutUserCommand, Resul
         user.Value.ClearToken(hashedToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return Result.Success();
     }
 }

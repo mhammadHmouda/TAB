@@ -3,7 +3,7 @@ using TAB.Application.Features.UserManagement.Activation;
 using TAB.Application.Features.UserManagement.Login;
 using TAB.Application.Features.UserManagement.Logout;
 using TAB.Application.Features.UserManagement.Register;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Auth;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
 using TAB.WebApi.Attributes;
@@ -58,7 +58,7 @@ public class AuthController : ApiController
             .Create(token)
             .Map(t => new ActivateUserCommand(t))
             .Bind(command => Mediator.Send(command))
-            .Match(_ => Ok("Account Activated Successfully. You can now login."), BadRequest);
+            .Match(() => Ok("Account Activated Successfully. You can now login."), BadRequest);
 
     /// <summary>
     /// Logs in a user.
@@ -91,6 +91,6 @@ public class AuthController : ApiController
             .Create(token)
             .Map(t => new LogoutUserCommand(t))
             .Bind(command => Mediator.Send(command))
-            .Match(_ => Ok("Logged out successfully."), BadRequest);
+            .Match(() => Ok("Logged out successfully."), BadRequest);
     }
 }

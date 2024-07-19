@@ -19,6 +19,8 @@ public static class DomainErrors
         public static Error UserNotActivated =>
             new("User.NotActivated", "The user account is not activated.");
         public static Error InvalidToken => new("User.InvalidToken", "The token is invalid.");
+        public static Error PasswordUnchanged =>
+            new("User.PasswordUnchanged", "The new password is the same as the old password.");
     }
 
     public static class Email
@@ -75,5 +77,8 @@ public static class DomainErrors
         public static Error NotFuture =>
             new("General.NotFuture", "The value is not in the future.");
         public static Error NotPast => new("General.NotPast", "The value is not in the past.");
+        public static Error UnProcessableRequest =>
+            new("General.UnProcessableRequest", "The request is unprocessable.");
+        public static Error Unauthorized => new("General.Unauthorized", "Unauthorized.");
     }
 }

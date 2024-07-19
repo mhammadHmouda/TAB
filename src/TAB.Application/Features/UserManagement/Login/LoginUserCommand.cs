@@ -1,5 +1,5 @@
 ﻿using TAB.Application.Core.Contracts;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Auth;
 using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Application.Features.UserManagement.Login;

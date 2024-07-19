@@ -33,6 +33,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenGenerator, GuidTokenGenerator>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ITokenValidationService, TokenValidationService>();
+        services.AddScoped<IUserContext, UserContext>();
 
         services.AddHostedService<TokenCleanupService>();
 

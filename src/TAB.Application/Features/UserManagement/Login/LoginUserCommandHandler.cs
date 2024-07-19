@@ -1,7 +1,7 @@
 ﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
-using TAB.Contracts.Features.UserManagement;
+using TAB.Contracts.Features.UserManagement.Auth;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.UserManagement.Repositories;

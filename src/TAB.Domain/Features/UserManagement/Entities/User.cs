@@ -104,4 +104,25 @@ public class User : AggregateRoot, IAuditableEntity
     {
         ActivationCode = activationCode ?? throw new ArgumentNullException(nameof(activationCode));
     }
+
+    public Result Update(string firstName, string lastName, string? password)
+    {
+        Ensure.NotEmpty(firstName, "The first name is required.", nameof(firstName));
+        Ensure.NotEmpty(lastName, "The last name is required.", nameof(lastName));
+
+        FirstName = firstName;
+        LastName = lastName;
+
+        if (!string.IsNullOrEmpty(password))
+        {
+            if (Password == password)
+            {
+                return DomainErrors.User.PasswordUnchanged;
+            }
+
+            Password = password;
+        }
+
+        return Result.Success();
+    }
 }

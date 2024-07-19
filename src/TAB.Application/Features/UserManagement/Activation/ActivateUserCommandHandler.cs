@@ -7,7 +7,7 @@ using TAB.Domain.Features.UserManagement.Repositories;
 
 namespace TAB.Application.Features.UserManagement.Activation;
 
-public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, Result<Unit>>
+public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, Result>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -18,7 +18,7 @@ public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, R
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Unit>> Handle(
+    public async Task<Result> Handle(
         ActivateUserCommand request,
         CancellationToken cancellationToken
     )
@@ -36,6 +36,6 @@ public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, R
         user.Value.Activate();
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return Result.Success();
     }
 }
