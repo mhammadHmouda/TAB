@@ -16,4 +16,16 @@ public static class ApiRoutes
         private const string Base = "users";
         public const string Update = Base + "/{id}";
     }
+
+    public static class Cities
+    {
+        private const string Base = "cities";
+        public const string Create = Base;
+    }
+
+    public static class Hotels
+    {
+        private const string Base = "hotels";
+        public const string Create = Base;
+    }
 }
