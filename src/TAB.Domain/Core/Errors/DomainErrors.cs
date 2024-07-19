@@ -1,6 +1,4 @@
-﻿using MediatR;
-using TAB.Domain.Core.Shared;
-using TAB.Domain.Core.Shared.Result;
+﻿using TAB.Domain.Core.Shared;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -80,5 +78,15 @@ public static class DomainErrors
         public static Error UnProcessableRequest =>
             new("General.UnProcessableRequest", "The request is unprocessable.");
         public static Error Unauthorized => new("General.Unauthorized", "Unauthorized.");
+    }
+
+    public static class Location
+    {
+        public static Error NullLatitude => new("Location.NullLatitude", "Latitude is required.");
+        public static Error NullLongitude => new("Location.NulLongitude", "Longitude is required.");
+        public static Error LatitudeOutOfRange =>
+            new("Location.Latitude out of range", "Latitude must be between -90 and 90.");
+        public static Error LongitudeOutOfRange =>
+            new("Location.Longitude out of range", "Longitude must be between -180 and 180.");
     }
 }
