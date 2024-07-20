@@ -12,4 +12,7 @@ public static class FormCollectionExtensions
                 x.OpenReadStream().ReadAllBytes()
             ))
             .ToArray();
+
+    public static FileRequest CreateFileRequest(this IFormFile file) =>
+        new(file.FileName, file.ContentType, file.OpenReadStream().ReadAllBytes());
 }

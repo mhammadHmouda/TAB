@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TAB.Application.Features.HotelManagement.AddHotels;
-using TAB.Application.Features.HotelManagement.UploadImages;
+using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
+using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Shared.Result;

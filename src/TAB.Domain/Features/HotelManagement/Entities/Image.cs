@@ -28,4 +28,6 @@ public class Image : Entity, IAuditableEntity
             .Ensure(x => Enum.IsDefined(typeof(ImageType), x.type), DomainErrors.Image.TypeInvalid)
             .Ensure(x => x.referenceId > 0, DomainErrors.Image.ReferenceIdInvalid)
             .Map(x => new Image(x.url, x.type, x.referenceId));
+
+    public void UpdateUrl(string url) => Url = url;
 }

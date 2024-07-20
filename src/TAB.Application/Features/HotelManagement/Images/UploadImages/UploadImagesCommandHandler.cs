@@ -7,7 +7,7 @@ using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 
-namespace TAB.Application.Features.HotelManagement.UploadImages;
+namespace TAB.Application.Features.HotelManagement.Images.UploadImages;
 
 public class UploadImagesCommandHandler
     : ICommandHandler<UploadImagesCommand, Result<UploadImagesResponse>>

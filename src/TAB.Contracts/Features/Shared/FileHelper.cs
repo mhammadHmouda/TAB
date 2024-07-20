@@ -21,4 +21,10 @@ public static class FileHelper
                 x => x.All(file => file.Content.Length <= MaxImageSize),
                 DomainErrors.Image.InvalidImageSize
             );
+
+    public static Result ValidateFileRequest(FileRequest file) =>
+        Result
+            .Create(file)
+            .Ensure(x => ImageTypes.Contains(x.ContentType), DomainErrors.Image.InvalidImageType)
+            .Ensure(x => x.Content.Length <= MaxImageSize, DomainErrors.Image.InvalidImageSize);
 }

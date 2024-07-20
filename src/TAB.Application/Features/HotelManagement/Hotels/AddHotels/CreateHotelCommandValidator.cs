@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TAB.Application.Features.HotelManagement.AddHotels;
+namespace TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 
 public class CreateHotelCommandValidator : AbstractValidator<CreateHotelCommand>
 {

@@ -8,7 +8,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 using TAB.Domain.Features.UserManagement.Repositories;
 
-namespace TAB.Application.Features.HotelManagement.AddHotels;
+namespace TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 
 public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Result<HotelResponse>>
 {

@@ -109,5 +109,6 @@ public static class DomainErrors
         public static Error TypeInvalid => new("Image.TypeInvalid", "The image type is invalid.");
         public static Error ReferenceIdInvalid =>
             new("Image.ReferenceIdInvalid", "The reference ID is invalid.");
+        public static Error ImageNotFound => new("Image.ImageNotFound", "The image was not found.");
     }
 }
