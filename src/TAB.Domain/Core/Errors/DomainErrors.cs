@@ -104,5 +104,10 @@ public static class DomainErrors
             new("Image.InvalidImagesType", "The image type is invalid.");
         public static Error InvalidImageSize =>
             new("Image.InvalidImagesSize", "The image size is invalid.");
+        public static Error UrlNullOrEmpty =>
+            new("Image.UrlNullOrEmpty", "The URL is null or empty.");
+        public static Error TypeInvalid => new("Image.TypeInvalid", "The image type is invalid.");
+        public static Error ReferenceIdInvalid =>
+            new("Image.ReferenceIdInvalid", "The reference ID is invalid.");
     }
 }

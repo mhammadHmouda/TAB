@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TAB.Persistence;
 
@@ -11,9 +12,11 @@ using TAB.Persistence;
 namespace TAB.Persistence.Migrations
 {
     [DbContext(typeof(TabDbContext))]
-    partial class TabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240720180327_AddImageEntity")]
+    partial class AddImageEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
