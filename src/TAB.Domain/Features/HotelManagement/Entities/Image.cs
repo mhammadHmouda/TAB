@@ -23,9 +23,9 @@ public class Image : Entity, IAuditableEntity
 
     public static Result<Image> Create(string url, ImageType type, int referenceId) =>
         Result
-            .Create((url, type, itemId: referenceId))
+            .Create((url, type, referenceId))
             .Ensure(x => !string.IsNullOrWhiteSpace(x.url), DomainErrors.Image.UrlNullOrEmpty)
             .Ensure(x => Enum.IsDefined(typeof(ImageType), x.type), DomainErrors.Image.TypeInvalid)
-            .Ensure(x => x.itemId > 0, DomainErrors.Image.ReferenceIdInvalid)
-            .Map(x => new Image(x.url, x.type, x.itemId));
+            .Ensure(x => x.referenceId > 0, DomainErrors.Image.ReferenceIdInvalid)
+            .Map(x => new Image(x.url, x.type, x.referenceId));
 }
