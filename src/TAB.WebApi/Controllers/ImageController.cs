@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TAB.Application.Features.HotelManagement.Images.DeleteImage;
 using TAB.Application.Features.HotelManagement.Images.UpdateImage;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
+using TAB.WebApi.Attributes;
 using TAB.WebApi.Contracts;
 using TAB.WebApi.Extensions;
 
@@ -12,6 +14,7 @@ namespace TAB.WebApi.Controllers;
 /// <summary>
 /// Controller for managing images.
 /// </summary>
+[TokenValidation]
 public class ImageController : ApiController
 {
     /// <summary>
@@ -48,6 +51,21 @@ public class ImageController : ApiController
         await Result
             .Create((id, file))
             .Map(x => new UpdateImageCommand(x.id, x.file.CreateFileRequest()))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Deletes an image.
+    /// </summary>
+    /// <param name="id">The ID of the image.</param>
+    /// <response code="200">The image was deleted successfully.</response>
+    /// <response code="400">The image was not deleted successfully.</response>
+    /// <returns>The result of the delete operation.</returns>
+    [HttpDelete(ApiRoutes.Images.Delete)]
+    public async Task<IActionResult> DeleteImage(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new DeleteImageCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

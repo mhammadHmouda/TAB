@@ -36,5 +36,6 @@ public static class ApiRoutes
         private const string Base = "images";
         public const string Upload = $"{Base}/references/{{id}}/type/{{type}}";
         public const string Update = $"{Base}/{{id}}";
+        public const string Delete = $"{Base}/{{id}}";
     }
 }
