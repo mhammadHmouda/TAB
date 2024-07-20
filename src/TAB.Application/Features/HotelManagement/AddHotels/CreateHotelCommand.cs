@@ -1,5 +1,5 @@
 ﻿using TAB.Application.Core.Contracts;
-using TAB.Contracts.Features.HotelManagement;
+using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Enums;
 

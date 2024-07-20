@@ -1,6 +1,6 @@
 ﻿using TAB.Domain.Features.HotelManagement.Enums;
 
-namespace TAB.Contracts.Features.HotelManagement;
+namespace TAB.Contracts.Features.HotelManagement.Hotels;
 
 public record CreateHotelRequest(
     string Name,

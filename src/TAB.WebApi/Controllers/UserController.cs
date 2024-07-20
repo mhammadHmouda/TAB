@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.UserManagement.UpdateProfile;
-using TAB.Contracts.Features.UserManagement.Core;
+using TAB.Contracts.Features.UserManagement.Users;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;

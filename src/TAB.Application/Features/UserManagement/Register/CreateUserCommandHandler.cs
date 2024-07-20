@@ -2,7 +2,7 @@
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
-using TAB.Contracts.Features.UserManagement.Core;
+using TAB.Contracts.Features.UserManagement.Users;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Result;
@@ -18,21 +18,21 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly ITokenGenerator _tokenGenerator;
+    private readonly IGeneratorService _generator;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IDateTimeProvider dateTimeProvider,
-        ITokenGenerator tokenGenerator
+        IGeneratorService generator
     )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
         _dateTimeProvider = dateTimeProvider;
-        _tokenGenerator = tokenGenerator;
+        _generator = generator;
     }
 
     public async Task<Result<UserResponse>> Handle(
@@ -63,7 +63,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         var passwordHash = _passwordHasher.HashPassword(passwordResult.Value);
 
         var activationCode = ActivationCode.Create(
-            _tokenGenerator.Generate(),
+            _generator.GenerateToken(),
             _dateTimeProvider.UtcNow.AddHours(24)
         );
 

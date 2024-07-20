@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Email;
@@ -10,6 +12,7 @@ using TAB.Infrastructure.Authentication;
 using TAB.Infrastructure.Authentication.Options;
 using TAB.Infrastructure.Background;
 using TAB.Infrastructure.Common;
+using TAB.Infrastructure.Common.Options;
 using TAB.Infrastructure.Cryptography;
 using TAB.Infrastructure.Emails;
 using TAB.Infrastructure.Emails.Options;
@@ -30,14 +33,16 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IEmailNotificationService, EmailNotificationService>();
-        services.AddScoped<ITokenGenerator, GuidTokenGenerator>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ITokenValidationService, TokenValidationService>();
         services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IGeneratorService, GeneratorService>();
+        services.AddScoped<IUploadFileService, AzureBlobService>();
 
         services.AddHostedService<TokenCleanupService>();
 
         services.AddAuthentication(configuration);
+        services.AddAzureBlob();
 
         return services;
     }
@@ -53,6 +58,19 @@ public static class ServiceCollectionExtensions
         services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         services.AddAuthorization();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAzureBlob(this IServiceCollection services)
+    {
+        services.ConfigureOptions<ConfigureAzureBlobOptions>();
+
+        services.AddSingleton(provider =>
+        {
+            var options = provider.GetRequiredService<IOptions<AzureBlobOptions>>().Value;
+            return new BlobServiceClient(options.ConnectionString);
+        });
 
         return services;
     }

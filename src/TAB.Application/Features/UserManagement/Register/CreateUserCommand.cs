@@ -1,5 +1,5 @@
 ﻿using TAB.Application.Core.Contracts;
-using TAB.Contracts.Features.UserManagement.Core;
+using TAB.Contracts.Features.UserManagement.Users;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.UserManagement.Enums;
 

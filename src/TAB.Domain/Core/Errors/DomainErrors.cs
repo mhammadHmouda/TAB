@@ -95,4 +95,14 @@ public static class DomainErrors
         public static Error CityNotFound => new("Hotel.CityNotFound", "City not found.");
         public static Error OwnerNotFound => new("Hotel.OwnerNotFound", "Owner not found.");
     }
+
+    public static class Image
+    {
+        public static Error InvalidImageCount =>
+            new("Image.InvalidImagesCount", "The number of images is invalid.");
+        public static Error InvalidImageType =>
+            new("Image.InvalidImagesType", "The image type is invalid.");
+        public static Error InvalidImageSize =>
+            new("Image.InvalidImagesSize", "The image size is invalid.");
+    }
 }

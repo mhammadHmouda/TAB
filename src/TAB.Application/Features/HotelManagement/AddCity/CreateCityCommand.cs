@@ -1,5 +1,5 @@
 ﻿using TAB.Application.Core.Contracts;
-using TAB.Contracts.Features.HotelManagement;
+using TAB.Contracts.Features.HotelManagement.Cities;
 using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Application.Features.HotelManagement.AddCity;
