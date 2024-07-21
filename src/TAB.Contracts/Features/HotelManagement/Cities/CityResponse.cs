@@ -1,4 +1,4 @@
-﻿namespace TAB.Contracts.Features.HotelManagement;
+﻿namespace TAB.Contracts.Features.HotelManagement.Cities;
 
 public record CityResponse(
     int Id,

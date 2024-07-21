@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TAB.Application.Features.HotelManagement.AddCity;
+namespace TAB.Application.Features.HotelManagement.Cities.AddCity;
 
 public class CreateCityCommandValidator : AbstractValidator<CreateCityCommand>
 {

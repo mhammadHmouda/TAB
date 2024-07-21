@@ -21,11 +21,21 @@ public static class ApiRoutes
     {
         private const string Base = "cities";
         public const string Create = Base;
+        public const string UploadImages = Base + "/{id}/images";
     }
 
     public static class Hotels
     {
         private const string Base = "hotels";
         public const string Create = Base;
+        public const string UploadImages = Base + "/{id}/images";
+    }
+
+    public static class Images
+    {
+        private const string Base = "images";
+        public const string Upload = $"{Base}/references/{{id}}/type/{{type}}";
+        public const string Update = $"{Base}/{{id}}";
+        public const string Delete = $"{Base}/{{id}}";
     }
 }

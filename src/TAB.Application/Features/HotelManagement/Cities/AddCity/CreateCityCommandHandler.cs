@@ -1,11 +1,11 @@
 ﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
-using TAB.Contracts.Features.HotelManagement;
+using TAB.Contracts.Features.HotelManagement.Cities;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 
-namespace TAB.Application.Features.HotelManagement.AddCity;
+namespace TAB.Application.Features.HotelManagement.Cities.AddCity;
 
 public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Result<CityResponse>>
 {

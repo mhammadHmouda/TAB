@@ -1,9 +1,9 @@
 ﻿using TAB.Application.Core.Contracts;
-using TAB.Contracts.Features.HotelManagement;
+using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Enums;
 
-namespace TAB.Application.Features.HotelManagement.AddHotels;
+namespace TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 
 public record CreateHotelCommand(
     string Name,

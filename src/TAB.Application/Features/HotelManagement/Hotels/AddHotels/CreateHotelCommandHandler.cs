@@ -1,6 +1,6 @@
 ﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
-using TAB.Contracts.Features.HotelManagement;
+using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Entities;
@@ -8,7 +8,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 using TAB.Domain.Features.UserManagement.Repositories;
 
-namespace TAB.Application.Features.HotelManagement.AddHotels;
+namespace TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 
 public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Result<HotelResponse>>
 {

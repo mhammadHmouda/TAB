@@ -33,6 +33,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<IHotelRepository, HotelRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
 
         return services;
     }
