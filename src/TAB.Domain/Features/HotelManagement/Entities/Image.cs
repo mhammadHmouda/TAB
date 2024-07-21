@@ -29,5 +29,37 @@ public class Image : Entity, IAuditableEntity
             .Ensure(x => x.referenceId > 0, DomainErrors.Image.ReferenceIdInvalid)
             .Map(x => new Image(x.url, x.type, x.referenceId));
 
-    public void UpdateUrl(string url) => Url = url;
+    public static Result<IReadOnlyCollection<Image>> CreateImages(
+        IEnumerable<string> urls,
+        ImageType type,
+        int referenceId
+    )
+    {
+        var images = new List<Image>();
+        foreach (var url in urls)
+        {
+            var imageResult = Create(url, type, referenceId);
+
+            if (imageResult.IsFailure)
+            {
+                return imageResult.Error;
+            }
+
+            images.Add(imageResult.Value);
+        }
+
+        return images.AsReadOnly();
+    }
+
+    public Result UpdateUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return DomainErrors.Image.UrlNullOrEmpty;
+        }
+
+        Url = url;
+
+        return Result.Success();
+    }
 }

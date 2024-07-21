@@ -42,21 +42,14 @@ public class UploadImagesCommandHandler
         var fileResponses = await _uploadFileService.UploadFilesAsync(request.Files);
         var urls = fileResponses.Select(x => x.Url).ToArray();
 
-        var imagesFile = new List<Image>();
+        var imagesResult = Image.CreateImages(urls, request.ImageType, request.ReferenceId);
 
-        foreach (var url in urls)
+        if (imagesResult.IsFailure)
         {
-            var imageResult = Image.Create(url, request.ImageType, request.ReferenceId);
-
-            if (imageResult.IsFailure)
-            {
-                return imageResult.Error;
-            }
-
-            imagesFile.Add(imageResult.Value);
+            return imagesResult.Error;
         }
 
-        await _imageRepository.InsertRangeAsync(imagesFile);
+        await _imageRepository.InsertRangeAsync(imagesResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new UploadImagesResponse(urls);
