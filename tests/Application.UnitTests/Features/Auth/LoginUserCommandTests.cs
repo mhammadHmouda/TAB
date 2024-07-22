@@ -54,7 +54,7 @@ public class LoginUserCommandTests
         }
 
         _userRepository
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>())
+            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(Task.FromResult(Maybe<User>.From(_user)));
     }
 
@@ -68,7 +68,7 @@ public class LoginUserCommandTests
         };
 
         _userRepository
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>())
+            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(Task.FromResult(Maybe<User>.None));
 
         // Act
@@ -92,7 +92,7 @@ public class LoginUserCommandTests
         _passwordHasher.VerifyPassword(_user.Password, command.Password).Returns(false);
 
         // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
+        var result = await _handler.Handle(command, default);
 
         // Assert
         result.Error.Should().BeEquivalentTo(DomainErrors.User.EmailOrPasswordIncorrect);
@@ -107,7 +107,7 @@ public class LoginUserCommandTests
         _passwordHasher.VerifyPassword(_user.Password, _command.Password).Returns(true);
 
         // Act
-        var result = await _handler.Handle(_command, CancellationToken.None);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.Error.Should().BeEquivalentTo(DomainErrors.User.UserNotActivated);
@@ -123,7 +123,7 @@ public class LoginUserCommandTests
         _jwtProvider.GenerateToken(_user).Returns("token");
 
         // Act
-        var result = await _handler.Handle(_command, CancellationToken.None);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.Value.Token.Should().Be("token");
