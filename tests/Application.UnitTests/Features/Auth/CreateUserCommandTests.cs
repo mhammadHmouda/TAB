@@ -6,8 +6,8 @@ using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Notifications;
 using TAB.Application.Features.UserManagement.Register;
-using TAB.Contracts.Features.UserManagement.Core;
 using TAB.Contracts.Features.UserManagement.Email;
+using TAB.Contracts.Features.UserManagement.Users;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared;
@@ -32,7 +32,7 @@ public class CreateUserCommandTests
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         var passwordHasherMock = Substitute.For<IPasswordHasher>();
-        var tokenGeneratorMock = Substitute.For<ITokenGenerator>();
+        var generatorMock = Substitute.For<IGeneratorService>();
         var emailNotificationServiceMock = Substitute.For<IEmailNotificationService>();
 
         var dateTimeMock = Substitute.For<IDateTimeProvider>();
@@ -56,7 +56,7 @@ public class CreateUserCommandTests
         );
 
         passwordHasherMock.HashPassword(_command.Password).Returns(_command.Password);
-        tokenGeneratorMock.Generate().Returns("token");
+        generatorMock.GenerateToken().Returns("token");
         emailNotificationServiceMock
             .SendWelcomeEmail(Arg.Any<WelcomeEmail>())
             .Returns(Task.CompletedTask);
@@ -66,7 +66,7 @@ public class CreateUserCommandTests
             _unitOfWorkMock,
             passwordHasherMock,
             dateTimeMock,
-            tokenGeneratorMock
+            generatorMock
         );
     }
 
