@@ -1,7 +1,7 @@
-﻿using MediatR;
-using TAB.Application.Core.Contracts;
+﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.UserManagement.Repositories;
 
@@ -11,11 +11,17 @@ public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, R
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
-    public ActivateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public ActivateUserCommandHandler(
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork,
+        IDateTimeProvider dateTimeProvider
+    )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<Result> Handle(
@@ -30,10 +36,21 @@ public class ActivateUserCommandHandler : ICommandHandler<ActivateUserCommand, R
 
         if (user.HasNoValue)
         {
-            return DomainErrors.User.UserAlreadyActive;
+            return DomainErrors.User.UserNotFound;
         }
 
-        user.Value.Activate();
+        if (user.Value.ActivationCode.ExpiresAtUtc < _dateTimeProvider.UtcNow)
+        {
+            return DomainErrors.User.ActivationCodeExpired;
+        }
+
+        var activationResult = user.Value.Activate();
+
+        if (activationResult.IsFailure)
+        {
+            return activationResult.Error;
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

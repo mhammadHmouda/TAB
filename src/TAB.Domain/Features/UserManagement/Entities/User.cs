@@ -72,11 +72,6 @@ public class User : AggregateRoot, IAuditableEntity
             return DomainErrors.User.UserAlreadyActive;
         }
 
-        if (ActivationCode.ExpiresAtUtc < DateTime.UtcNow)
-        {
-            return DomainErrors.User.ActivationCodeExpired;
-        }
-
         IsActive = true;
         ActivationCode.Value = string.Empty;
         ActivationCode.ExpiresAtUtc = DateTime.MinValue;
