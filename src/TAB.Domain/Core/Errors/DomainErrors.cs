@@ -1,4 +1,5 @@
 ﻿using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -94,6 +95,9 @@ public static class DomainErrors
     {
         public static Error CityNotFound => new("Hotel.CityNotFound", "City not found.");
         public static Error OwnerNotFound => new("Hotel.OwnerNotFound", "Owner not found.");
+        public static Error NothingToUpdate =>
+            new("Hotel.NothingToUpdate", "Nothing to update in the hotel.");
+        public static Error NotFound => new("Hotel.NotFound", "Hotel not found.");
     }
 
     public static class Image

@@ -29,6 +29,7 @@ public static class ApiRoutes
         private const string Base = "hotels";
         public const string Create = Base;
         public const string UploadImages = Base + "/{id}/images";
+        public const string Update = Base + "/{id}";
     }
 
     public static class Images
