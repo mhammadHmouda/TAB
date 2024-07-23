@@ -79,6 +79,7 @@ public static class DomainErrors
         public static Error UnProcessableRequest =>
             new("General.UnProcessableRequest", "The request is unprocessable.");
         public static Error Unauthorized => new("General.Unauthorized", "Unauthorized.");
+        public static Error Of => new("General.Of", "The value is of the wrong type.");
     }
 
     public static class Location

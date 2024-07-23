@@ -72,4 +72,14 @@ public static class Ensure
             throw new DomainException(DomainErrors.General.NotPast.WithMessage(error));
         }
     }
+
+    public static void Of<TEnum>(TEnum value, string? message, string? argumentName)
+        where TEnum : struct, Enum
+    {
+        var error = $"{argumentName} {message}";
+        if (!Enum.IsDefined(typeof(TEnum), value))
+        {
+            throw new DomainException(DomainErrors.General.Of.WithMessage(error));
+        }
+    }
 }
