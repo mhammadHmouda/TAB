@@ -1,4 +1,5 @@
 ﻿using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -78,6 +79,7 @@ public static class DomainErrors
         public static Error UnProcessableRequest =>
             new("General.UnProcessableRequest", "The request is unprocessable.");
         public static Error Unauthorized => new("General.Unauthorized", "Unauthorized.");
+        public static Error Of => new("General.Of", "The value is of the wrong type.");
     }
 
     public static class Location
@@ -94,6 +96,9 @@ public static class DomainErrors
     {
         public static Error CityNotFound => new("Hotel.CityNotFound", "City not found.");
         public static Error OwnerNotFound => new("Hotel.OwnerNotFound", "Owner not found.");
+        public static Error NothingToUpdate =>
+            new("Hotel.NothingToUpdate", "Nothing to update in the hotel.");
+        public static Error NotFound => new("Hotel.NotFound", "Hotel not found.");
     }
 
     public static class Image
@@ -110,5 +115,22 @@ public static class DomainErrors
         public static Error ReferenceIdInvalid =>
             new("Image.ReferenceIdInvalid", "The reference ID is invalid.");
         public static Error ImageNotFound => new("Image.ImageNotFound", "The image was not found.");
+    }
+
+    public static class Amenity
+    {
+        public static Error NameIsRequired =>
+            new("Amenity.NameIsRequired", "The name is required.");
+        public static Error DescriptionIsRequired =>
+            new("Amenity.DescriptionIsRequired", "The description is required.");
+        public static Error TypeShouldBeOneOfTheFollowingHotelRoom =>
+            new(
+                "Amenity.TypeShouldBeOneOfTheFollowingHotelRoom",
+                "The type should be one of the following: Hotel, Room"
+            );
+        public static Error NothingToUpdate =>
+            new("Amenity.NothingToUpdate", "Nothing to update in the amenity.");
+        public static Error NotFound => new("Amenity.NotFound", "Amenity not found.");
+        public static Error IdIsRequired => new("Amenity.IdIsRequired", "The ID is required.");
     }
 }

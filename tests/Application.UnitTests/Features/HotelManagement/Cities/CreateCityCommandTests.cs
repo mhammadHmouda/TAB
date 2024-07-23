@@ -5,7 +5,7 @@ using TAB.Application.Features.HotelManagement.Cities.AddCity;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 
-namespace Application.UnitTests.Features.HotelManagement;
+namespace Application.UnitTests.Features.HotelManagement.Cities;
 
 public class CreateCityCommandTests
 {

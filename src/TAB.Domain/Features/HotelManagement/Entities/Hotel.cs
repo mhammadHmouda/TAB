@@ -1,6 +1,8 @@
-﻿using TAB.Domain.Core.Interfaces;
+﻿using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 using TAB.Domain.Features.UserManagement.Entities;
@@ -63,16 +65,21 @@ public class Hotel : AggregateRoot, IAuditableEntity
         return new Hotel(name, description, location, type, cityId, ownerId);
     }
 
-    public void Update(string name, string description, Location location, HotelType type)
+    public Result Update(string name, string description, Location location)
     {
-        Ensure.NotEmpty(name, "The hotel name is required.", nameof(name));
-        Ensure.NotEmpty(description, "The hotel description is required.", nameof(description));
-        Ensure.NotNull(location, "The hotel location is required.", nameof(location));
-        Ensure.NotDefault(type, "The hotel type is required.", nameof(type));
+        Ensure.NotEmpty(name, "The name is required.", nameof(name));
+        Ensure.NotEmpty(description, "The description is required.", nameof(description));
+        Ensure.NotDefault(location, "The location is required.", nameof(location));
+
+        if (Name == name && Description == description && Location == location)
+        {
+            return DomainErrors.Hotel.NothingToUpdate;
+        }
 
         Name = name;
         Description = description;
         Location = location;
-        Type = type;
+
+        return Result.Success();
     }
 }
