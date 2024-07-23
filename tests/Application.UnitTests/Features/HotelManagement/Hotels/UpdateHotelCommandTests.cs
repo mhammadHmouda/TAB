@@ -10,7 +10,7 @@ using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 
-namespace Application.UnitTests.Features.HotelManagement;
+namespace Application.UnitTests.Features.HotelManagement.Hotels;
 
 public class UpdateHotelCommandTests
 {

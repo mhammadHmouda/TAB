@@ -12,7 +12,7 @@ using TAB.Domain.Features.UserManagement.Enums;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Domain.Features.UserManagement.ValueObjects;
 
-namespace Application.UnitTests.Features.HotelManagement;
+namespace Application.UnitTests.Features.HotelManagement.Hotels;
 
 public class CreateHotelCommandTests
 {

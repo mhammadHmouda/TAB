@@ -11,7 +11,7 @@ using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 
-namespace Application.UnitTests.Features.HotelManagement;
+namespace Application.UnitTests.Features.HotelManagement.Images;
 
 public class UpdateImageCommandTests
 {
