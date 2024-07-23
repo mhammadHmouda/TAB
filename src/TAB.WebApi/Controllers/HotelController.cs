@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
+using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
+using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.WebApi.Abstractions;
 using TAB.WebApi.Attributes;
 using TAB.WebApi.Contracts;
@@ -84,4 +87,26 @@ public class HotelController : ApiController
             ))
             .Bind(x => Mediator.Send(x))
             .Match(() => Ok("Hotel updated successfully."), BadRequest);
+
+    /// <summary>
+    /// Creates amenities for a hotel.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <param name="request">The create amenity request.</param>
+    /// <response code="200">The amenities were created successfully.</response>
+    /// <response code="400">The amenities were not created successfully.</response>
+    /// <returns>The result of the create amenity operation.</returns>
+    [HttpPost(ApiRoutes.Hotels.AddAmenity)]
+    public async Task<IActionResult> CreateAmenities(int id, CreateAmenityRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.TypeId, DomainErrors.General.UnProcessableRequest)
+            .Map(x => new CreateAmenityCommand(
+                x.request.Name,
+                x.request.Description,
+                AmenityType.Hotel,
+                x.request.TypeId
+            ))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
 }

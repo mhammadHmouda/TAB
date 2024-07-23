@@ -116,4 +116,17 @@ public static class DomainErrors
             new("Image.ReferenceIdInvalid", "The reference ID is invalid.");
         public static Error ImageNotFound => new("Image.ImageNotFound", "The image was not found.");
     }
+
+    public static class Amenity
+    {
+        public static Error NameIsRequired =>
+            new("Amenity.NameIsRequired", "The name is required.");
+        public static Error DescriptionIsRequired =>
+            new("Amenity.DescriptionIsRequired", "The description is required.");
+        public static Error TypeShouldBeOneOfTheFollowingHotelRoom =>
+            new(
+                "Amenity.TypeShouldBeOneOfTheFollowingHotelRoom",
+                "The type should be one of the following: Hotel, Room"
+            );
+    }
 }

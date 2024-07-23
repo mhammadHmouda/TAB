@@ -8,6 +8,7 @@ using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Email;
 using TAB.Application.Core.Interfaces.Notifications;
 using TAB.Domain.Core.Interfaces;
+using TAB.Domain.Features.HotelManagement.Services;
 using TAB.Infrastructure.Authentication;
 using TAB.Infrastructure.Authentication.Options;
 using TAB.Infrastructure.Background;
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<IGeneratorService, GeneratorService>();
         services.AddScoped<IUploadFileService, AzureBlobService>();
+        services.AddScoped<IAmenityService, AmenityService>();
 
         services.AddHostedService<TokenCleanupService>();
 
