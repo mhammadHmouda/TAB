@@ -11,14 +11,14 @@ using TAB.Domain.Features.UserManagement.Enums;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Domain.Features.UserManagement.ValueObjects;
 
-namespace Application.UnitTests.Features.Auth;
+namespace Application.UnitTests.Features.UserManagement;
 
 public class ActivateUserCommandTests
 {
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly IUserRepository _userRepositoryMock;
     private readonly IDateTimeProvider _dateTimeMock;
-    private readonly ActivateUserCommandHandler _sut;
+    private readonly ActivateUserCommandHandler _handler;
     private readonly User _user;
     private readonly ActivateUserCommand _command;
 
@@ -28,7 +28,11 @@ public class ActivateUserCommandTests
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _dateTimeMock = Substitute.For<IDateTimeProvider>();
 
-        _sut = new ActivateUserCommandHandler(_userRepositoryMock, _unitOfWorkMock, _dateTimeMock);
+        _handler = new ActivateUserCommandHandler(
+            _userRepositoryMock,
+            _unitOfWorkMock,
+            _dateTimeMock
+        );
 
         _command = new ActivateUserCommand("token");
 
@@ -56,7 +60,7 @@ public class ActivateUserCommandTests
         SetupUserRepositoryMock(Maybe<User>.None);
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.User.UserNotFound);
@@ -70,7 +74,7 @@ public class ActivateUserCommandTests
         SetupUserRepositoryMock(Maybe<User>.From(_user));
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.User.UserAlreadyActive);
@@ -86,7 +90,7 @@ public class ActivateUserCommandTests
         SetupUserRepositoryMock(Maybe<User>.From(_user));
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result
@@ -104,7 +108,7 @@ public class ActivateUserCommandTests
         SetupUserRepositoryMock(Maybe<User>.From(_user));
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -117,7 +121,7 @@ public class ActivateUserCommandTests
         SetupUserRepositoryMock(Maybe<User>.From(_user));
 
         // Act
-        await _sut.Handle(_command, default);
+        await _handler.Handle(_command, default);
 
         // Assert
         await _unitOfWorkMock.Received(1).SaveChangesAsync();

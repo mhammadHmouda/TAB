@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Cities.AddCity;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Contracts.Features.HotelManagement.Cities;
@@ -25,6 +26,7 @@ public class CityController : ApiController
     /// <response code="200">The city was created successfully.</response>
     /// <response code="400">The request is invalid.</response>
     [HttpPost(ApiRoutes.Cities.Create)]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateCity([FromBody] CreateCityRequest request)
     {
         return await Result
