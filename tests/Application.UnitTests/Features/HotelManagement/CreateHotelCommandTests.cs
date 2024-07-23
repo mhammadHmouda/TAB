@@ -18,7 +18,7 @@ public class CreateHotelCommandTests
 {
     private readonly ICityRepository _cityRepositoryMock;
     private readonly IUserRepository _userRepositoryMock;
-    private readonly CreateHotelCommandHandler _sut;
+    private readonly CreateHotelCommandHandler _handler;
     private readonly CreateHotelCommand _command;
 
     public CreateHotelCommandTests()
@@ -28,7 +28,7 @@ public class CreateHotelCommandTests
         _cityRepositoryMock = Substitute.For<ICityRepository>();
         _userRepositoryMock = Substitute.For<IUserRepository>();
 
-        _sut = new CreateHotelCommandHandler(
+        _handler = new CreateHotelCommandHandler(
             hotelRepositoryMock,
             _cityRepositoryMock,
             _userRepositoryMock,
@@ -59,7 +59,7 @@ public class CreateHotelCommandTests
     public async Task Handle_WhenHotelIsCreated_ReturnsHotelResponse()
     {
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -72,7 +72,7 @@ public class CreateHotelCommandTests
         _cityRepositoryMock.GetByIdAsync(1, default).Returns(Task.FromResult(Maybe<City>.None));
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -86,7 +86,7 @@ public class CreateHotelCommandTests
         _userRepositoryMock.GetByIdAsync(1, default).Returns(Task.FromResult(Maybe<User>.None));
 
         // Act
-        var result = await _sut.Handle(_command, default);
+        var result = await _handler.Handle(_command, default);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -103,7 +103,7 @@ public class CreateHotelCommandTests
         };
 
         // Act
-        var result = await _sut.Handle(command, default);
+        var result = await _handler.Handle(command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Location.LatitudeOutOfRange);
@@ -119,7 +119,7 @@ public class CreateHotelCommandTests
         };
 
         // Act
-        var result = await _sut.Handle(command, default);
+        var result = await _handler.Handle(command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Location.LongitudeOutOfRange);
@@ -135,7 +135,7 @@ public class CreateHotelCommandTests
         };
 
         // Act
-        var result = await _sut.Handle(command, default);
+        var result = await _handler.Handle(command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Location.NullLatitude);
@@ -151,7 +151,7 @@ public class CreateHotelCommandTests
         };
 
         // Act
-        var result = await _sut.Handle(command, default);
+        var result = await _handler.Handle(command, default);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Location.NullLongitude);
