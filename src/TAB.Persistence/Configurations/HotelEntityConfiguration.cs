@@ -47,5 +47,11 @@ public class HotelEntityConfiguration : IEntityTypeConfiguration<Hotel>
             .WithMany()
             .HasForeignKey(hotel => hotel.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany(hotel => hotel.Rooms)
+            .WithOne()
+            .HasForeignKey(room => room.HotelId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
