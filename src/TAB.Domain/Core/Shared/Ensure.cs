@@ -82,4 +82,29 @@ public static class Ensure
             throw new DomainException(DomainErrors.General.Of.WithMessage(error));
         }
     }
+
+    public static void Between<TValue>(
+        TValue value,
+        TValue min,
+        TValue max,
+        string? message,
+        string? argumentName
+    )
+        where TValue : IComparable<TValue>
+    {
+        var error = $"{argumentName} {message}";
+        if (value.CompareTo(min) < 0 || value.CompareTo(max) > 0)
+        {
+            throw new DomainException(DomainErrors.General.Between.WithMessage(error));
+        }
+    }
+
+    public static void IsTrue(bool condition, string? message, string? argumentName)
+    {
+        var error = $"{argumentName} {message}";
+        if (!condition)
+        {
+            throw new DomainException(DomainErrors.General.IsTrue.WithMessage(error));
+        }
+    }
 }

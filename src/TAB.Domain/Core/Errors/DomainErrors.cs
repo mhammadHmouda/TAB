@@ -1,5 +1,4 @@
 ﻿using TAB.Domain.Core.Shared;
-using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -80,6 +79,9 @@ public static class DomainErrors
             new("General.UnProcessableRequest", "The request is unprocessable.");
         public static Error Unauthorized => new("General.Unauthorized", "Unauthorized.");
         public static Error Of => new("General.Of", "The value is of the wrong type.");
+        public static Error Between =>
+            new("General.Between", "The value is not between the specified range.");
+        public static Error IsTrue => new("General.IsTrue", "The value is not true.");
     }
 
     public static class Location
@@ -132,5 +134,11 @@ public static class DomainErrors
             new("Amenity.NothingToUpdate", "Nothing to update in the amenity.");
         public static Error NotFound => new("Amenity.NotFound", "Amenity not found.");
         public static Error IdIsRequired => new("Amenity.IdIsRequired", "The ID is required.");
+    }
+
+    public static class Discount
+    {
+        public static Error AlreadyExists =>
+            new("Discount.AlreadyExists", "The discount already exists.");
     }
 }
