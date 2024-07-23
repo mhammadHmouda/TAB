@@ -11,7 +11,7 @@ using TAB.Domain.Features.UserManagement.Enums;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Domain.Features.UserManagement.ValueObjects;
 
-namespace Application.UnitTests.Features.Auth;
+namespace Application.UnitTests.Features.UserManagement;
 
 public class UpdateUserCommandTests
 {
