@@ -1,6 +1,8 @@
-﻿using TAB.Domain.Core.Interfaces;
+﻿using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Enums;
 
 namespace TAB.Domain.Features.HotelManagement.Entities;
@@ -30,5 +32,28 @@ public class Amenity : Entity, IAuditableEntity
         Ensure.NotDefault(typeId, "The type id is required.", nameof(typeId));
 
         return new Amenity(name, description, type, typeId);
+    }
+
+    public Result Update(string name, string description)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return DomainErrors.Amenity.NameIsRequired;
+        }
+
+        if (string.IsNullOrEmpty(description))
+        {
+            return DomainErrors.Amenity.DescriptionIsRequired;
+        }
+
+        if (Name == name && Description == description)
+        {
+            return DomainErrors.Amenity.NothingToUpdate;
+        }
+
+        Name = name;
+        Description = description;
+
+        return Result.Success();
     }
 }

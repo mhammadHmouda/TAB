@@ -128,5 +128,9 @@ public static class DomainErrors
                 "Amenity.TypeShouldBeOneOfTheFollowingHotelRoom",
                 "The type should be one of the following: Hotel, Room"
             );
+        public static Error NothingToUpdate =>
+            new("Amenity.NothingToUpdate", "Nothing to update in the amenity.");
+        public static Error NotFound => new("Amenity.NotFound", "Amenity not found.");
+        public static Error IdIsRequired => new("Amenity.IdIsRequired", "The ID is required.");
     }
 }
