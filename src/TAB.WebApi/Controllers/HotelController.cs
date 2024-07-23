@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Contracts.Features.HotelManagement.Hotels;
@@ -15,6 +16,7 @@ namespace TAB.WebApi.Controllers;
 /// Controller for managing hotels.
 /// </summary>
 [TokenValidation]
+[Authorize(Roles = "Admin")]
 public class HotelController : ApiController
 {
     /// <summary>
@@ -24,7 +26,6 @@ public class HotelController : ApiController
     /// <returns>The created hotel.</returns>
     /// <response code="200">The hotel was created successfully.</response>
     /// <response code="400">The request is invalid.</response>
-
     [HttpPost(ApiRoutes.Hotels.Create)]
     public async Task<IActionResult> CreateHotel(
         [FromBody] CreateHotelRequest createHotelRequest
