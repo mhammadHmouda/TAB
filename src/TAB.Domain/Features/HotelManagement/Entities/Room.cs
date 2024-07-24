@@ -115,6 +115,7 @@ public class Room : Entity, IAuditableEntity
         Price = price;
         Type = type;
         AdultsCapacity = adultsCapacity;
+        ChildrenCapacity = childrenCapacity;
 
         UpdateDiscountedPrice(currentDate);
 

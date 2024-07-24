@@ -31,7 +31,10 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var roomMaybe = await _roomRepository.GetByIdAsync(request.Id, cancellationToken);
+        var roomMaybe = await _roomRepository.GetByIdWithDiscountsAsync(
+            request.Id,
+            cancellationToken
+        );
 
         if (roomMaybe.HasNoValue)
         {

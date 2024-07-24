@@ -9,9 +9,6 @@ using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
-using TAB.Domain.Features.UserManagement.Entities;
-using TAB.Domain.Features.UserManagement.Enums;
-using TAB.Domain.Features.UserManagement.ValueObjects;
 
 namespace Application.UnitTests.Features.HotelManagement.Rooms;
 
