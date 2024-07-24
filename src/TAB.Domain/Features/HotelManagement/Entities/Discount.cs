@@ -55,6 +55,8 @@ public class Discount : Entity, IAuditableEntity
             nameof(discountPercentage)
         );
         Ensure.IsTrue(start < end, "The start date must be before the end date.", nameof(start));
+        Ensure.NotPast(start, "The start date must be in the future.", nameof(start));
+        Ensure.NotPast(end, "The end date must be in the future.", nameof(end));
 
         return new Discount(name, description, discountPercentage, start, end);
     }

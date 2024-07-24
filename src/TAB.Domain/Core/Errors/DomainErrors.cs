@@ -141,4 +141,9 @@ public static class DomainErrors
         public static Error AlreadyExists =>
             new("Discount.AlreadyExists", "The discount already exists.");
     }
+
+    public static class Room
+    {
+        public static Error NotFound => new("Room.NotFound", "Room not found.");
+    }
 }
