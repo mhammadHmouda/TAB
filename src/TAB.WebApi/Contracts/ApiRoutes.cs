@@ -54,5 +54,6 @@ public static class ApiRoutes
     {
         private const string Base = "rooms";
         public const string AddDiscount = Base + "/{id}/discounts";
+        public const string Update = Base + "/{id}";
     }
 }

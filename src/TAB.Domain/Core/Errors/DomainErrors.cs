@@ -1,4 +1,5 @@
 ﻿using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -145,5 +146,7 @@ public static class DomainErrors
     public static class Room
     {
         public static Error NotFound => new("Room.NotFound", "Room not found.");
+        public static Error NothingToUpdate =>
+            new("Room.NothingToUpdate", "Nothing to update in the room.");
     }
 }

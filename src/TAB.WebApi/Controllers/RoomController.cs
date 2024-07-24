@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
+using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
 using TAB.Contracts.Features.HotelManagement.Discounts;
+using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
@@ -42,4 +44,29 @@ public class RoomController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
     }
+
+    /// <summary>
+    /// Updates a room.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="request">The request containing the updated room details.</param>
+    /// <response code="200">The room was updated successfully.</response>
+    /// <response code="400">The room was not updated successfully.</response>
+    /// <returns>The result of the update operation.</returns>
+    [HttpPut(ApiRoutes.Rooms.Update)]
+    public async Task<IActionResult> Update(int id, UpdateRoomRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.Id, DomainErrors.General.UnProcessableRequest)
+            .Map(x => new UpdateRoomCommand(
+                x.id,
+                x.request.Number,
+                x.request.Price,
+                x.request.Currency,
+                x.request.Type,
+                x.request.CapacityOfAdults,
+                x.request.CapacityOfChildren
+            ))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
 }

@@ -11,7 +11,7 @@ public class Room : Entity, IAuditableEntity
 {
     public int Number { get; private set; }
     public string Description { get; private set; }
-    public Money Price { get; }
+    public Money Price { get; set; }
     public decimal DiscountedPrice { get; private set; }
     public RoomType Type { get; private set; }
     public int AdultsCapacity { get; private set; }
@@ -89,5 +89,35 @@ public class Room : Entity, IAuditableEntity
         );
 
         DiscountedPrice = discountedPrice.Amount;
+    }
+
+    public Result Update(
+        int number,
+        Money price,
+        RoomType type,
+        int adultsCapacity,
+        int childrenCapacity,
+        DateTime currentDate
+    )
+    {
+        if (
+            Number == number
+            && Price == price
+            && Type == type
+            && AdultsCapacity == adultsCapacity
+            && ChildrenCapacity == childrenCapacity
+        )
+        {
+            return DomainErrors.Room.NothingToUpdate;
+        }
+
+        Number = number;
+        Price = price;
+        Type = type;
+        AdultsCapacity = adultsCapacity;
+
+        UpdateDiscountedPrice(currentDate);
+
+        return Result.Success();
     }
 }
