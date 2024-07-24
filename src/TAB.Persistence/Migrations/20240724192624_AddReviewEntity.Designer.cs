@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TAB.Persistence;
 
@@ -11,9 +12,11 @@ using TAB.Persistence;
 namespace TAB.Persistence.Migrations
 {
     [DbContext(typeof(TabDbContext))]
-    partial class TabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240724192624_AddReviewEntity")]
+    partial class AddReviewEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,9 +280,6 @@ namespace TAB.Persistence.Migrations
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HotelId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -295,8 +295,6 @@ namespace TAB.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
 
                     b.ToTable("Review", (string)null);
                 });
@@ -468,15 +466,6 @@ namespace TAB.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TAB.Domain.Features.ReviewManagement.Entities.Review", b =>
-                {
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Hotel", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TAB.Domain.Features.UserManagement.Entities.Token", b =>
                 {
                     b.HasOne("TAB.Domain.Features.UserManagement.Entities.User", null)
@@ -516,8 +505,6 @@ namespace TAB.Persistence.Migrations
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Hotel", b =>
                 {
-                    b.Navigation("Reviews");
-
                     b.Navigation("Rooms");
                 });
 

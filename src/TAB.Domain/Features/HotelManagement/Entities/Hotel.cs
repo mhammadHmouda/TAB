@@ -5,6 +5,7 @@ using TAB.Domain.Core.Shared;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
+using TAB.Domain.Features.ReviewManagement.Entities;
 using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Domain.Features.HotelManagement.Entities;
@@ -22,6 +23,7 @@ public class Hotel : AggregateRoot, IAuditableEntity
     public City? City { get; internal set; }
     public User? Owner { get; internal set; }
     public ICollection<Room> Rooms { get; } = new List<Room>();
+    public ICollection<Review> Reviews { get; } = new List<Review>();
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
@@ -88,5 +90,14 @@ public class Hotel : AggregateRoot, IAuditableEntity
         Ensure.NotNull(room, "The room is required.", nameof(room));
 
         Rooms.Add(room);
+    }
+
+    public void AddReview(Review review)
+    {
+        Ensure.NotNull(review, "The review is required.", nameof(review));
+
+        Reviews.Add(review);
+
+        StarRating = (int)Math.Round(Reviews.Average(x => x.Rating), 0);
     }
 }
