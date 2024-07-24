@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
+using TAB.Application.Features.HotelManagement.Rooms.DeleteRoom;
 using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
 using TAB.Contracts.Features.HotelManagement.Discounts;
 using TAB.Contracts.Features.HotelManagement.Rooms;
@@ -67,6 +68,21 @@ public class RoomController : ApiController
                 x.request.CapacityOfAdults,
                 x.request.CapacityOfChildren
             ))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Deletes a room.
+    /// </summary>
+    /// <param name="id">The ID of the room to delete.</param>
+    /// <response code="200">The room was deleted successfully.</response>
+    /// <response code="400">The room was not deleted successfully.</response>
+    /// <returns>The result of the delete operation.</returns>
+    [HttpDelete(ApiRoutes.Rooms.Delete)]
+    public async Task<IActionResult> Delete(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new DeleteRoomCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
