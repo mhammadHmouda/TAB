@@ -4,8 +4,10 @@ using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
+using TAB.Application.Features.HotelManagement.Rooms.AddRoom;
 using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Contracts.Features.HotelManagement.Hotels;
+using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
@@ -106,6 +108,32 @@ public class HotelController : ApiController
                 x.request.Description,
                 AmenityType.Hotel,
                 x.request.TypeId
+            ))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Creates a room for a hotel.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <param name="request">The create room request.</param>
+    /// <response code="200">The room was created successfully.</response>
+    /// <response code="400">The room was not created successfully.</response>
+    /// <returns>The result of the create room operation.</returns>
+    [HttpPost(ApiRoutes.Hotels.CreateRoom)]
+    public async Task<IActionResult> CreateRoom(int id, CreateRoomRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.HotelId, DomainErrors.General.UnProcessableRequest)
+            .Map(x => new CreateRoomCommand(
+                x.request.HotelId,
+                x.request.Number,
+                x.request.Description,
+                x.request.Price,
+                x.request.Currency,
+                x.request.Type,
+                x.request.CapacityOfAdults,
+                x.request.CapacityOfChildren
             ))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);

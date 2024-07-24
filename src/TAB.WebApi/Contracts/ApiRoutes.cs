@@ -31,6 +31,7 @@ public static class ApiRoutes
         public const string UploadImages = Base + "/{id}/images";
         public const string Update = Base + "/{id}";
         public const string AddAmenity = Base + "/{id}/amenities";
+        public const string CreateRoom = Base + "/{id}/rooms";
     }
 
     public static class Images
@@ -47,5 +48,11 @@ public static class ApiRoutes
         public const string Create = Base;
         public const string Update = Base + "/{id}";
         public const string Delete = Base + "/{id}";
+    }
+
+    public static class Rooms
+    {
+        private const string Base = "rooms";
+        public const string AddDiscount = Base + "/{id}/discounts";
     }
 }
