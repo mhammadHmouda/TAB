@@ -65,7 +65,9 @@ public class CreateDiscountCommandHandler
             discount.Id,
             discount.Name,
             discount.Description,
-            discount.DiscountPercentage
+            discount.DiscountPercentage,
+            discount.StartDate,
+            discount.EndDate
         );
     }
 }

@@ -59,6 +59,7 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
         return new RoomResponse(
             room.Id,
             room.Number,
+            room.Description,
             room.Price,
             room.DiscountedPrice,
             room.Type,

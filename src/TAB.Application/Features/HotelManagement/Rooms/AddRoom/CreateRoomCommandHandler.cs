@@ -1,6 +1,7 @@
 ﻿using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Rooms;
+using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
@@ -10,38 +11,46 @@ namespace TAB.Application.Features.HotelManagement.Rooms.AddRoom;
 
 public class CreateRoomCommandHandler : ICommandHandler<CreateRoomCommand, Result<RoomResponse>>
 {
-    private readonly IRoomRepository _roomRepository;
+    private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateRoomCommandHandler(IRoomRepository roomRepository, IUnitOfWork unitOfWork)
+    public CreateRoomCommandHandler(IHotelRepository hotelRepository, IUnitOfWork unitOfWork)
     {
-        _roomRepository = roomRepository;
+        _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<RoomResponse>> Handle(
-        CreateRoomCommand request,
+        CreateRoomCommand command,
         CancellationToken cancellationToken
     )
     {
-        var price = Money.Create(request.Price, request.Currency);
+        var hotelMaybe = await _hotelRepository.GetByIdAsync(command.HotelId, cancellationToken);
+
+        if (hotelMaybe.HasNoValue)
+        {
+            return DomainErrors.Hotel.NotFound;
+        }
+
+        var price = Money.Create(command.Price, command.Currency);
 
         var room = Room.Create(
-            request.Number,
+            command.Number,
             price,
-            request.Description,
-            request.Type,
-            request.HotelId,
-            request.CapacityOfAdults,
-            request.CapacityOfChildren
+            command.Description,
+            command.Type,
+            command.HotelId,
+            command.CapacityOfAdults,
+            command.CapacityOfChildren
         );
 
-        await _roomRepository.InsertAsync(room);
+        hotelMaybe.Value.AddRoom(room);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RoomResponse(
             room.Id,
             room.Number,
+            room.Description,
             room.Price,
             room.DiscountedPrice,
             room.Type,
