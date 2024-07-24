@@ -1,6 +1,5 @@
 ﻿using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
-using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 
@@ -9,8 +8,13 @@ namespace TAB.Domain.Features.HotelManagement.Services;
 public class AmenityService : IAmenityService
 {
     private readonly IHotelRepository _hotelRepository;
+    private readonly IRoomRepository _roomRepository;
 
-    public AmenityService(IHotelRepository hotelRepository) => _hotelRepository = hotelRepository;
+    public AmenityService(IHotelRepository hotelRepository, IRoomRepository roomRepository)
+    {
+        _hotelRepository = hotelRepository;
+        _roomRepository = roomRepository;
+    }
 
     public Task<Result> CheckAmenityTypeAndUserOwnerShipAsync(
         int userId,
@@ -22,7 +26,7 @@ public class AmenityService : IAmenityService
         {
             AmenityType.Hotel
                 => CheckHotelAmenityTypeAndUserOwnerShipAsync(userId, typeId, cancellationToken),
-            AmenityType.Room => throw new NotImplementedException(),
+            AmenityType.Room => CheckRoomAmenityType(typeId, cancellationToken),
             _
                 => throw new ArgumentOutOfRangeException(
                     nameof(amenityType),
@@ -44,10 +48,17 @@ public class AmenityService : IAmenityService
             return DomainErrors.Hotel.NotFound;
         }
 
-        return !IsHotelOwner(userId, maybeHotel.Value)
+        return userId != maybeHotel.Value.OwnerId
             ? DomainErrors.General.Unauthorized
             : Result.Success();
     }
 
-    private static bool IsHotelOwner(int userId, Hotel hotel) => hotel.OwnerId == userId;
+    private async Task<Result> CheckRoomAmenityType(
+        int typeId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var maybeRoom = await _roomRepository.GetByIdAsync(typeId, cancellationToken);
+        return maybeRoom.HasNoValue ? DomainErrors.Room.NotFound : Result.Success();
+    }
 }

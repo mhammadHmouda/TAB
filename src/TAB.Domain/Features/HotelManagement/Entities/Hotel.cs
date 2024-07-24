@@ -21,7 +21,7 @@ public class Hotel : AggregateRoot, IAuditableEntity
     public int OwnerId { get; private set; }
     public City? City { get; internal set; }
     public User? Owner { get; internal set; }
-
+    public ICollection<Room> Rooms { get; } = new List<Room>();
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
@@ -81,5 +81,12 @@ public class Hotel : AggregateRoot, IAuditableEntity
         Location = location;
 
         return Result.Success();
+    }
+
+    public void AddRoom(Room room)
+    {
+        Ensure.NotNull(room, "The room is required.", nameof(room));
+
+        Rooms.Add(room);
     }
 }
