@@ -153,4 +153,9 @@ public static class DomainErrors
         public static Error NothingToUpdate =>
             new("Room.NothingToUpdate", "Nothing to update in the room.");
     }
+
+    public static class Review
+    {
+        public static Error NotFound => new("Review.NotFound", "Review not found.");
+    }
 }

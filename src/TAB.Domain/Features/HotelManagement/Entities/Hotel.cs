@@ -100,4 +100,18 @@ public class Hotel : AggregateRoot, IAuditableEntity
 
         StarRating = (int)Math.Round(Reviews.Average(x => x.Rating), 0);
     }
+
+    public void RemoveReview(int reviewId)
+    {
+        var review = Reviews.FirstOrDefault(x => x.Id == reviewId);
+
+        if (review is null)
+        {
+            return;
+        }
+
+        Reviews.Remove(review);
+
+        StarRating = (int)Math.Round(Reviews.Average(x => x.Rating), 0);
+    }
 }
