@@ -32,7 +32,10 @@ public class CreateReviewCommandHandler
         CancellationToken cancellationToken
     )
     {
-        var hotelMaybe = await _hotelRepository.GetByIdAsync(request.HotelId, cancellationToken);
+        var hotelMaybe = await _hotelRepository.GetByIdWithReviewsAsync(
+            request.HotelId,
+            cancellationToken
+        );
 
         if (hotelMaybe.HasNoValue)
         {

@@ -13,7 +13,7 @@ public class ReviewDeletedEventHandler : IDomainEventHandler<ReviewDeletedEvent>
 
     public async Task Handle(ReviewDeletedEvent notification, CancellationToken cancellationToken)
     {
-        if (notification.HotelId == default || notification.ReviewId == default)
+        if (notification.HotelId == default)
         {
             return;
         }
@@ -30,6 +30,6 @@ public class ReviewDeletedEventHandler : IDomainEventHandler<ReviewDeletedEvent>
 
         var hotel = hotelMaybe.Value;
 
-        hotel.RemoveReview(notification.ReviewId);
+        hotel.UpdateStarRating();
     }
 }

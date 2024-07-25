@@ -48,7 +48,7 @@ public class DeleteReviewCommandHandler : ICommandHandler<DeleteReviewCommand, R
 
         _reviewRepository.Remove(review);
 
-        review.AddDomainEvent(new ReviewDeletedEvent(review.HotelId, review.Id));
+        review.AddDomainEvent(new ReviewDeletedEvent(review.HotelId));
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

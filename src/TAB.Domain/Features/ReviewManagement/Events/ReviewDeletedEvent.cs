@@ -2,4 +2,4 @@
 
 namespace TAB.Domain.Features.ReviewManagement.Events;
 
-public record ReviewDeletedEvent(int HotelId, int ReviewId) : IDomainEvent;
+public record ReviewDeletedEvent(int HotelId) : IDomainEvent;
