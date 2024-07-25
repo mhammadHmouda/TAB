@@ -157,5 +157,7 @@ public static class DomainErrors
     public static class Review
     {
         public static Error NotFound => new("Review.NotFound", "Review not found.");
+        public static Error NothingToUpdate =>
+            new("Review.NothingToUpdate", "Nothing to update in the review.");
     }
 }

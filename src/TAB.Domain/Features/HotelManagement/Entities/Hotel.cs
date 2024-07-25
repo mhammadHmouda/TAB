@@ -90,6 +90,8 @@ public class Hotel : AggregateRoot, IAuditableEntity
         Ensure.NotNull(room, "The room is required.", nameof(room));
 
         Rooms.Add(room);
+
+        RoomsNumber = Rooms.Count;
     }
 
     public void AddReview(Review review)
@@ -97,8 +99,7 @@ public class Hotel : AggregateRoot, IAuditableEntity
         Ensure.NotNull(review, "The review is required.", nameof(review));
 
         Reviews.Add(review);
-
-        StarRating = (int)Math.Round(Reviews.Average(x => x.Rating), 0);
+        UpdateStarRating();
     }
 
     public void RemoveReview(int reviewId)
@@ -111,7 +112,23 @@ public class Hotel : AggregateRoot, IAuditableEntity
         }
 
         Reviews.Remove(review);
+        UpdateStarRating();
+    }
 
-        StarRating = (int)Math.Round(Reviews.Average(x => x.Rating), 0);
+    public void UpdateReview(int reviewId)
+    {
+        var review = Reviews.FirstOrDefault(x => x.Id == reviewId);
+
+        if (review is null)
+        {
+            return;
+        }
+
+        UpdateStarRating();
+    }
+
+    private void UpdateStarRating()
+    {
+        StarRating = Reviews.Any() ? (int)Math.Round(Reviews.Average(x => x.Rating), 0) : 0;
     }
 }
