@@ -63,5 +63,6 @@ public static class ApiRoutes
         private const string Base = "reviews";
         public const string Create = Base;
         public const string Delete = Base + "/{id}";
+        public const string Update = Base + "/{id}";
     }
 }
