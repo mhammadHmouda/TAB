@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Features.HotelManagement.Repositories;
+using TAB.Domain.Features.ReviewManagement.Repositories;
 using TAB.Domain.Features.UserManagement.Repositories;
 using TAB.Persistence.Infrastructure;
 using TAB.Persistence.Repositories.HotelManagement;
+using TAB.Persistence.Repositories.ReviewManagement;
 using TAB.Persistence.Repositories.UserManagement;
 
 namespace TAB.Persistence;
@@ -36,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IImageRepository, ImageRepository>();
         services.AddScoped<IAmenityRepository, AmenityRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
         return services;
     }

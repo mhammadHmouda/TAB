@@ -102,9 +102,42 @@ public static class Ensure
     public static void IsTrue(bool condition, string? message, string? argumentName)
     {
         var error = $"{argumentName} {message}";
+
         if (!condition)
         {
             throw new DomainException(DomainErrors.General.IsTrue.WithMessage(error));
+        }
+    }
+
+    public static void LessThan<TValue>(
+        TValue value,
+        TValue max,
+        string? message,
+        string? argumentName
+    )
+        where TValue : struct, IComparable<TValue>
+    {
+        var error = $"{argumentName} {message}";
+
+        if (value.CompareTo(max) > 0)
+        {
+            throw new DomainException(DomainErrors.General.LessThan.WithMessage(error));
+        }
+    }
+
+    public static void GreaterThan<TValue>(
+        TValue value,
+        TValue min,
+        string? message,
+        string? argumentName
+    )
+        where TValue : struct, IComparable<TValue>
+    {
+        var error = $"{argumentName} {message}";
+
+        if (value.CompareTo(min) < 0)
+        {
+            throw new DomainException(DomainErrors.General.GreaterThan.WithMessage(error));
         }
     }
 }

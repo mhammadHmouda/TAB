@@ -1,5 +1,4 @@
 ﻿using TAB.Domain.Core.Shared;
-using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -83,6 +82,11 @@ public static class DomainErrors
         public static Error Between =>
             new("General.Between", "The value is not between the specified range.");
         public static Error IsTrue => new("General.IsTrue", "The value is not true.");
+
+        public static Error LessThan =>
+            new("General.LessThan", "The value is not less than the specified value.");
+        public static Error GreaterThan =>
+            new("General.GreaterThan", "The value is not greater than the specified value.");
     }
 
     public static class Location
@@ -148,5 +152,12 @@ public static class DomainErrors
         public static Error NotFound => new("Room.NotFound", "Room not found.");
         public static Error NothingToUpdate =>
             new("Room.NothingToUpdate", "Nothing to update in the room.");
+    }
+
+    public static class Review
+    {
+        public static Error NotFound => new("Review.NotFound", "Review not found.");
+        public static Error NothingToUpdate =>
+            new("Review.NothingToUpdate", "Nothing to update in the review.");
     }
 }
