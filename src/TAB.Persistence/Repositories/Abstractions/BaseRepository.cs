@@ -4,6 +4,9 @@ using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared.Maybe;
+using TAB.Domain.Core.Specifications;
+using TAB.Domain.Features.HotelManagement.Entities;
+using TAB.Persistence.Specifications;
 
 namespace TAB.Persistence.Repositories.Abstractions;
 
@@ -34,4 +37,7 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     public void Update(TEntity entity) => DbContext.Set<TEntity>().Update(entity);
 
     public void Remove(TEntity entity) => DbContext.Set<TEntity>().Remove(entity);
+
+    protected IQueryable<Hotel> ApplySpecification(ISpecification<Hotel> spec) =>
+        SpecificationEvaluator<Hotel>.GetQuery(DbContext.Set<Hotel>().AsQueryable(), spec);
 }
