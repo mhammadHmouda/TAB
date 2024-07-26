@@ -7,4 +7,11 @@ namespace TAB.Domain.Features.HotelManagement.Repositories;
 public interface IHotelRepository : IRepository<Hotel>
 {
     Task<Maybe<Hotel>> GetByIdWithReviewsAsync(int hotelId, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<Hotel>> SearchHotelsAsync(
+        string? filters,
+        string? sorting,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken
+    );
 }
