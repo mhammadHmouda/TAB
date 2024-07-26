@@ -11,6 +11,6 @@ public record RoomResponse(
     decimal DiscountedPrice,
     RoomType Type,
     bool IsAvailable,
-    int CapacityOfAdults,
-    int CapacityOfChildren
+    int AdultsCapacity,
+    int ChildrenCapacity
 );
