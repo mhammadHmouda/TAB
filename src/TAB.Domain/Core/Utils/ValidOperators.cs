@@ -4,12 +4,6 @@ public static class ValidOperators
 {
     public static readonly string[] AllOperators =
     {
-        CaseInsensitiveDoesNotStartsWith,
-        CaseInsensitiveDoesNotContains,
-        CaseInsensitiveNotEquals,
-        CaseInsensitiveEquals,
-        CaseInsensitiveStartsWith,
-        CaseInsensitiveContains,
         DoesNotStartsWith,
         DoesNotContains,
         StartsWith,
@@ -32,10 +26,4 @@ public static class ValidOperators
     public const string DoesNotContains = "!@=";
     public const string StartsWith = "_=";
     public const string DoesNotStartsWith = "!_=";
-    public const string CaseInsensitiveContains = "@=*";
-    public const string CaseInsensitiveStartsWith = "_=*";
-    public const string CaseInsensitiveEquals = "==*";
-    public const string CaseInsensitiveNotEquals = "!=*";
-    public const string CaseInsensitiveDoesNotContains = "!@=*";
-    public const string CaseInsensitiveDoesNotStartsWith = "!_=*";
 }

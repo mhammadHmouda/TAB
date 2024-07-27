@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TAB.Application.Core.Contracts;
+using TAB.Application.Features.HotelManagement.Hotels.Specifications;
 using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Contracts.Features.HotelManagement.Images;
@@ -35,10 +36,12 @@ public class SearchHotelsQueryHandler
     )
     {
         var hotels = await _hotelRepository.SearchHotelsAsync(
-            request.Filters,
-            request.Sorting,
-            request.Page,
-            request.PageSize,
+            new HotelsSearchSpecification(
+                request.Filters,
+                request.Sorting,
+                request.Page,
+                request.PageSize
+            ),
             cancellationToken
         );
 

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Shared.Maybe;
+using TAB.Domain.Core.Specifications;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Persistence.Repositories.Abstractions;
-using TAB.Persistence.Specifications.HotelManagement;
 
 namespace TAB.Persistence.Repositories.HotelManagement;
 
@@ -25,15 +25,7 @@ public class HotelRepository : BaseRepository<Hotel>, IHotelRepository
     }
 
     public async Task<IReadOnlyCollection<Hotel>> SearchHotelsAsync(
-        string? filters,
-        string? sorting,
-        int page,
-        int pageSize,
+        ISpecification<Hotel> spec,
         CancellationToken cancellationToken = default
-    )
-    {
-        var spec = new HotelsSearchSpecification(filters, sorting, page, pageSize);
-
-        return await ApplySpecification(spec).ToListAsync(cancellationToken);
-    }
+    ) => await GetAllBySpecificationAsync(spec, cancellationToken);
 }

@@ -86,62 +86,7 @@ public class FilterParser<T>
                 => Expression.Not(
                     Expression.Call(member, nameof(string.StartsWith), null, constant)
                 ),
-            ValidOperators.CaseInsensitiveContains
-                => CreateCaseInsensitiveCall(member, nameof(string.Contains), constant),
-            ValidOperators.CaseInsensitiveStartsWith
-                => CreateCaseInsensitiveCall(member, nameof(string.StartsWith), constant),
-            ValidOperators.CaseInsensitiveEquals => CreateCaseInsensitiveEquality(member, constant),
-            ValidOperators.CaseInsensitiveNotEquals
-                => CreateCaseInsensitiveNotEqual(member, constant),
-            ValidOperators.CaseInsensitiveDoesNotContains
-                => CreateCaseInsensitiveNegatedCall(member, nameof(string.Contains), constant),
-            ValidOperators.CaseInsensitiveDoesNotStartsWith
-                => CreateCaseInsensitiveNegatedCall(member, nameof(string.StartsWith), constant),
             _ => null
         };
     }
-
-    private static Expression CreateCaseInsensitiveCall(
-        Expression member,
-        string methodName,
-        Expression constant
-    ) =>
-        Expression.Call(
-            Expression.Call(member, nameof(string.ToLower), null),
-            methodName,
-            null,
-            Expression.Call(constant, nameof(string.ToLower), null)
-        );
-
-    private static Expression CreateCaseInsensitiveEquality(
-        Expression member,
-        Expression constant
-    ) =>
-        Expression.Equal(
-            Expression.Call(member, nameof(string.ToLower), null),
-            Expression.Call(constant, nameof(string.ToLower), null)
-        );
-
-    private static Expression CreateCaseInsensitiveNotEqual(
-        Expression member,
-        Expression constant
-    ) =>
-        Expression.NotEqual(
-            Expression.Call(member, nameof(string.ToLower), null),
-            Expression.Call(constant, nameof(string.ToLower), null)
-        );
-
-    private static Expression CreateCaseInsensitiveNegatedCall(
-        Expression member,
-        string methodName,
-        Expression constant
-    ) =>
-        Expression.Not(
-            Expression.Call(
-                Expression.Call(member, nameof(string.ToLower), null),
-                methodName,
-                null,
-                Expression.Call(constant, nameof(string.ToLower), null)
-            )
-        );
 }
