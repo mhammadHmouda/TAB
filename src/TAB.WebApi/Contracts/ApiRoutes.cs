@@ -33,6 +33,7 @@ public static class ApiRoutes
         public const string AddAmenity = Base + "/{id}/amenities";
         public const string CreateRoom = Base + "/{id}/rooms";
         public const string Search = Base + "/search";
+        public const string Get = Base + "/{id}";
     }
 
     public static class Images

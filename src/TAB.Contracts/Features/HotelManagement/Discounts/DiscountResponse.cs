@@ -5,6 +5,6 @@ public record DiscountResponse(
     string Name,
     string Description,
     decimal DiscountPercentage,
-    DateTime Start,
-    DateTime End
+    DateTime StartDate,
+    DateTime EndDate
 );

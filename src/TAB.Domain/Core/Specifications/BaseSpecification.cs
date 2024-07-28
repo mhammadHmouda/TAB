@@ -7,6 +7,7 @@ public class BaseSpecification<T> : ISpecification<T>
 {
     public Expression<Func<T, bool>>? Criteria { get; private set; }
     public List<Expression<Func<T, object>>> Includes { get; private init; } = new();
+    public List<string> IncludeStrings { get; } = new();
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
     public int Take { get; private set; }
@@ -33,6 +34,11 @@ public class BaseSpecification<T> : ISpecification<T>
     protected void AddInclude(Expression<Func<T, object>> includeExpression)
     {
         Includes.Add(includeExpression);
+    }
+
+    protected void AddInclude(string includeString)
+    {
+        IncludeStrings.Add(includeString);
     }
 
     protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)

@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
@@ -14,16 +15,19 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeProvider _dateTime;
+    private readonly IMapper _mapper;
 
     public UpdateRoomCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IDateTimeProvider dateTime
+        IDateTimeProvider dateTime,
+        IMapper mapper
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _dateTime = dateTime;
+        _mapper = mapper;
     }
 
     public async Task<Result<RoomResponse>> Handle(
@@ -59,16 +63,6 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RoomResponse(
-            room.Id,
-            room.Number,
-            room.Description,
-            room.Price,
-            room.DiscountedPrice,
-            room.Type,
-            room.IsAvailable,
-            room.AdultsCapacity,
-            room.ChildrenCapacity
-        );
+        return _mapper.Map<RoomResponse>(room);
     }
 }

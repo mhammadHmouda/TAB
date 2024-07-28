@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using TAB.Application.Core.Contracts;
-using TAB.Application.Features.HotelManagement.Hotels.Specifications;
 using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Contracts.Features.HotelManagement.Images;

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
+using TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
 using TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
@@ -159,6 +160,21 @@ public class HotelController : ApiController
         await Result
             .Create((filters, sorting, page, pageSize))
             .Map(x => new SearchHotelsQuery(x.filters, x.sorting, x.page, x.pageSize))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get a hotel by ID.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <returns>The hotel with all its details.</returns>
+    /// <response code="200">The hotel with all its details.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.Get)]
+    public async Task<IActionResult> GetHotelById(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new GetHotelByIdQuery(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

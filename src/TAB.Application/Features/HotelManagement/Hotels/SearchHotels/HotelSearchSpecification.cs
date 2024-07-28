@@ -1,7 +1,7 @@
 ﻿using TAB.Domain.Core.Specifications;
 using TAB.Domain.Features.HotelManagement.Entities;
 
-namespace TAB.Application.Features.HotelManagement.Hotels.Specifications;
+namespace TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 
 public class HotelsSearchSpecification : BaseSpecification<Hotel>
 {
