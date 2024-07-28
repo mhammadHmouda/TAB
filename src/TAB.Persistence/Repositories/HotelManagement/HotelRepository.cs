@@ -8,7 +8,7 @@ using TAB.Persistence.Repositories.Abstractions;
 
 namespace TAB.Persistence.Repositories.HotelManagement;
 
-public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
+public class HotelRepository : BaseRepository<Hotel>, IHotelRepository
 {
     public HotelRepository(IDbContext dbContext)
         : base(dbContext) { }

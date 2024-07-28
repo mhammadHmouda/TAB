@@ -40,7 +40,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         CancellationToken cancellationToken
     )
     {
-        var userExists = await _userRepository.GetByAsync(
+        var userExists = await _userRepository.GetAsync(
             user => user.Email == request.Email,
             cancellationToken
         );
@@ -76,7 +76,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
             activationCode
         );
 
-        await _userRepository.InsertAsync(user);
+        await _userRepository.AddAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new UserResponse(user.Id, user.Email.Value, user.FirstName, user.LastName);

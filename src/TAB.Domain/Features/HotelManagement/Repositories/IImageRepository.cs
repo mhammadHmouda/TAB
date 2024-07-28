@@ -5,5 +5,5 @@ namespace TAB.Domain.Features.HotelManagement.Repositories;
 
 public interface IImageRepository : IRepository<Image>
 {
-    Task<List<Image>> GetByHotelIdAsync(int hotelId, CancellationToken cancellationToken);
+    Task<IEnumerable<Image>> GetByHotelIdAsync(int hotelId, CancellationToken cancellationToken);
 }

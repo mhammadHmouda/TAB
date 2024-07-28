@@ -11,14 +11,11 @@ public class ImageRepository : BaseRepository<Image>, IImageRepository
     public ImageRepository(IDbContext context)
         : base(context) { }
 
-    public async Task<List<Image>> GetByHotelIdAsync(
+    public async Task<IEnumerable<Image>> GetByHotelIdAsync(
         int hotelId,
         CancellationToken cancellationToken = default
     )
     {
-        return await DbContext
-            .Set<Image>()
-            .Where(image => image.ReferenceId == hotelId)
-            .ToListAsync(cancellationToken);
+        return await GetAllAsync(i => i.ReferenceId == hotelId, cancellationToken);
     }
 }

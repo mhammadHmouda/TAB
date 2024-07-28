@@ -140,7 +140,7 @@ public class HotelController : ApiController
             .Match(Ok, BadRequest);
 
     /// <summary>
-    /// Get hotels with reviews.
+    /// Search hotels with dynamic filters and sorting.
     /// </summary>
     /// <param name="filters">The filters to apply.</param>
     /// <param name="sorting">The sorting to apply.</param>

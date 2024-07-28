@@ -73,7 +73,7 @@ public class CreateUserCommandTests
     private void SetupUserRepositoryMock(Maybe<User> user)
     {
         _userRepositoryMock
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
+            .GetAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(user);
     }
 
@@ -145,7 +145,7 @@ public class CreateUserCommandTests
         await _handler.Handle(_command, default);
 
         // Assert
-        await _userRepositoryMock.Received(1).InsertAsync(Arg.Any<User>());
+        await _userRepositoryMock.Received(1).AddAsync(Arg.Any<User>());
     }
 
     public static IEnumerable<object[]> PasswordTestData()

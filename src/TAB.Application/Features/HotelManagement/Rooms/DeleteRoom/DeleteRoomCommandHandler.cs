@@ -26,7 +26,7 @@ public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand, Resul
             return DomainErrors.Room.NotFound;
         }
 
-        _roomRepository.Remove(roomMaybe.Value);
+        _roomRepository.Delete(roomMaybe.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

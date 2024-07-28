@@ -26,7 +26,7 @@ public class TokenValidationService : ITokenValidationService
     {
         var hashedToken = _hasher.HashPassword(token);
 
-        var tokenEntity = await _tokenRepository.GetByAsync(
+        var tokenEntity = await _tokenRepository.GetAsync(
             t => t.Value == hashedToken,
             CancellationToken.None
         );

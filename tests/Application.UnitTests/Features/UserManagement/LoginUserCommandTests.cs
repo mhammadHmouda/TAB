@@ -54,7 +54,7 @@ public class LoginUserCommandTests
         }
 
         _userRepository
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
+            .GetAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(Task.FromResult(Maybe<User>.From(_user)));
     }
 
@@ -68,7 +68,7 @@ public class LoginUserCommandTests
         };
 
         _userRepository
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
+            .GetAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(Task.FromResult(Maybe<User>.None));
 
         // Act

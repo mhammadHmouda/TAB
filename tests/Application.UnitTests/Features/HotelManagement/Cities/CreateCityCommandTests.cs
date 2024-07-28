@@ -29,7 +29,7 @@ public class CreateCityCommandTests
     {
         // Arrange
         var city = City.Create("City", "Country", "PostOffice").Value;
-        _cityRepositoryMock.InsertAsync(city).Returns(Task.FromResult(city));
+        _cityRepositoryMock.AddAsync(city).Returns(Task.FromResult(city));
 
         // Act
         var result = await _sut.Handle(_command, default);
@@ -46,7 +46,7 @@ public class CreateCityCommandTests
     {
         // Arrange
         var city = City.Create("City", "Country", "PostOffice").Value;
-        _cityRepositoryMock.InsertAsync(city).Returns(Task.FromResult(city));
+        _cityRepositoryMock.AddAsync(city).Returns(Task.FromResult(city));
 
         // Act
         await _sut.Handle(_command, default);

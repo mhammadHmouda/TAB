@@ -30,7 +30,7 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<
         CancellationToken cancellationToken
     )
     {
-        var user = await _userRepository.GetByAsync(
+        var user = await _userRepository.GetAsync(
             user => user.Email == request.Email,
             cancellationToken
         );

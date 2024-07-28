@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TAB.Application.Core.Interfaces.Data;
+﻿using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Persistence.Repositories.Abstractions;
@@ -11,14 +10,11 @@ public class AmenityRepository : BaseRepository<Amenity>, IAmenityRepository
     public AmenityRepository(IDbContext context)
         : base(context) { }
 
-    public async Task<List<Amenity>> GetByHotelIdAsync(
+    public async Task<IEnumerable<Amenity>> GetByHotelIdAsync(
         int hotelId,
         CancellationToken cancellationToken = default
     )
     {
-        return await DbContext
-            .Set<Amenity>()
-            .Where(amenity => amenity.TypeId == hotelId)
-            .ToListAsync(cancellationToken);
+        return await GetAllAsync(a => a.TypeId == hotelId, cancellationToken);
     }
 }

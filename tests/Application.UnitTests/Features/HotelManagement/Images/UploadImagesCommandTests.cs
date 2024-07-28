@@ -167,8 +167,6 @@ public class UploadImagesTests
         await _sut.Handle(command, CancellationToken.None);
 
         // Assert
-        await _imageRepositoryMock
-            .Received()
-            .InsertRangeAsync(Arg.Any<IReadOnlyCollection<Image>>());
+        await _imageRepositoryMock.Received().AddRangeAsync(Arg.Any<IReadOnlyCollection<Image>>());
     }
 }

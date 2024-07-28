@@ -30,7 +30,7 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
             return cityResult.Error;
         }
 
-        await _cityRepository.InsertAsync(cityResult.Value);
+        await _cityRepository.AddAsync(cityResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         var city = cityResult.Value;

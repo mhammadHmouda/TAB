@@ -49,7 +49,7 @@ public class UploadImagesCommandHandler
             return imagesResult.Error;
         }
 
-        await _imageRepository.InsertRangeAsync(imagesResult.Value);
+        await _imageRepository.AddRangeAsync(imagesResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new UploadImagesResponse(urls);

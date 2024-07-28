@@ -31,7 +31,7 @@ public class DeleteImageCommandHandler : ICommandHandler<DeleteImageCommand, Res
 
         var image = imageMaybe.Value;
 
-        _imageRepository.Remove(image);
+        _imageRepository.Delete(image);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

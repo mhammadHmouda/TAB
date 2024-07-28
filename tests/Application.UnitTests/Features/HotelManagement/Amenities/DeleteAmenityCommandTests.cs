@@ -52,7 +52,7 @@ public class DeleteAmenityCommandTests
         var result = await _sut.Handle(Command, CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
-        _amenityRepositoryMock.Received(1).Remove(Arg.Any<Amenity>());
+        _amenityRepositoryMock.Received(1).Delete(Arg.Any<Amenity>());
         await _unitOfWorkMock.Received(1).SaveChangesAsync(CancellationToken.None);
     }
 }
