@@ -68,8 +68,8 @@ public class CreateDiscountHandlerTests
         var discount = result.Value;
 
         discount.DiscountPercentage.Should().Be(Command.DiscountPercentage);
-        discount.Start.Should().Be(Command.StartDate);
-        discount.End.Should().Be(Command.EndDate);
+        discount.StartDate.Should().Be(Command.StartDate);
+        discount.EndDate.Should().Be(Command.EndDate);
     }
 
     [Fact]
