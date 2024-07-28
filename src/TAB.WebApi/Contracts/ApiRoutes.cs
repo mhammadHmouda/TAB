@@ -22,6 +22,7 @@ public static class ApiRoutes
         private const string Base = "cities";
         public const string Create = Base;
         public const string UploadImages = Base + "/{id}/images";
+        public const string Search = Base + "/search";
     }
 
     public static class Hotels

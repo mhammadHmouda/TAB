@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Cities;
 using TAB.Domain.Core.Shared.Result;
@@ -11,11 +12,17 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
 {
     private readonly ICityRepository _cityRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateCityCommandHandler(ICityRepository cityRepository, IUnitOfWork unitOfWork)
+    public CreateCityCommandHandler(
+        ICityRepository cityRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper
+    )
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<Result<CityResponse>> Handle(
@@ -35,13 +42,6 @@ public class CreateCityCommandHandler : ICommandHandler<CreateCityCommand, Resul
 
         var city = cityResult.Value;
 
-        return new CityResponse(
-            city.Id,
-            city.Name,
-            city.Country,
-            city.PostOffice,
-            city.CreatedAtUtc,
-            city.UpdatedAtUtc
-        );
+        return _mapper.Map<CityResponse>(city);
     }
 }

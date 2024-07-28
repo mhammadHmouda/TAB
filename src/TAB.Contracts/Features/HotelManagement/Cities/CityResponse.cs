@@ -5,6 +5,6 @@ public record CityResponse(
     string Name,
     string Country,
     string PostOffice,
-    DateTime CreatedAt,
-    DateTime? UpdatedAt
+    DateTime CreatedAtUtc,
+    DateTime? UpdatedAtUtc
 );
