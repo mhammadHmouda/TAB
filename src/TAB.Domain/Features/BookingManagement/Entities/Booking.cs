@@ -47,11 +47,23 @@ public class Booking : AggregateRoot, IAuditableEntity
         decimal pricePerNight
     )
     {
-        Ensure.NotDefault(checkInDate, "The check in date is required.", nameof(checkInDate));
-        Ensure.NotDefault(checkOutDate, "The check out date is required.", nameof(checkOutDate));
-        Ensure.NotDefault(userId, "The user id is required.", nameof(userId));
-        Ensure.NotDefault(hotelId, "The hotel id is required.", nameof(hotelId));
-        Ensure.NotDefault(roomId, "The room id is required.", nameof(roomId));
+        Ensure.NotPast(
+            checkInDate,
+            "The check in date must be in the future.",
+            nameof(checkInDate)
+        );
+        Ensure.NotPast(
+            checkOutDate,
+            "The check out date must be in the future.",
+            nameof(checkOutDate)
+        );
+        Ensure.GreaterThan(
+            checkOutDate,
+            checkInDate,
+            "The check out date must be greater than the check in date.",
+            nameof(checkOutDate)
+        );
+        Ensure.NotDefault(pricePerNight, "The price per night is required.", nameof(pricePerNight));
 
         return new Booking(checkInDate, checkOutDate, userId, hotelId, roomId, pricePerNight);
     }
