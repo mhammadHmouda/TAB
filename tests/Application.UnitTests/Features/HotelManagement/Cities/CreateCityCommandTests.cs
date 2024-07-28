@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
+using TAB.Application.Features.HotelManagement.Cities;
 using TAB.Application.Features.HotelManagement.Cities.AddCity;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
@@ -19,7 +21,14 @@ public class CreateCityCommandTests
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         _cityRepositoryMock = Substitute.For<ICityRepository>();
 
-        _sut = new CreateCityCommandHandler(_cityRepositoryMock, _unitOfWorkMock);
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile(new CityProfile());
+        });
+
+        var mapper = config.CreateMapper();
+
+        _sut = new CreateCityCommandHandler(_cityRepositoryMock, _unitOfWorkMock, mapper);
 
         _command = new CreateCityCommand("City", "Country", "PostOffice");
     }

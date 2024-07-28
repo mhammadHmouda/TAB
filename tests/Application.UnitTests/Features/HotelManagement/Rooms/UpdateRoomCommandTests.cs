@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
+using TAB.Application.Features.HotelManagement.Rooms;
 using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
@@ -29,10 +31,18 @@ public class UpdateRoomCommandTests
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         var dateTimeProviderMock = Substitute.For<IDateTimeProvider>();
 
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile(new RoomProfile());
+        });
+
+        var mapper = config.CreateMapper();
+
         _sut = new UpdateRoomCommandHandler(
             _roomRepositoryMock,
             _unitOfWorkMock,
-            dateTimeProviderMock
+            dateTimeProviderMock,
+            mapper
         );
     }
 

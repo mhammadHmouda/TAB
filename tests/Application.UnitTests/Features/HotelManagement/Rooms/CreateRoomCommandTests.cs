@@ -1,6 +1,9 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
+using TAB.Application.Features.HotelManagement.Cities;
+using TAB.Application.Features.HotelManagement.Rooms;
 using TAB.Application.Features.HotelManagement.Rooms.AddRoom;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
@@ -25,8 +28,15 @@ public class CreateRoomCommandTests
     {
         _hotelRepositoryMock = Substitute.For<IHotelRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile(new RoomProfile());
+        });
 
-        _sut = new CreateRoomCommandHandler(_hotelRepositoryMock, _unitOfWorkMock);
+        var mapper = config.CreateMapper();
+        ;
+
+        _sut = new CreateRoomCommandHandler(_hotelRepositoryMock, _unitOfWorkMock, mapper);
     }
 
     [Fact]
