@@ -10,7 +10,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 namespace TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 
 public class SearchHotelsQueryHandler
-    : IQueryHandler<SearchHotelsQuery, Result<HotelSearchResponse[]>>
+    : IQueryHandler<SearchHotelsQuery, Result<PagedList<HotelSearchResponse>>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -30,22 +30,23 @@ public class SearchHotelsQueryHandler
         _amenityRepository = amenityRepository;
     }
 
-    public async Task<Result<HotelSearchResponse[]>> Handle(
+    public async Task<Result<PagedList<HotelSearchResponse>>> Handle(
         SearchHotelsQuery request,
         CancellationToken cancellationToken
     )
     {
-        var hotels = await _hotelRepository.SearchHotelsAsync(
-            new HotelsSearchSpecification(
-                request.Filters,
-                request.Sorting,
-                request.Page,
-                request.PageSize
-            ),
-            cancellationToken
+        var spec = new HotelsSearchSpecification(
+            request.Filters,
+            request.Sorting,
+            request.Page,
+            request.PageSize
         );
 
-        var hotelsResponse = _mapper.Map<HotelSearchResponse[]>(hotels.ToList());
+        var hotels = await _hotelRepository.SearchHotelsAsync(spec, cancellationToken);
+
+        var totalCount = await _hotelRepository.CountAsync(spec.ForCounting());
+
+        var hotelsResponse = _mapper.Map<HotelSearchResponse[]>(hotels);
 
         foreach (var hotel in hotelsResponse)
         {
@@ -56,6 +57,11 @@ public class SearchHotelsQueryHandler
             hotel.Amenities = _mapper.Map<AmenityResponse[]>(amenities);
         }
 
-        return hotelsResponse;
+        return PagedList<HotelSearchResponse>.Create(
+            hotelsResponse.ToList(),
+            request.Page,
+            request.PageSize,
+            totalCount
+        );
     }
 }

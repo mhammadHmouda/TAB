@@ -6,7 +6,7 @@ namespace TAB.Domain.Core.Specifications;
 public class BaseSpecification<T> : ISpecification<T>
 {
     public Expression<Func<T, bool>>? Criteria { get; private set; }
-    public List<Expression<Func<T, object>>> Includes { get; } = new();
+    public List<Expression<Func<T, object>>> Includes { get; private init; } = new();
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
     public int Take { get; private set; }
@@ -88,5 +88,17 @@ public class BaseSpecification<T> : ISpecification<T>
                 }
             }
         }
+    }
+
+    public ISpecification<T> ForCounting()
+    {
+        var countSpec = new BaseSpecification<T>
+        {
+            Criteria = Criteria,
+            IsPagingEnabled = false,
+            IsNoTracking = true
+        };
+
+        return countSpec;
     }
 }
