@@ -23,13 +23,7 @@ public class BookingController : ApiController
     {
         return await Result
             .Create(request)
-            .Map(r => new BookingRoomCommand(
-                r.CheckInDate,
-                r.CheckOutDate,
-                r.UserId,
-                r.HotelId,
-                r.RoomId
-            ))
+            .Map(r => new BookingRoomCommand(r.CheckInDate, r.CheckOutDate, r.RoomId))
             .Bind(command => Mediator.Send(command))
             .Match(Ok, BadRequest);
     }
