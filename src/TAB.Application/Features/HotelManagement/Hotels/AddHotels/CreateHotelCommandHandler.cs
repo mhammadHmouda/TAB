@@ -65,7 +65,7 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
             request.OwnerId
         );
 
-        await _hotelRepository.InsertAsync(hotel);
+        await _hotelRepository.AddAsync(hotel);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new HotelResponse(

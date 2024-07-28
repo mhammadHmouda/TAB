@@ -54,7 +54,7 @@ public class CreateAmenityCommandHandler
             request.TypeId
         );
 
-        await _amenityRepository.InsertAsync(amenity);
+        await _amenityRepository.AddAsync(amenity);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new AmenityResponse(amenity.Id, amenity.Name, amenity.Description);

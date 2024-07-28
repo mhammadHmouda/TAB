@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
+using TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
+using TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Application.Features.HotelManagement.Rooms.AddRoom;
@@ -135,6 +137,44 @@ public class HotelController : ApiController
                 x.request.CapacityOfAdults,
                 x.request.CapacityOfChildren
             ))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Search hotels with dynamic filters and sorting.
+    /// </summary>
+    /// <param name="filters">The filters to apply.</param>
+    /// <param name="sorting">The sorting to apply.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <returns>The hotels with reviews.</returns>
+    /// <response code="200">The hotels with reviews.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.Search)]
+    public async Task<IActionResult> SearchHotels(
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    ) =>
+        await Result
+            .Create((filters, sorting, page, pageSize))
+            .Map(x => new SearchHotelsQuery(x.filters, x.sorting, x.page, x.pageSize))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get a hotel by ID.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <returns>The hotel with all its details.</returns>
+    /// <response code="200">The hotel with all its details.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.Get)]
+    public async Task<IActionResult> GetHotelById(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new GetHotelByIdQuery(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

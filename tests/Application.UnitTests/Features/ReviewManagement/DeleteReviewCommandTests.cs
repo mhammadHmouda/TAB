@@ -80,7 +80,7 @@ public class DeleteReviewCommandTests
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
-        _reviewRepositoryMock.Received().Remove(Review);
+        _reviewRepositoryMock.Received().Delete(Review);
 
         result.IsSuccess.Should().BeTrue();
     }

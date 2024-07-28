@@ -105,7 +105,7 @@ public class CreateAmenityCommandTests
         await _sut.Handle(Command, CancellationToken.None);
 
         // Assert
-        await _amenityRepositoryMock.Received(1).InsertAsync(Arg.Any<Amenity>());
+        await _amenityRepositoryMock.Received(1).AddAsync(Arg.Any<Amenity>());
     }
 
     [Fact]

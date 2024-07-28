@@ -3,4 +3,7 @@ using TAB.Domain.Features.HotelManagement.Entities;
 
 namespace TAB.Domain.Features.HotelManagement.Repositories;
 
-public interface IAmenityRepository : IRepository<Amenity> { }
+public interface IAmenityRepository : IRepository<Amenity>
+{
+    Task<IEnumerable<Amenity>> GetByHotelIdAsync(int hotelId, CancellationToken cancellationToken);
+}

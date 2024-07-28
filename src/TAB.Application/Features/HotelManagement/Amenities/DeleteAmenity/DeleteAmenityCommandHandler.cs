@@ -29,7 +29,7 @@ public class DeleteAmenityCommandHandler : ICommandHandler<DeleteAmenityCommand,
             return DomainErrors.Amenity.NotFound;
         }
 
-        _amenityRepository.Remove(amenityMaybe.Value);
+        _amenityRepository.Delete(amenityMaybe.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

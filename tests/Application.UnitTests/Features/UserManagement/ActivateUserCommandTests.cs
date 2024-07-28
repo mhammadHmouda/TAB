@@ -49,7 +49,7 @@ public class ActivateUserCommandTests
     private void SetupUserRepositoryMock(Maybe<User> user)
     {
         _userRepositoryMock
-            .GetByAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
+            .GetAsync(Arg.Any<Expression<Func<User, bool>>>(), default)
             .Returns(user);
     }
 

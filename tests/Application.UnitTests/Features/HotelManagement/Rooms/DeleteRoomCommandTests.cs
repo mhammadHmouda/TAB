@@ -83,7 +83,7 @@ public class DeleteRoomCommandTests
 
         var result = await _sut.Handle(Command, CancellationToken.None);
 
-        _roomRepositoryMock.Received(1).Remove(Arg.Any<Room>());
+        _roomRepositoryMock.Received(1).Delete(Arg.Any<Room>());
         result.IsSuccess.Should().BeTrue();
     }
 

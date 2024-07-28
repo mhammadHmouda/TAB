@@ -46,7 +46,7 @@ public class DeleteReviewCommandHandler : ICommandHandler<DeleteReviewCommand, R
             return DomainErrors.General.Unauthorized;
         }
 
-        _reviewRepository.Remove(review);
+        _reviewRepository.Delete(review);
 
         review.AddDomainEvent(new ReviewDeletedEvent(review.HotelId));
 

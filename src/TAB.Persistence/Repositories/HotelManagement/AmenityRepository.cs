@@ -9,4 +9,12 @@ public class AmenityRepository : BaseRepository<Amenity>, IAmenityRepository
 {
     public AmenityRepository(IDbContext context)
         : base(context) { }
+
+    public async Task<IEnumerable<Amenity>> GetByHotelIdAsync(
+        int hotelId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await GetAllAsync(a => a.TypeId == hotelId, cancellationToken);
+    }
 }

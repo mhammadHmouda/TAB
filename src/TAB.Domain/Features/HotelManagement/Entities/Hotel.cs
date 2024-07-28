@@ -20,8 +20,8 @@ public class Hotel : AggregateRoot, IAuditableEntity
     public int RoomsNumber { get; private set; }
     public int CityId { get; private set; }
     public int OwnerId { get; private set; }
-    public City? City { get; internal set; }
-    public User? Owner { get; internal set; }
+    public City City { get; internal set; }
+    public User Owner { get; internal set; }
     public ICollection<Room> Rooms { get; } = new List<Room>();
     public ICollection<Review> Reviews { get; } = new List<Review>();
     public DateTime CreatedAtUtc { get; internal set; }

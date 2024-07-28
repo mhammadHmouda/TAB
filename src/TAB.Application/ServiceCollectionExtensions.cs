@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using TAB.Application.Core.Behaviours;
+using TAB.Application.Core.Extensions;
 
 namespace TAB.Application;
 
@@ -19,6 +20,8 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddValidatorsFromAssembly(assembly);
+
+        services.AddMapper();
 
         return services;
     }

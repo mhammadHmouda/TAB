@@ -1,4 +1,5 @@
-﻿using TAB.Domain.Features.HotelManagement.Enums;
+﻿using TAB.Contracts.Features.HotelManagement.Discounts;
+using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 
 namespace TAB.Contracts.Features.HotelManagement.Rooms;
@@ -11,6 +12,7 @@ public record RoomResponse(
     decimal DiscountedPrice,
     RoomType Type,
     bool IsAvailable,
-    int CapacityOfAdults,
-    int CapacityOfChildren
+    int AdultsCapacity,
+    int ChildrenCapacity,
+    DiscountResponse[] Discounts
 );
