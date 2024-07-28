@@ -8,7 +8,7 @@ using TAB.Persistence.Repositories.Abstractions;
 
 namespace TAB.Persistence.Repositories.HotelManagement;
 
-public class HotelRepository : BaseRepository<Hotel>, IHotelRepository
+public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
 {
     public HotelRepository(IDbContext dbContext)
         : base(dbContext) { }
@@ -24,8 +24,8 @@ public class HotelRepository : BaseRepository<Hotel>, IHotelRepository
                 .SingleOrDefaultAsync(h => h.Id == id, cancellationToken) ?? Maybe<Hotel>.None;
     }
 
-    public async Task<IReadOnlyCollection<Hotel>> SearchHotelsAsync(
+    public async Task<IEnumerable<Hotel>> SearchHotelsAsync(
         ISpecification<Hotel> spec,
         CancellationToken cancellationToken = default
-    ) => await GetAllBySpecificationAsync(spec, cancellationToken);
+    ) => await GetAllAsync(spec, cancellationToken);
 }

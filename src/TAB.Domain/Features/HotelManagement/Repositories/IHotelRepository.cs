@@ -5,10 +5,10 @@ using TAB.Domain.Features.HotelManagement.Entities;
 
 namespace TAB.Domain.Features.HotelManagement.Repositories;
 
-public interface IHotelRepository : IRepository<Hotel>
+public interface IHotelRepository : IRepository2<Hotel>
 {
     Task<Maybe<Hotel>> GetByIdWithReviewsAsync(int hotelId, CancellationToken cancellationToken);
-    Task<IReadOnlyCollection<Hotel>> SearchHotelsAsync(
+    Task<IEnumerable<Hotel>> SearchHotelsAsync(
         ISpecification<Hotel> spec,
         CancellationToken cancellationToken
     );
