@@ -152,6 +152,7 @@ public static class DomainErrors
         public static Error NotFound => new("Room.NotFound", "Room not found.");
         public static Error NothingToUpdate =>
             new("Room.NothingToUpdate", "Nothing to update in the room.");
+        public static Error NotAvailable => new("Room.NotAvailable", "The room is not available.");
     }
 
     public static class Review
