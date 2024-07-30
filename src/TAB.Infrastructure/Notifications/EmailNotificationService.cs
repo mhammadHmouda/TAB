@@ -30,4 +30,27 @@ public class EmailNotificationService : IEmailNotificationService
         var mailRequest = new MailRequest(welcomeEmail.EmailTo, "Welcome to Tap", body);
         await _emailService.SendEmailAsync(mailRequest);
     }
+
+    public async Task SendSuccessBookingEmail(BookingSuccessEmail bookingSuccessEmail)
+    {
+        var body = $"""
+            Dear {bookingSuccessEmail.Name},
+
+            Your booking at {bookingSuccessEmail.HotelName} has been successfully created.
+
+            Please find the booking details below:
+
+            Check in date: {bookingSuccessEmail.CheckInDate}
+            Check out date: {bookingSuccessEmail.CheckOutDate}
+            Total price: {bookingSuccessEmail.TotalPrice} {bookingSuccessEmail.Currency}
+
+            Your booking now in pending status. Please wait for the hotel to confirm your booking.
+
+            Thank you for using Tap!
+            """;
+
+        var mailRequest = new MailRequest(bookingSuccessEmail.EmailTo, "Booking Success", body);
+
+        await _emailService.SendEmailAsync(mailRequest);
+    }
 }
