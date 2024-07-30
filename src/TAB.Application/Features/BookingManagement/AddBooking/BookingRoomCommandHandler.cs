@@ -61,7 +61,6 @@ public class BookingRoomCommandHandler
         }
 
         var room = roomMaybe.Value;
-        var hotelId = room.HotelId;
 
         if (!room.IsAvailable)
         {
@@ -79,7 +78,7 @@ public class BookingRoomCommandHandler
             request.CheckInDate,
             request.CheckOutDate,
             userId,
-            hotelId,
+            room.HotelId,
             request.RoomId,
             room.DiscountedPrice
         );

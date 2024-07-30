@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TAB.Application.Core.Interfaces.Email;
 using TAB.Application.Core.Interfaces.Notifications;
-using TAB.Contracts.Features.UserManagement.Email;
+using TAB.Contracts.Features.Shared.Email;
 
 namespace TAB.Infrastructure.Notifications;
 

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using TAB.Application.Core.Interfaces.Notifications;
-using TAB.Contracts.Features.UserManagement.Email;
+using TAB.Contracts.Features.Shared.Email;
 using TAB.Domain.Features.UserManagement.Events;
 
 namespace TAB.Application.Features.UserManagement.Register;
