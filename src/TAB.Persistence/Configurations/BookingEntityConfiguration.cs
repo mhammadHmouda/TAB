@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TAB.Domain.Features.BookingManagement.Entities;
+using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.UserManagement.Entities;
 
@@ -10,7 +11,7 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
-        builder.ToTable("Bookings");
+        builder.ToTable(nameof(Booking));
 
         builder.HasKey(b => b.Id);
 
@@ -26,8 +27,12 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
 
         builder.Property(b => b.RoomId).IsRequired();
 
-        builder.Property(b => b.Status).IsRequired();
-
+        builder
+            .Property(x => x.Status)
+            .HasConversion(
+                v => v.ToString(),
+                v => (BookingStatus)Enum.Parse(typeof(BookingStatus), v)
+            );
         builder.Property(b => b.CreatedAtUtc).IsRequired();
 
         builder.Property(b => b.UpdatedAtUtc);

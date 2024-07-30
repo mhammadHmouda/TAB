@@ -46,7 +46,7 @@ public class EmailNotificationService : IEmailNotificationService
 
             Your booking now in pending status. Please wait for the hotel to confirm your booking.
 
-            Thank you for using Tap!
+            Thank you for using Tab!
             """;
 
         var mailRequest = new MailRequest(bookingSuccessEmail.EmailTo, "Booking Success", body);
