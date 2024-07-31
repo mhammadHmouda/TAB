@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Stripe;
+using Stripe.Checkout;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Email;
 using TAB.Application.Core.Interfaces.Notifications;
+using TAB.Application.Core.Interfaces.Payment;
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Features.HotelManagement.Services;
 using TAB.Infrastructure.Authentication;
@@ -18,6 +21,8 @@ using TAB.Infrastructure.Cryptography;
 using TAB.Infrastructure.Emails;
 using TAB.Infrastructure.Emails.Options;
 using TAB.Infrastructure.Notifications;
+using TAB.Infrastructure.Payment;
+using TAB.Infrastructure.Payment.Options;
 
 namespace TAB.Infrastructure;
 
@@ -46,6 +51,8 @@ public static class ServiceCollectionExtensions
         services.AddAuthentication(configuration);
         services.AddAzureBlob();
 
+        services.AddStripe(configuration);
+
         return services;
     }
 
@@ -73,6 +80,26 @@ public static class ServiceCollectionExtensions
             var options = provider.GetRequiredService<IOptions<AzureBlobOptions>>().Value;
             return new BlobServiceClient(options.ConnectionString);
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddStripe(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
+    {
+        services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
+
+        var options = services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<StripeOptions>>()
+            .Value;
+
+        StripeConfiguration.ApiKey = options.SecretKey;
+
+        services.AddScoped<SessionService>();
+        services.AddScoped<ISessionService, StripeService>();
 
         return services;
     }

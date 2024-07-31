@@ -173,5 +173,7 @@ public static class DomainErrors
         public static Error CannotCancel =>
             new("Booking.CannotCancel", "The booking cannot be cancelled.");
         public static Error IsConfirmed => new("Booking.IsConfirmed", "The booking is confirmed.");
+        public static Error NotConfirmed =>
+            new("Booking.NotConfirmed", "The booking is not confirmed.");
     }
 }

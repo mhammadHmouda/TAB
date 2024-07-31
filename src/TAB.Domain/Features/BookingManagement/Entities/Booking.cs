@@ -144,8 +144,20 @@ public class Booking : AggregateRoot, IAuditableEntity
 
     public void AddSessionId(string sessionId)
     {
-        Ensure.NotEmpty(sessionId, "The session id is required.", nameof(sessionId));
+        Ensure.NotDefault(sessionId, "The session id is required.", nameof(sessionId));
 
         SessionId = sessionId;
+    }
+
+    public Result Pay()
+    {
+        if (Status != BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.NotConfirmed;
+        }
+
+        Status = BookingStatus.Paid;
+
+        return Result.Success();
     }
 }
