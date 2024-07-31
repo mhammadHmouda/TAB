@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.BookingManagement.AddBooking;
+using TAB.Application.Features.BookingManagement.CancelBooking;
 using TAB.Application.Features.BookingManagement.ConfirmBooking;
 using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Shared.Result;
@@ -46,5 +47,22 @@ public class BookingController : ApiController
             .Map(i => new ConfirmBookingCommand(i))
             .Bind(command => Mediator.Send(command))
             .Match(() => Ok("Booking confirmed successfully!"), BadRequest);
+    }
+
+    /// <summary>
+    /// Cancel a booking.
+    /// </summary>
+    /// <param name="id">The booking id.</param>
+    /// <returns>The result of the cancellation.</returns>
+    /// <response code="200">The booking was cancelled.</response>
+    /// <response code="400">The booking id is invalid.</response>
+    [HttpPut(ApiRoutes.Booking.Cancel)]
+    public async Task<IActionResult> CancelBooking(int id)
+    {
+        return await Result
+            .Create(id)
+            .Map(i => new CancelBookingCommand(i))
+            .Bind(command => Mediator.Send(command))
+            .Match(() => Ok("Booking cancelled successfully!"), BadRequest);
     }
 }
