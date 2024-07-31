@@ -108,7 +108,7 @@ public class Booking : AggregateRoot, IAuditableEntity
 
         if (Status == BookingStatus.Cancelled)
         {
-            return DomainErrors.Booking.AlreadyCancelled;
+            return DomainErrors.Booking.IsCancelled;
         }
 
         Status = BookingStatus.Confirmed;
@@ -126,7 +126,7 @@ public class Booking : AggregateRoot, IAuditableEntity
 
         if (Status == BookingStatus.Confirmed)
         {
-            return DomainErrors.Booking.AlreadyConfirmed;
+            return DomainErrors.Booking.IsConfirmed;
         }
 
         if (CheckInDate < now.AddDays(1))
