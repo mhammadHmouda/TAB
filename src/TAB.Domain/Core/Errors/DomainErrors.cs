@@ -176,4 +176,9 @@ public static class DomainErrors
         public static Error NotConfirmed =>
             new("Booking.NotConfirmed", "The booking is not confirmed.");
     }
+
+    public static class Session
+    {
+        public static Error NotFound => new("Session.NotFound", "Session not found.");
+    }
 }
