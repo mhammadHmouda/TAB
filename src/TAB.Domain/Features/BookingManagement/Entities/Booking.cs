@@ -96,18 +96,41 @@ public class Booking : AggregateRoot, IAuditableEntity
 
     public Result Confirm()
     {
-        switch (Status)
+        if (Status == BookingStatus.Confirmed)
         {
-            case BookingStatus.Confirmed:
-                return DomainErrors.Booking.AlreadyConfirmed;
-            case BookingStatus.Cancelled:
-                return DomainErrors.Booking.IsCancelled;
-            case BookingStatus.Pending:
-                Status = BookingStatus.Confirmed;
-                AddDomainEvent(new BookingConfirmedEvent(Id));
-                return Result.Success();
-            default:
-                throw new ArgumentOutOfRangeException();
+            return DomainErrors.Booking.AlreadyConfirmed;
         }
+
+        if (Status == BookingStatus.Cancelled)
+        {
+            return DomainErrors.Booking.AlreadyCancelled;
+        }
+
+        Status = BookingStatus.Confirmed;
+        AddDomainEvent(new BookingConfirmedEvent(Id));
+
+        return Result.Success();
+    }
+
+    public Result Cancel(DateTime now)
+    {
+        if (Status == BookingStatus.Cancelled)
+        {
+            return DomainErrors.Booking.AlreadyCancelled;
+        }
+
+        if (Status == BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.AlreadyConfirmed;
+        }
+
+        if (CheckInDate < now.AddDays(1))
+        {
+            return DomainErrors.Booking.CannotCancel;
+        }
+
+        Status = BookingStatus.Cancelled;
+
+        return Result.Success();
     }
 }

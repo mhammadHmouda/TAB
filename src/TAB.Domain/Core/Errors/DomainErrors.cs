@@ -167,7 +167,10 @@ public static class DomainErrors
         public static Error NotFound => new("Booking.NotFound", "Booking not found.");
         public static Error AlreadyConfirmed =>
             new("Booking.AlreadyConfirmed", "The booking is already confirmed.");
-
         public static Error IsCancelled => new("Booking.IsCancelled", "The booking is cancelled.");
+        public static Error AlreadyCancelled =>
+            new("Booking.AlreadyCancelled", "The booking is already cancelled.");
+        public static Error CannotCancel =>
+            new("Booking.CannotCancel", "The booking cannot be cancelled.");
     }
 }
