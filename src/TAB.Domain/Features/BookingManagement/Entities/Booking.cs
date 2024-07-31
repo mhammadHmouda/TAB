@@ -104,6 +104,7 @@ public class Booking : AggregateRoot, IAuditableEntity
                 return DomainErrors.Booking.IsCancelled;
             case BookingStatus.Pending:
                 Status = BookingStatus.Confirmed;
+                AddDomainEvent(new BookingConfirmedEvent(Id));
                 return Result.Success();
             default:
                 throw new ArgumentOutOfRangeException();

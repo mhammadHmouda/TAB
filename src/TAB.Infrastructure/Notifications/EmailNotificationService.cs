@@ -55,4 +55,24 @@ public class EmailNotificationService : IEmailNotificationService
 
         await _emailService.SendEmailAsync(mailRequest);
     }
+
+    public Task SendBookingConfirmedEmail(BookingConfirmedEmail bookingConfirmedEmail)
+    {
+        var body = $"""
+            Dear {bookingConfirmedEmail.Name},
+
+            Your booking at {bookingConfirmedEmail.HotelName} has been confirmed.
+
+            Please find the booking details below:
+            Check in date: {bookingConfirmedEmail.CheckInDate}.
+            Check out date: {bookingConfirmedEmail.CheckOutDate}.
+            Total price: {bookingConfirmedEmail.TotalPrice} {bookingConfirmedEmail.Currency}.
+
+            Thank you for using Tab!
+            """;
+
+        var mailRequest = new MailRequest(bookingConfirmedEmail.EmailTo, "Booking Confirmed", body);
+
+        return _emailService.SendEmailAsync(mailRequest);
+    }
 }
