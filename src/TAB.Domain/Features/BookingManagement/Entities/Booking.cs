@@ -1,6 +1,8 @@
-﻿using TAB.Domain.Core.Interfaces;
+﻿using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Enums;
 
 namespace TAB.Domain.Features.BookingManagement.Entities;
@@ -73,5 +75,16 @@ public class Booking : AggregateRoot, IAuditableEntity
         var totalNights = (CheckOutDate - CheckInDate).Days;
 
         TotalPrice = pricePerNight * totalNights;
+    }
+
+    public Result Confirm()
+    {
+        if (Status == BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.AlreadyConfirmed;
+        }
+
+        Status = BookingStatus.Confirmed;
+        return Result.Success();
     }
 }

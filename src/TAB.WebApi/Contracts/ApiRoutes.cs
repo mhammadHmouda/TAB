@@ -74,5 +74,6 @@ public static class ApiRoutes
     {
         private const string Base = "bookings";
         public const string Create = Base;
+        public const string Confirm = Base + "/{id}/confirm";
     }
 }

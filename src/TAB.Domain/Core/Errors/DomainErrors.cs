@@ -1,4 +1,5 @@
 ﻿using TAB.Domain.Core.Shared;
+using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -160,5 +161,12 @@ public static class DomainErrors
         public static Error NotFound => new("Review.NotFound", "Review not found.");
         public static Error NothingToUpdate =>
             new("Review.NothingToUpdate", "Nothing to update in the review.");
+    }
+
+    public static class Booking
+    {
+        public static Error NotFound => new("Booking.NotFound", "Booking not found.");
+        public static Error AlreadyConfirmed =>
+            new("Booking.AlreadyConfirmed", "The booking is already confirmed.");
     }
 }
