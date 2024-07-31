@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TAB.Domain.Features.BookingManagement.Entities;
 using TAB.Domain.Features.BookingManagement.Enums;
-using TAB.Domain.Features.HotelManagement.Entities;
-using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Persistence.Configurations;
 
@@ -58,21 +56,21 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(b => b.UpdatedAtUtc);
 
         builder
-            .HasOne<Room>()
+            .HasOne(x => x.Hotel)
             .WithMany()
-            .HasForeignKey(b => b.RoomId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(x => x.HotelId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
-            .HasOne<Hotel>()
+            .HasOne(x => x.Room)
             .WithMany()
-            .HasForeignKey(b => b.HotelId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(x => x.RoomId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
-            .HasOne<User>()
+            .HasOne(x => x.User)
             .WithMany()
-            .HasForeignKey(b => b.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

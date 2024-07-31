@@ -83,7 +83,7 @@ public class EmailNotificationService : IEmailNotificationService
 
             your booking at {bookingCanceledEmail.HotelName} has been cancelled.
 
-            Thank you for using Tap!
+            Thank you for using Tab!
             """;
 
         var mailRequest = new MailRequest(bookingCanceledEmail.EmailTo, "Booking Cancelled", body);

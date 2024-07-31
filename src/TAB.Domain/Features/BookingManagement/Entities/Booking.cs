@@ -5,19 +5,24 @@ using TAB.Domain.Core.Shared;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.BookingManagement.Events;
+using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
+using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Domain.Features.BookingManagement.Entities;
 
 public class Booking : AggregateRoot, IAuditableEntity
 {
-    public DateTime CheckInDate { get; private set; }
-    public DateTime CheckOutDate { get; private set; }
+    public DateTime CheckInDate { get; }
+    public DateTime CheckOutDate { get; }
     public Money TotalPrice { get; private set; }
+    public BookingStatus Status { get; private set; }
     public int UserId { get; private set; }
     public int HotelId { get; private set; }
     public int RoomId { get; private set; }
-    public BookingStatus Status { get; private set; }
+    public Room Room { get; internal set; }
+    public User User { get; internal set; }
+    public Hotel Hotel { get; internal set; }
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 

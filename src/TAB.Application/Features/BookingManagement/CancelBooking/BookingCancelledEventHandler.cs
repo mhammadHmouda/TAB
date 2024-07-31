@@ -3,8 +3,6 @@ using TAB.Contracts.Features.Shared.Email;
 using TAB.Domain.Core.Primitives.Events;
 using TAB.Domain.Features.BookingManagement.Events;
 using TAB.Domain.Features.BookingManagement.Repositories;
-using TAB.Domain.Features.HotelManagement.Repositories;
-using TAB.Domain.Features.UserManagement.Repositories;
 
 namespace TAB.Application.Features.BookingManagement.CancelBooking;
 
@@ -12,29 +10,20 @@ public class BookingCancelledEventHandler : IDomainEventHandler<BookingCancelled
 {
     private readonly IEmailNotificationService _emailNotificationService;
     private readonly IBookingRepository _bookingRepository;
-    private readonly IHotelRepository _hotelRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IRoomRepository _roomRepository;
 
     public BookingCancelledEventHandler(
         IEmailNotificationService emailNotificationService,
-        IBookingRepository bookingRepository,
-        IHotelRepository hotelRepository,
-        IUserRepository userRepository,
-        IRoomRepository roomRepository
+        IBookingRepository bookingRepository
     )
     {
         _emailNotificationService = emailNotificationService;
         _bookingRepository = bookingRepository;
-        _hotelRepository = hotelRepository;
-        _userRepository = userRepository;
-        _roomRepository = roomRepository;
     }
 
     public async Task Handle(BookingCancelledEvent domainEvent, CancellationToken cancellationToken)
     {
-        var bookingMaybe = await _bookingRepository.GetByIdAsync(
-            domainEvent.BookingId,
+        var bookingMaybe = await _bookingRepository.GetAsync(
+            new BookingWithAllInfoSpecification(domainEvent.BookingId),
             cancellationToken
         );
 
@@ -45,30 +34,7 @@ public class BookingCancelledEventHandler : IDomainEventHandler<BookingCancelled
 
         var booking = bookingMaybe.Value;
 
-        var userMaybe = await _userRepository.GetByIdAsync(booking.UserId, cancellationToken);
-
-        if (userMaybe.HasNoValue)
-        {
-            return;
-        }
-
-        var user = userMaybe.Value;
-
-        var hotelMaybe = await _hotelRepository.GetByIdAsync(booking.HotelId, cancellationToken);
-
-        if (hotelMaybe.HasNoValue)
-        {
-            return;
-        }
-
-        var roomMaybe = await _roomRepository.GetByIdAsync(booking.RoomId, cancellationToken);
-
-        if (roomMaybe.HasNoValue)
-        {
-            return;
-        }
-
-        var result = roomMaybe.Value.UpdateAvailability(true);
+        var result = booking.Room.UpdateAvailability(true);
 
         if (result.IsFailure)
         {
@@ -77,9 +43,9 @@ public class BookingCancelledEventHandler : IDomainEventHandler<BookingCancelled
 
         await _emailNotificationService.SendBookingCancelledEmail(
             new BookingCancelledEmail(
-                $"{user.FirstName} {user.LastName}",
-                user.Email,
-                hotelMaybe.Value.Name
+                $"{booking.User.FirstName} {booking.User.LastName}",
+                booking.User.Email,
+                booking.Hotel.Name
             )
         );
     }
