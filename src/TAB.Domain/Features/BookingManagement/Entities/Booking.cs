@@ -131,6 +131,8 @@ public class Booking : AggregateRoot, IAuditableEntity
 
         Status = BookingStatus.Cancelled;
 
+        AddDomainEvent(new BookingCancelledEvent(Id));
+
         return Result.Success();
     }
 }

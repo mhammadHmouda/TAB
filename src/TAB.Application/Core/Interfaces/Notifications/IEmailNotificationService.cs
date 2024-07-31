@@ -7,4 +7,5 @@ public interface IEmailNotificationService
     Task SendWelcomeEmail(WelcomeEmail welcomeEmail);
     Task SendSuccessBookingEmail(BookingSuccessEmail bookingSuccessEmail);
     Task SendBookingConfirmedEmail(BookingConfirmedEmail bookingConfirmedEmail);
+    Task SendBookingCancelledEmail(BookingCancelledEmail bookingCanceledEmail);
 }

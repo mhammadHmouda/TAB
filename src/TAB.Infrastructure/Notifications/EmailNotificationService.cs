@@ -75,4 +75,19 @@ public class EmailNotificationService : IEmailNotificationService
 
         return _emailService.SendEmailAsync(mailRequest);
     }
+
+    public Task SendBookingCancelledEmail(BookingCancelledEmail bookingCanceledEmail)
+    {
+        var body = $"""
+            Dear {bookingCanceledEmail.Name},
+
+            your booking at {bookingCanceledEmail.HotelName} has been cancelled.
+
+            Thank you for using Tap!
+            """;
+
+        var mailRequest = new MailRequest(bookingCanceledEmail.EmailTo, "Booking Cancelled", body);
+
+        return _emailService.SendEmailAsync(mailRequest);
+    }
 }
