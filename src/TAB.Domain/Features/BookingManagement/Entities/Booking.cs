@@ -25,6 +25,7 @@ public class Booking : AggregateRoot, IAuditableEntity
     public Hotel Hotel { get; internal set; }
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
+    public string? SessionId { get; private set; }
 
     private Booking() { }
 
@@ -139,5 +140,12 @@ public class Booking : AggregateRoot, IAuditableEntity
         AddDomainEvent(new BookingCancelledEvent(Id));
 
         return Result.Success();
+    }
+
+    public void AddSessionId(string sessionId)
+    {
+        Ensure.NotEmpty(sessionId, "The session id is required.", nameof(sessionId));
+
+        SessionId = sessionId;
     }
 }
