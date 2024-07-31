@@ -1,5 +1,4 @@
 ﻿using TAB.Domain.Core.Shared;
-using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Domain.Core.Errors;
 
@@ -168,5 +167,7 @@ public static class DomainErrors
         public static Error NotFound => new("Booking.NotFound", "Booking not found.");
         public static Error AlreadyConfirmed =>
             new("Booking.AlreadyConfirmed", "The booking is already confirmed.");
+
+        public static Error IsCancelled => new("Booking.IsCancelled", "The booking is cancelled.");
     }
 }

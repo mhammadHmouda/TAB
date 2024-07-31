@@ -79,12 +79,17 @@ public class Booking : AggregateRoot, IAuditableEntity
 
     public Result Confirm()
     {
-        if (Status == BookingStatus.Confirmed)
+        switch (Status)
         {
-            return DomainErrors.Booking.AlreadyConfirmed;
+            case BookingStatus.Confirmed:
+                return DomainErrors.Booking.AlreadyConfirmed;
+            case BookingStatus.Cancelled:
+                return DomainErrors.Booking.IsCancelled;
+            case BookingStatus.Pending:
+                Status = BookingStatus.Confirmed;
+                return Result.Success();
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-
-        Status = BookingStatus.Confirmed;
-        return Result.Success();
     }
 }
