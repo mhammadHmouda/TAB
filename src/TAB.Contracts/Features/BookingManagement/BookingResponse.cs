@@ -1,4 +1,6 @@
-﻿namespace TAB.Contracts.Features.BookingManagement;
+﻿using TAB.Domain.Features.HotelManagement.ValueObjects;
+
+namespace TAB.Contracts.Features.BookingManagement;
 
 public record BookingResponse(
     int Id,
@@ -7,5 +9,5 @@ public record BookingResponse(
     int UserId,
     DateTime CheckInDate,
     DateTime CheckOutDate,
-    decimal TotalPrice
+    Money TotalPrice
 );

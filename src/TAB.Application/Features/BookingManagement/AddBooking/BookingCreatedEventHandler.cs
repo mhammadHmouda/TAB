@@ -52,8 +52,7 @@ public class BookingCreatedEventHandler : IDomainEventHandler<BookingCreatedEven
             hotel.Name,
             notification.CheckInDate.ToLongDateString(),
             notification.CheckOutDate.ToLongDateString(),
-            notification.TotalPrice,
-            notification.Currency
+            notification.TotalPrice
         );
 
         await _emailNotificationService.SendSuccessBookingEmail(bookingSuccessEmail);

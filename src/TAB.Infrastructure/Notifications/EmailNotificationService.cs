@@ -42,7 +42,9 @@ public class EmailNotificationService : IEmailNotificationService
 
             Check in date: {bookingSuccessEmail.CheckInDate}
             Check out date: {bookingSuccessEmail.CheckOutDate}
-            Total price: {bookingSuccessEmail.TotalPrice} {bookingSuccessEmail.Currency}
+            Total price: {bookingSuccessEmail.TotalPrice.Amount} {bookingSuccessEmail
+                .TotalPrice
+                .Currency}
 
             Your booking now in pending status. Please wait for the hotel to confirm your booking.
 

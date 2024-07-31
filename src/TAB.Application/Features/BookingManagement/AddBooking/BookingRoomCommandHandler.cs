@@ -6,7 +6,6 @@ using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Entities;
-using TAB.Domain.Features.BookingManagement.Events;
 using TAB.Domain.Features.BookingManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.UserManagement.Repositories;
@@ -83,22 +82,11 @@ public class BookingRoomCommandHandler
             userId,
             hotelId,
             request.RoomId,
-            room.DiscountedPrice
+            room.DiscountedPrice,
+            room.Price.Currency
         );
 
         await _bookingRepository.AddAsync(booking);
-
-        booking.AddDomainEvent(
-            new BookingCreatedEvent(
-                userId,
-                hotelId,
-                booking.CheckInDate,
-                booking.CheckOutDate,
-                booking.TotalPrice,
-                room.Price.Currency
-            )
-        );
-
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<BookingResponse>(booking);

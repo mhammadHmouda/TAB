@@ -19,7 +19,27 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
 
         builder.Property(b => b.CheckOutDate).IsRequired();
 
-        builder.Property(b => b.TotalPrice).IsRequired();
+        builder.OwnsOne(
+            room => room.TotalPrice,
+            priceBuilder =>
+            {
+                priceBuilder.WithOwner();
+
+                priceBuilder
+                    .Property(x => x.Amount)
+                    .HasColumnName("Price")
+                    .IsRequired()
+                    .HasPrecision(18, 2)
+                    .HasColumnType("decimal(18,2)");
+
+                priceBuilder
+                    .Property(x => x.Currency)
+                    .HasColumnName("Currency")
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .HasColumnType("char(3)");
+            }
+        );
 
         builder.Property(b => b.UserId).IsRequired();
 

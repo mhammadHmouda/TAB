@@ -4,6 +4,8 @@ using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Enums;
+using TAB.Domain.Features.BookingManagement.Events;
+using TAB.Domain.Features.HotelManagement.ValueObjects;
 
 namespace TAB.Domain.Features.BookingManagement.Entities;
 
@@ -11,7 +13,7 @@ public class Booking : AggregateRoot, IAuditableEntity
 {
     public DateTime CheckInDate { get; private set; }
     public DateTime CheckOutDate { get; private set; }
-    public decimal TotalPrice { get; private set; }
+    public Money TotalPrice { get; private set; }
     public int UserId { get; private set; }
     public int HotelId { get; private set; }
     public int RoomId { get; private set; }
@@ -27,7 +29,8 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight
+        decimal pricePerNight,
+        string currency
     )
     {
         CheckInDate = checkInDate;
@@ -37,7 +40,11 @@ public class Booking : AggregateRoot, IAuditableEntity
         RoomId = roomId;
         Status = BookingStatus.Pending;
 
-        CalculateTotalPrice(pricePerNight);
+        CalculateTotalPrice(pricePerNight, currency);
+
+        AddDomainEvent(
+            new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice!)
+        );
     }
 
     public static Booking Create(
@@ -46,7 +53,8 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight
+        decimal pricePerNight,
+        string currency
     )
     {
         Ensure.NotPast(
@@ -67,14 +75,23 @@ public class Booking : AggregateRoot, IAuditableEntity
         );
         Ensure.NotDefault(pricePerNight, "The price per night is required.", nameof(pricePerNight));
 
-        return new Booking(checkInDate, checkOutDate, userId, hotelId, roomId, pricePerNight);
+        return new Booking(
+            checkInDate,
+            checkOutDate,
+            userId,
+            hotelId,
+            roomId,
+            pricePerNight,
+            currency
+        );
     }
 
-    private void CalculateTotalPrice(decimal pricePerNight)
+    private void CalculateTotalPrice(decimal pricePerNight, string currency)
     {
         var totalNights = (CheckOutDate - CheckInDate).Days;
+        var totalAmount = pricePerNight * totalNights;
 
-        TotalPrice = pricePerNight * totalNights;
+        TotalPrice = Money.Create(totalAmount, currency);
     }
 
     public Result Confirm()
