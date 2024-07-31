@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using TAB.Domain.Core.Primitives.Events;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.ReviewManagement.Events;
 
 namespace TAB.Application.Features.ReviewManagement.UpdateReview;
 
-public class ReviewUpdatedEventHandler : INotificationHandler<ReviewUpdatedEvent>
+public class ReviewUpdatedEventHandler : IDomainEventHandler<ReviewUpdatedEvent>
 {
     private readonly IHotelRepository _hotelRepository;
 
