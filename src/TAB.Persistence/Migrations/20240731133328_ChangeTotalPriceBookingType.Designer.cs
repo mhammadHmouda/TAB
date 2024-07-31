@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TAB.Persistence;
 
@@ -11,9 +12,11 @@ using TAB.Persistence;
 namespace TAB.Persistence.Migrations
 {
     [DbContext(typeof(TabDbContext))]
-    partial class TabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240731133328_ChangeTotalPriceBookingType")]
+    partial class ChangeTotalPriceBookingType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -427,22 +430,22 @@ namespace TAB.Persistence.Migrations
 
             modelBuilder.Entity("TAB.Domain.Features.BookingManagement.Entities.Booking", b =>
                 {
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Hotel", "Hotel")
+                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Hotel", null)
                         .WithMany()
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", "Room")
+                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TAB.Domain.Features.UserManagement.Entities.User", "User")
+                    b.HasOne("TAB.Domain.Features.UserManagement.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("TAB.Domain.Features.HotelManagement.ValueObjects.Money", "TotalPrice", b1 =>
@@ -469,14 +472,8 @@ namespace TAB.Persistence.Migrations
                                 .HasForeignKey("BookingId");
                         });
 
-                    b.Navigation("Hotel");
-
-                    b.Navigation("Room");
-
                     b.Navigation("TotalPrice")
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Discount", b =>

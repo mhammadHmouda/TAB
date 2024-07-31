@@ -88,7 +88,6 @@ public class CityController : ApiController
     /// <returns>The city with the specified ID.</returns>
     /// <response code="200">The city was found.</response>
     /// <response code="400">The city was not found.</response>
-
     [HttpGet(ApiRoutes.Cities.Get)]
     public async Task<IActionResult> GetCity(int id)
     {

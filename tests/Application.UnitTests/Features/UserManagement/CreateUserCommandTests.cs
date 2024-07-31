@@ -6,7 +6,7 @@ using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Notifications;
 using TAB.Application.Features.UserManagement.Register;
-using TAB.Contracts.Features.UserManagement.Email;
+using TAB.Contracts.Features.Shared.Email;
 using TAB.Contracts.Features.UserManagement.Users;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Interfaces;

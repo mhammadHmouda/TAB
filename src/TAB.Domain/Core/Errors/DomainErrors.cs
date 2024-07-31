@@ -152,6 +152,7 @@ public static class DomainErrors
         public static Error NotFound => new("Room.NotFound", "Room not found.");
         public static Error NothingToUpdate =>
             new("Room.NothingToUpdate", "Nothing to update in the room.");
+        public static Error NotAvailable => new("Room.NotAvailable", "The room is not available.");
     }
 
     public static class Review
@@ -159,5 +160,18 @@ public static class DomainErrors
         public static Error NotFound => new("Review.NotFound", "Review not found.");
         public static Error NothingToUpdate =>
             new("Review.NothingToUpdate", "Nothing to update in the review.");
+    }
+
+    public static class Booking
+    {
+        public static Error NotFound => new("Booking.NotFound", "Booking not found.");
+        public static Error AlreadyConfirmed =>
+            new("Booking.AlreadyConfirmed", "The booking is already confirmed.");
+        public static Error IsCancelled => new("Booking.IsCancelled", "The booking is cancelled.");
+        public static Error AlreadyCancelled =>
+            new("Booking.AlreadyCancelled", "The booking is already cancelled.");
+        public static Error CannotCancel =>
+            new("Booking.CannotCancel", "The booking cannot be cancelled.");
+        public static Error IsConfirmed => new("Booking.IsConfirmed", "The booking is confirmed.");
     }
 }

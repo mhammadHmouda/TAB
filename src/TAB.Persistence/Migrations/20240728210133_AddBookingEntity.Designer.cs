@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TAB.Persistence;
 
@@ -11,9 +12,11 @@ using TAB.Persistence;
 namespace TAB.Persistence.Migrations
 {
     [DbContext(typeof(TabDbContext))]
-    partial class TabDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240728210133_AddBookingEntity")]
+    partial class AddBookingEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +48,11 @@ namespace TAB.Persistence.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
@@ -63,7 +68,7 @@ namespace TAB.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Booking", (string)null);
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Amenity", b =>
@@ -427,56 +432,23 @@ namespace TAB.Persistence.Migrations
 
             modelBuilder.Entity("TAB.Domain.Features.BookingManagement.Entities.Booking", b =>
                 {
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Hotel", "Hotel")
+                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Hotel", null)
                         .WithMany()
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", "Room")
+                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TAB.Domain.Features.UserManagement.Entities.User", "User")
+                    b.HasOne("TAB.Domain.Features.UserManagement.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.OwnsOne("TAB.Domain.Features.HotelManagement.ValueObjects.Money", "TotalPrice", b1 =>
-                        {
-                            b1.Property<int>("BookingId")
-                                .HasColumnType("int");
-
-                            b1.Property<decimal>("Amount")
-                                .HasPrecision(18, 2)
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Price");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasMaxLength(3)
-                                .HasColumnType("char(3)")
-                                .HasColumnName("Currency");
-
-                            b1.HasKey("BookingId");
-
-                            b1.ToTable("Booking");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BookingId");
-                        });
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("Room");
-
-                    b.Navigation("TotalPrice")
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Discount", b =>

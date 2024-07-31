@@ -1,11 +1,11 @@
-﻿using MediatR;
-using TAB.Application.Core.Interfaces.Notifications;
-using TAB.Contracts.Features.UserManagement.Email;
+﻿using TAB.Application.Core.Interfaces.Notifications;
+using TAB.Contracts.Features.Shared.Email;
+using TAB.Domain.Core.Primitives.Events;
 using TAB.Domain.Features.UserManagement.Events;
 
 namespace TAB.Application.Features.UserManagement.Register;
 
-public class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+public class UserCreatedEventHandler : IDomainEventHandler<UserCreatedEvent>
 {
     private readonly IEmailNotificationService _emailService;
 

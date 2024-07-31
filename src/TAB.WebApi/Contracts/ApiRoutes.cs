@@ -69,4 +69,12 @@ public static class ApiRoutes
         public const string Delete = Base + "/{id}";
         public const string Update = Base + "/{id}";
     }
+
+    public static class Booking
+    {
+        private const string Base = "bookings";
+        public const string Create = Base;
+        public const string Confirm = Base + "/{id}/confirm";
+        public const string Cancel = Base + "/{id}/cancel";
+    }
 }
