@@ -37,8 +37,6 @@ public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
             }
         );
 
-        builder.Property(x => x.DiscountedPrice).IsRequired();
-
         builder
             .Property(x => x.Type)
             .HasConversion(v => v.ToString(), v => (RoomType)Enum.Parse(typeof(RoomType), v));

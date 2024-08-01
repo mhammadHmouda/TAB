@@ -12,7 +12,6 @@ public class Room : Entity, IAuditableEntity
     public int Number { get; private set; }
     public string Description { get; private set; }
     public Money Price { get; set; }
-    public decimal DiscountedPrice { get; private set; }
     public RoomType Type { get; private set; }
     public int AdultsCapacity { get; private set; }
     public int ChildrenCapacity { get; private set; }
@@ -43,8 +42,6 @@ public class Room : Entity, IAuditableEntity
         IsAvailable = isAvailable;
         AdultsCapacity = capacityOfAdults;
         ChildrenCapacity = capacityOfChildren;
-
-        DiscountedPrice = price.Amount;
     }
 
     public static Room Create(
@@ -76,19 +73,8 @@ public class Room : Entity, IAuditableEntity
         }
 
         Discounts.Add(discount);
-        UpdateDiscountedPrice();
 
         return Result.Success();
-    }
-
-    private void UpdateDiscountedPrice()
-    {
-        var discountedPrice = Discounts.Aggregate(
-            Price,
-            (current, discount) => discount.Apply(current)
-        );
-
-        DiscountedPrice = discountedPrice.Amount;
     }
 
     public Result Update(
@@ -115,8 +101,6 @@ public class Room : Entity, IAuditableEntity
         Type = type;
         AdultsCapacity = adultsCapacity;
         ChildrenCapacity = childrenCapacity;
-
-        UpdateDiscountedPrice();
 
         return Result.Success();
     }
