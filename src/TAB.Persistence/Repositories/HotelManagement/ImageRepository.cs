@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TAB.Application.Core.Interfaces.Data;
+﻿using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Persistence.Repositories.Abstractions;
@@ -17,5 +16,13 @@ public class ImageRepository : BaseRepository<Image>, IImageRepository
     )
     {
         return await GetAllAsync(i => i.ReferenceId == hotelId, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Image>> GetByRoomIdAsync(
+        int roomId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await GetAllAsync(i => i.ReferenceId == roomId, cancellationToken);
     }
 }

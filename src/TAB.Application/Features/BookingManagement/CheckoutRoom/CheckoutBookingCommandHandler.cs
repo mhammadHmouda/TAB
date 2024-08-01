@@ -5,6 +5,7 @@ using TAB.Application.Core.Interfaces.Payment;
 using TAB.Contracts.Features.Shared;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
+using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.BookingManagement.Repositories;
 
 namespace TAB.Application.Features.BookingManagement.CheckoutRoom;
@@ -52,16 +53,26 @@ public class CheckoutBookingCommandHandler
             return DomainErrors.General.Unauthorized;
         }
 
-        var maybeSession = await _sessionService.SaveAsync(command.BookingId, cancellationToken);
-
-        if (maybeSession.HasNoValue)
+        if (booking.Status != BookingStatus.Confirmed)
         {
-            return DomainErrors.Session.NotFound;
+            return DomainErrors.Booking.NotConfirmed;
         }
 
-        booking.AddSessionId(maybeSession.Value.SessionId);
+        if (booking.Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.AlreadyPaid;
+        }
+
+        var sessionResult = await _sessionService.SaveAsync(command.BookingId, cancellationToken);
+
+        if (sessionResult.IsFailure)
+        {
+            return sessionResult.Error;
+        }
+
+        booking.AddSessionId(sessionResult.Value.SessionId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return maybeSession.Value;
+        return sessionResult.Value;
     }
 }

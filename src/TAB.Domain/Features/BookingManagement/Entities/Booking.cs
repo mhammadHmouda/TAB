@@ -112,6 +112,11 @@ public class Booking : AggregateRoot, IAuditableEntity
             return DomainErrors.Booking.IsCancelled;
         }
 
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
+        }
+
         Status = BookingStatus.Confirmed;
         AddDomainEvent(new BookingConfirmedEvent(Id));
 
@@ -128,6 +133,11 @@ public class Booking : AggregateRoot, IAuditableEntity
         if (Status == BookingStatus.Confirmed)
         {
             return DomainErrors.Booking.IsConfirmed;
+        }
+
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
         }
 
         if (CheckInDate < now.AddDays(1))
@@ -157,6 +167,8 @@ public class Booking : AggregateRoot, IAuditableEntity
         }
 
         Status = BookingStatus.Paid;
+
+        AddDomainEvent(new BookingPaidEvent(Id));
 
         return Result.Success();
     }

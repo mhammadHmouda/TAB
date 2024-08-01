@@ -68,6 +68,8 @@ public class EmailNotificationService : IEmailNotificationService
             Check out date: {bookingConfirmedEmail.CheckOutDate}.
             Total price: {bookingConfirmedEmail.TotalPrice} {bookingConfirmedEmail.Currency}.
 
+            to checkout, please click the following link: {BaseUrl}bookings/{bookingConfirmedEmail.BookingId}/checkout
+
             Thank you for using Tab!
             """;
 
@@ -87,6 +89,25 @@ public class EmailNotificationService : IEmailNotificationService
             """;
 
         var mailRequest = new MailRequest(bookingCanceledEmail.EmailTo, "Booking Cancelled", body);
+
+        return _emailService.SendEmailAsync(mailRequest);
+    }
+
+    public Task SendBookingPayedEmail(BookingPaidEmail bookingPayedEmail)
+    {
+        var body = $"""
+            Dear {bookingPayedEmail.Name},
+
+            Thank you for choosing Tab!
+            your booking {bookingPayedEmail.BookingId} in {bookingPayedEmail.HotelName} has been paid.
+
+            Total price: {bookingPayedEmail.TotalPrice} {bookingPayedEmail.Currency}
+
+            Thank you for choosing Tab! , Hope to see you again.
+            
+            """;
+
+        var mailRequest = new MailRequest(bookingPayedEmail.EmailTo, "Booking Paid", body);
 
         return _emailService.SendEmailAsync(mailRequest);
     }

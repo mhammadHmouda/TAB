@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Stripe.Checkout;
-using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Payment;
-using TAB.Domain.Core.Shared.Maybe;
-using TAB.Domain.Features.BookingManagement.Entities;
-using TAB.Domain.Features.HotelManagement.Entities;
+using TAB.Application.Features.BookingManagement.CancelBooking;
+using TAB.Domain.Core.Errors;
+using TAB.Domain.Core.Shared.Result;
+using TAB.Domain.Features.BookingManagement.Repositories;
+using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Infrastructure.Payment.Options;
 using Session = TAB.Contracts.Features.Shared.Session;
 
@@ -13,7 +13,8 @@ namespace TAB.Infrastructure.Payment;
 
 public class StripeService : ISessionService
 {
-    private readonly IDbContext _dbContext;
+    private readonly IBookingRepository _bookingRepository;
+    private readonly IImageRepository _imageRepository;
     private readonly StripeOptions _stripeOptions;
     private readonly SessionService _sessionService;
 
@@ -21,47 +22,38 @@ public class StripeService : ISessionService
         "https://i.imgur.com/iw0UgTm_d.webp?maxwidth=1520&fidelity=grand";
 
     public StripeService(
-        IDbContext dbContext,
         IOptions<StripeOptions> stripeOptions,
-        SessionService sessionService
+        SessionService sessionService,
+        IBookingRepository bookingRepository,
+        IImageRepository imageRepository
     )
     {
-        _dbContext = dbContext;
         _sessionService = sessionService;
+        _bookingRepository = bookingRepository;
+        _imageRepository = imageRepository;
         _stripeOptions = stripeOptions.Value;
     }
 
-    public async Task<string> GetByIdAsync(
-        string sessionId,
-        CancellationToken cancellation = default
-    )
+    public async Task<Result<Session>> SaveAsync(int bookingId, CancellationToken cancellation)
     {
-        var session = await _sessionService.GetAsync(sessionId, cancellationToken: cancellation);
+        var bookingMaybe = await _bookingRepository.GetAsync(
+            new BookingWithAllInfoSpecification(bookingId),
+            cancellation
+        );
 
-        return session.Id;
-    }
-
-    public async Task<Maybe<Session>> SaveAsync(int bookingId, CancellationToken cancellation)
-    {
-        var booking = await _dbContext
-            .Set<Booking>()
-            .Include(b => b.Room)
-            .Include(b => b.Hotel)
-            .ThenInclude(h => h.City)
-            .FirstOrDefaultAsync(b => b.Id == bookingId, cancellation);
-
-        if (booking is null)
+        if (bookingMaybe.HasNoValue)
         {
-            return Maybe<Session>.None;
+            return DomainErrors.Booking.NotFound;
         }
 
-        var photos = await _dbContext
-            .Set<Image>()
-            .Where(p => p.ReferenceId == booking.RoomId)
-            .Select(p => p.Url)
-            .ToListAsync(cancellation);
+        var booking = bookingMaybe.Value;
 
-        var images = photos.Any() ? photos : new List<string> { DefaultImageUrl };
+        var images = await _imageRepository.GetByRoomIdAsync(
+            bookingMaybe.Value.RoomId,
+            cancellation
+        );
+
+        var imagesUrl = images.Select(i => i.Url).DefaultIfEmpty(DefaultImageUrl).ToList();
 
         var options = new SessionCreateOptions
         {
@@ -90,7 +82,7 @@ public class StripeService : ISessionService
                                     .Name}. Your booking awaits in Room
                                 {booking.Room.Number}—indulge in unparalleled comfort and style.
                                 """,
-                            Images = images
+                            Images = imagesUrl
                         }
                     },
                     Quantity = 1
@@ -100,6 +92,6 @@ public class StripeService : ISessionService
 
         var session = await _sessionService.CreateAsync(options, cancellationToken: cancellation);
 
-        return Maybe<Session>.From(new Session(session.Id, _stripeOptions.PublishableKey));
+        return new Session(session.Id, _stripeOptions.PublishableKey);
     }
 }

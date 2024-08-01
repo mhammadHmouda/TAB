@@ -2,7 +2,6 @@
 using TAB.Application.Features.BookingManagement.SuccessPayment;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
-using TAB.WebApi.Attributes;
 using TAB.WebApi.Contracts;
 
 namespace TAB.WebApi.Controllers;
@@ -10,7 +9,6 @@ namespace TAB.WebApi.Controllers;
 /// <summary>
 /// Payment controller.
 /// </summary>
-[TokenValidation]
 public class PaymentController : ApiController
 {
     /// <summary>
@@ -27,4 +25,13 @@ public class PaymentController : ApiController
             .Map(x => new SuccessPaymentCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(() => Ok("The booking payed successfully!"), BadRequest);
+
+    /// <summary>
+    /// Cancel a payment.
+    /// </summary>
+    /// <returns>Cancel payment response.</returns>
+    /// <response code="200">Cancel payment response.</response>
+    /// <response code="400">Error response.</response>
+    [HttpGet(ApiRoutes.Payment.Cancel)]
+    public Task<IActionResult> Cancel() => Task.FromResult(Ok("Payment cancelled successfully!"));
 }
