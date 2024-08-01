@@ -88,4 +88,10 @@ public static class ApiRoutes
         public const string Success = $"{Base}/success";
         public const string Cancel = $"{Base}/cancel";
     }
+
+    public static class Discounts
+    {
+        private const string Base = "discounts";
+        public const string Delete = Base + "/{id}";
+    }
 }
