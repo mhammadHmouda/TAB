@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.BookingManagement.AddBooking;
 using TAB.Application.Features.BookingManagement.CancelBooking;
+using TAB.Application.Features.BookingManagement.CheckoutRoom;
 using TAB.Application.Features.BookingManagement.ConfirmBooking;
 using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Shared.Result;
@@ -65,4 +66,19 @@ public class BookingController : ApiController
             .Bind(command => Mediator.Send(command))
             .Match(() => Ok("Booking cancelled successfully!"), BadRequest);
     }
+
+    /// <summary>
+    /// Checkout a booking.
+    /// </summary>
+    /// <param name="id">The booking id.</param>
+    /// <returns>The result of the checkout.</returns>
+    /// <response code="200">The booking was checked out.</response>
+    /// <response code="400">The booking id is invalid.</response>
+    [HttpPost(ApiRoutes.Booking.Checkout)]
+    public async Task<IActionResult> CheckoutBooking(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new CheckoutBookingCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
 }

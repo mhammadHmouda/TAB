@@ -25,6 +25,7 @@ public class Booking : AggregateRoot, IAuditableEntity
     public Hotel Hotel { get; internal set; }
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
+    public string? SessionId { get; private set; }
 
     private Booking() { }
 
@@ -111,6 +112,11 @@ public class Booking : AggregateRoot, IAuditableEntity
             return DomainErrors.Booking.IsCancelled;
         }
 
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
+        }
+
         Status = BookingStatus.Confirmed;
         AddDomainEvent(new BookingConfirmedEvent(Id));
 
@@ -129,6 +135,11 @@ public class Booking : AggregateRoot, IAuditableEntity
             return DomainErrors.Booking.IsConfirmed;
         }
 
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
+        }
+
         if (CheckInDate < now.AddDays(1))
         {
             return DomainErrors.Booking.CannotCancel;
@@ -137,6 +148,27 @@ public class Booking : AggregateRoot, IAuditableEntity
         Status = BookingStatus.Cancelled;
 
         AddDomainEvent(new BookingCancelledEvent(Id));
+
+        return Result.Success();
+    }
+
+    public void AddSessionId(string sessionId)
+    {
+        Ensure.NotDefault(sessionId, "The session id is required.", nameof(sessionId));
+
+        SessionId = sessionId;
+    }
+
+    public Result Pay()
+    {
+        if (Status != BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.NotConfirmed;
+        }
+
+        Status = BookingStatus.Paid;
+
+        AddDomainEvent(new BookingPaidEvent(Id));
 
         return Result.Success();
     }

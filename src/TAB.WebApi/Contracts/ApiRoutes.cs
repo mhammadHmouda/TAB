@@ -76,5 +76,13 @@ public static class ApiRoutes
         public const string Create = Base;
         public const string Confirm = Base + "/{id}/confirm";
         public const string Cancel = Base + "/{id}/cancel";
+        public const string Checkout = Base + "/{id}/checkout";
+    }
+
+    public static class Payment
+    {
+        private const string Base = "payments";
+        public const string Success = $"{Base}/success";
+        public const string Cancel = $"{Base}/cancel";
     }
 }

@@ -45,6 +45,8 @@ public class BookingEntityConfiguration : IEntityTypeConfiguration<Booking>
 
         builder.Property(b => b.RoomId).IsRequired();
 
+        builder.Property(x => x.SessionId).IsRequired(false);
+
         builder
             .Property(x => x.Status)
             .HasConversion(

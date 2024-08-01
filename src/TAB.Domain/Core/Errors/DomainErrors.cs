@@ -173,5 +173,15 @@ public static class DomainErrors
         public static Error CannotCancel =>
             new("Booking.CannotCancel", "The booking cannot be cancelled.");
         public static Error IsConfirmed => new("Booking.IsConfirmed", "The booking is confirmed.");
+        public static Error NotConfirmed =>
+            new("Booking.NotConfirmed", "The booking is not confirmed.");
+        public static Error AlreadyPaid =>
+            new("Booking.AlreadyPaid", "The booking is already paid.");
+        public static Error IsPaid => new("Booking.IsPaid", "The booking is paid.");
+    }
+
+    public static class Session
+    {
+        public static Error NotFound => new("Session.NotFound", "Session not found.");
     }
 }

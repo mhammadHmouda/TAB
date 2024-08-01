@@ -30,6 +30,6 @@ public class GetCityByIdQueryHandler : IQueryHandler<GetCityByIdQuery, Result<Ci
             return DomainErrors.Hotel.CityNotFound;
         }
 
-        return _mapper.Map<CityResponse>(cityMaybe);
+        return _mapper.Map<CityResponse>(cityMaybe.Value);
     }
 }
