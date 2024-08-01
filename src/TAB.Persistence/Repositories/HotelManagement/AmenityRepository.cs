@@ -17,4 +17,12 @@ public class AmenityRepository : BaseRepository<Amenity>, IAmenityRepository
     {
         return await GetAllAsync(a => a.TypeId == hotelId, cancellationToken);
     }
+
+    public async Task<IEnumerable<Amenity>> GetByRoomIdAsync(
+        int roomId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await GetAllAsync(a => a.TypeId == roomId, cancellationToken);
+    }
 }
