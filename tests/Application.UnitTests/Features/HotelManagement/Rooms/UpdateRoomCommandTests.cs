@@ -6,7 +6,6 @@ using TAB.Application.Features.HotelManagement.Rooms;
 using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
-using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
@@ -29,7 +28,6 @@ public class UpdateRoomCommandTests
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        var dateTimeProviderMock = Substitute.For<IDateTimeProvider>();
 
         var config = new MapperConfiguration(cfg =>
         {
@@ -38,12 +36,7 @@ public class UpdateRoomCommandTests
 
         var mapper = config.CreateMapper();
 
-        _sut = new UpdateRoomCommandHandler(
-            _roomRepositoryMock,
-            _unitOfWorkMock,
-            dateTimeProviderMock,
-            mapper
-        );
+        _sut = new UpdateRoomCommandHandler(_roomRepositoryMock, _unitOfWorkMock, mapper);
     }
 
     [Fact]

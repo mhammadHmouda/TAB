@@ -35,8 +35,8 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight,
-        string currency
+        Money pricePerNight,
+        IReadOnlyCollection<Discount> discounts
     )
     {
         CheckInDate = checkInDate;
@@ -46,7 +46,7 @@ public class Booking : AggregateRoot, IAuditableEntity
         RoomId = roomId;
         Status = BookingStatus.Pending;
 
-        CalculateTotalPrice(pricePerNight, currency);
+        CalculateTotalPrice(pricePerNight, discounts);
 
         AddDomainEvent(
             new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice!)
@@ -59,8 +59,8 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight,
-        string currency
+        Money pricePerNight,
+        IReadOnlyCollection<Discount> discounts
     )
     {
         Ensure.NotPast(
@@ -88,16 +88,37 @@ public class Booking : AggregateRoot, IAuditableEntity
             hotelId,
             roomId,
             pricePerNight,
-            currency
+            discounts
         );
     }
 
-    private void CalculateTotalPrice(decimal pricePerNight, string currency)
+    private void CalculateTotalPrice(Money pricePerNight, IReadOnlyCollection<Discount> discounts)
     {
         var totalNights = (CheckOutDate - CheckInDate).Days;
-        var totalAmount = pricePerNight * totalNights;
 
-        TotalPrice = Money.Create(totalAmount, currency);
+        var totalPrice = 0m;
+
+        for (var i = 0; i < totalNights; i++)
+        {
+            var currentDate = CheckInDate.AddDays(i);
+
+            var activeDiscounts = discounts
+                .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
+                .ToList();
+
+            if (activeDiscounts.Count > 0)
+            {
+                totalPrice += activeDiscounts
+                    .Aggregate(pricePerNight, (current, discount) => discount.Apply(current))
+                    .Amount;
+            }
+            else
+            {
+                totalPrice += pricePerNight.Amount;
+            }
+        }
+
+        TotalPrice = Money.Create(totalPrice, pricePerNight.Currency);
     }
 
     public Result Confirm()

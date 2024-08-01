@@ -68,7 +68,7 @@ public class Room : Entity, IAuditableEntity
             capacityOfChildren
         );
 
-    public Result AddDiscount(Discount discount, DateTime currentDate)
+    public Result AddDiscount(Discount discount)
     {
         if (Discounts.Any(x => x.Name == discount.Name))
         {
@@ -76,16 +76,16 @@ public class Room : Entity, IAuditableEntity
         }
 
         Discounts.Add(discount);
-        UpdateDiscountedPrice(currentDate);
+        UpdateDiscountedPrice();
 
         return Result.Success();
     }
 
-    private void UpdateDiscountedPrice(DateTime currentDate)
+    private void UpdateDiscountedPrice()
     {
         var discountedPrice = Discounts.Aggregate(
             Price,
-            (current, discount) => discount.Apply(current, currentDate)
+            (current, discount) => discount.Apply(current)
         );
 
         DiscountedPrice = discountedPrice.Amount;
@@ -96,8 +96,7 @@ public class Room : Entity, IAuditableEntity
         Money price,
         RoomType type,
         int adultsCapacity,
-        int childrenCapacity,
-        DateTime currentDate
+        int childrenCapacity
     )
     {
         if (
@@ -117,7 +116,7 @@ public class Room : Entity, IAuditableEntity
         AdultsCapacity = adultsCapacity;
         ChildrenCapacity = childrenCapacity;
 
-        UpdateDiscountedPrice(currentDate);
+        UpdateDiscountedPrice();
 
         return Result.Success();
     }

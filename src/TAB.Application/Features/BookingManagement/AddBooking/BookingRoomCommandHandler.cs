@@ -53,7 +53,10 @@ public class BookingRoomCommandHandler
             return DomainErrors.User.UserNotFound;
         }
 
-        var roomMaybe = await _roomRepository.GetByIdAsync(request.RoomId, cancellationToken);
+        var roomMaybe = await _roomRepository.GetByIdWithDiscountsAsync(
+            request.RoomId,
+            cancellationToken
+        );
 
         if (roomMaybe.HasNoValue)
         {
@@ -82,8 +85,8 @@ public class BookingRoomCommandHandler
             userId,
             hotelId,
             request.RoomId,
-            room.DiscountedPrice,
-            room.Price.Currency
+            room.Price,
+            room.Discounts.ToList()
         );
 
         await _bookingRepository.AddAsync(booking);

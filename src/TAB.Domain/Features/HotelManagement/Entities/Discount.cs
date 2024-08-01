@@ -61,14 +61,9 @@ public class Discount : Entity, IAuditableEntity
         return new Discount(name, description, discountPercentage, start, end);
     }
 
-    public Money Apply(Money price, DateTime currentDate)
+    public Money Apply(Money price)
     {
-        if (currentDate >= StartDate && currentDate <= EndDate)
-        {
-            var discountedPrice = price.Amount - (price.Amount * DiscountPercentage / 100);
-            return Money.Create(discountedPrice, price.Currency);
-        }
-
-        return price;
+        var discountedPrice = price.Amount - (price.Amount * DiscountPercentage / 100);
+        return Money.Create(discountedPrice, price.Currency);
     }
 }
