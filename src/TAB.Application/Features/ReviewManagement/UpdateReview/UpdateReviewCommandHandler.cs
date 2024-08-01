@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.ReviewManagement;
@@ -14,16 +15,19 @@ public class UpdateReviewCommandHandler
     private readonly IReviewRepository _reviewRepository;
     private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public UpdateReviewCommandHandler(
         IReviewRepository reviewRepository,
         IUserContext userContext,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IMapper mapper
     )
     {
         _reviewRepository = reviewRepository;
         _userContext = userContext;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<Result<ReviewResponse>> Handle(
@@ -55,13 +59,6 @@ public class UpdateReviewCommandHandler
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new ReviewResponse(
-            review.Id,
-            review.Title,
-            review.Content,
-            review.Rating,
-            review.HotelId,
-            review.UserId
-        );
+        return _mapper.Map<ReviewResponse>(review);
     }
 }
