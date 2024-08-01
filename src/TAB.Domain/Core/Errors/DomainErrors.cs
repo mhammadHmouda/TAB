@@ -145,6 +145,7 @@ public static class DomainErrors
     {
         public static Error AlreadyExists =>
             new("Discount.AlreadyExists", "The discount already exists.");
+        public static Error NotFound => new("Discount.NotFound", "Discount not found.");
     }
 
     public static class Room
