@@ -5,7 +5,7 @@ namespace TAB.Application.Features.HotelManagement.Rooms.SearchRooms;
 
 public class RoomsSearchSpecification : BaseSpecification<Room>
 {
-    public RoomsSearchSpecification(int page, int pageSize, string filters, string sorting)
+    public RoomsSearchSpecification(int page, int pageSize, string? filters, string? sorting)
     {
         ApplyNoTracking();
         ApplyPaging(page, pageSize);

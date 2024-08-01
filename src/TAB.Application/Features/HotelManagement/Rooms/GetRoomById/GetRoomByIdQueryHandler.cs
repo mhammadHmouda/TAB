@@ -51,10 +51,9 @@ public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, Result<Ro
         var amenities = await _amenityRepository.GetByRoomIdAsync(room.Id, cancellationToken);
         var images = await _imageRepository.GetByRoomIdAsync(room.Id, cancellationToken);
 
-        return roomResponse with
-        {
-            Amenities = _mapper.Map<AmenityResponse[]>(amenities),
-            Images = _mapper.Map<ImageResponse[]>(images)
-        };
+        roomResponse.Images = _mapper.Map<ImageResponse[]>(images);
+        roomResponse.Amenities = _mapper.Map<AmenityResponse[]>(amenities);
+
+        return roomResponse;
     }
 }

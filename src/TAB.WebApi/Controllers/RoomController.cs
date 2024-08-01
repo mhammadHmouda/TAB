@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
 using TAB.Application.Features.HotelManagement.Rooms.DeleteRoom;
+using TAB.Application.Features.HotelManagement.Rooms.GetRoomById;
+using TAB.Application.Features.HotelManagement.Rooms.SearchRooms;
 using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
 using TAB.Contracts.Features.HotelManagement.Discounts;
 using TAB.Contracts.Features.HotelManagement.Rooms;
@@ -83,6 +85,46 @@ public class RoomController : ApiController
         await Result
             .Create(id)
             .Map(x => new DeleteRoomCommand(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get room by ID.
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <response code="200">The room was found successfully.</response>
+    /// <response code="400">The room was not found successfully.</response>
+    /// <returns>The result of the get room operation.</returns>
+    [HttpGet(ApiRoutes.Rooms.Get)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Get(int id) =>
+        await Result
+            .Create(id)
+            .Map(x => new GetRoomByIdQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Search rooms.
+    /// </summary>
+    /// <param name="filters">The filters to apply.</param>
+    /// <param name="sorting">The sorting to apply.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <response code="200">The rooms were found successfully.</response>
+    /// <response code="400">The rooms were not found successfully.</response>
+    /// <returns>The result of the search rooms operation.</returns>
+    [HttpGet(ApiRoutes.Rooms.Search)]
+    [AllowAnonymous]
+    public async Task<IActionResult> Search(
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    ) =>
+        await Result
+            .Create((filters, sorting, page, pageSize))
+            .Map(x => new SearchRoomsQuery(x.page, x.pageSize, x.filters, x.sorting))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
