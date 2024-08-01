@@ -6,17 +6,18 @@ using TAB.Domain.Features.HotelManagement.ValueObjects;
 
 namespace TAB.Contracts.Features.HotelManagement.Rooms;
 
-public record RoomSearchResponse(
-    int Id,
-    int Number,
-    string Description,
-    Money Price,
-    decimal DiscountedPrice,
-    RoomType Type,
-    bool IsAvailable,
-    int AdultsCapacity,
-    int ChildrenCapacity,
-    DiscountResponse[] Discounts,
-    ImageResponse[] Images,
-    AmenityResponse[] Amenities
-);
+public class RoomSearchResponse
+{
+    public int Id { get; init; }
+    public int Number { get; init; }
+    public string Description { get; init; }
+    public Money Price { get; init; }
+    public decimal DiscountedPrice { get; init; }
+    public RoomType Type { get; init; }
+    public bool IsAvailable { get; init; }
+    public int AdultsCapacity { get; init; }
+    public int ChildrenCapacity { get; init; }
+    public DiscountResponse[] Discounts { get; init; }
+    public ImageResponse[] Images { get; set; }
+    public AmenityResponse[] Amenities { get; set; }
+}
