@@ -62,6 +62,7 @@ public static class ApiRoutes
         public const string Delete = Base + "/{id}";
         public const string Get = Base + "/{id}";
         public const string Search = Base + "/search";
+        public const string AddAmenity = Base + "/{id}/amenities";
     }
 
     public static class Review

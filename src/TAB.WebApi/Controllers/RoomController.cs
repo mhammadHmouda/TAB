@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
 using TAB.Application.Features.HotelManagement.Rooms.DeleteRoom;
 using TAB.Application.Features.HotelManagement.Rooms.GetRoomById;
 using TAB.Application.Features.HotelManagement.Rooms.SearchRooms;
 using TAB.Application.Features.HotelManagement.Rooms.UpdateRoom;
+using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Contracts.Features.HotelManagement.Discounts;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
+using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.WebApi.Abstractions;
 using TAB.WebApi.Attributes;
 using TAB.WebApi.Contracts;
@@ -125,6 +128,28 @@ public class RoomController : ApiController
         await Result
             .Create((filters, sorting, page, pageSize))
             .Map(x => new SearchRoomsQuery(x.page, x.pageSize, x.filters, x.sorting))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Creates amenities for a room;
+    /// </summary>
+    /// <param name="id">The ID of the room.</param>
+    /// <param name="request">The create amenity request.</param>
+    /// <response code="200">The amenities were created successfully.</response>
+    /// <response code="400">The amenities were not created successfully.</response>
+    /// <returns>The result of the create amenity operation.</returns>
+    [HttpPost(ApiRoutes.Rooms.AddAmenity)]
+    public async Task<IActionResult> CreateAmenities(int id, CreateAmenityRequest request) =>
+        await Result
+            .Create((id, request))
+            .Ensure(x => x.id == x.request.TypeId, DomainErrors.General.UnProcessableRequest)
+            .Map(x => new CreateAmenityCommand(
+                x.request.Name,
+                x.request.Description,
+                AmenityType.Room,
+                x.request.TypeId
+            ))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
