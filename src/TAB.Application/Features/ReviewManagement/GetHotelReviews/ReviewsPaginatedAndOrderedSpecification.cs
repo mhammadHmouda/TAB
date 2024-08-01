@@ -3,9 +3,9 @@ using TAB.Domain.Features.ReviewManagement.Entities;
 
 namespace TAB.Application.Features.ReviewManagement.GetHotelReviews;
 
-public class ReviewsWithFiltersSpecification : BaseSpecification<Review>
+public class ReviewsPaginatedAndOrderedSpecification : BaseSpecification<Review>
 {
-    public ReviewsWithFiltersSpecification(
+    public ReviewsPaginatedAndOrderedSpecification(
         int hotelId,
         int page,
         int pageSize,

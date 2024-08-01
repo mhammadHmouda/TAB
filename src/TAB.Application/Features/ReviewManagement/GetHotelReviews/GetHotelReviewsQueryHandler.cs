@@ -38,7 +38,7 @@ public class GetHotelReviewsQueryHandler
             return DomainErrors.Hotel.NotFound;
         }
 
-        var spec = new ReviewsWithFiltersSpecification(
+        var spec = new ReviewsPaginatedAndOrderedSpecification(
             request.HotelId,
             request.Page,
             request.PageSize,
@@ -46,23 +46,14 @@ public class GetHotelReviewsQueryHandler
             request.Sorting
         );
 
-        var reviews = await _reviewRepository.GetAllAsync(
-            new ReviewsWithFiltersSpecification(
-                request.HotelId,
-                request.Page,
-                request.PageSize,
-                request.Filters,
-                request.Sorting
-            ),
-            cancellationToken
-        );
+        var reviews = await _reviewRepository.GetAllAsync(spec, cancellationToken);
 
         var totalCount = await _reviewRepository.CountAsync(spec.ForCounting());
 
-        var mappedReviews = _mapper.Map<List<ReviewResponse>>(reviews);
+        var mappedReviews = _mapper.Map<ReviewResponse[]>(reviews);
 
         return PagedList<ReviewResponse>.Create(
-            mappedReviews,
+            mappedReviews.ToList(),
             request.Page,
             request.PageSize,
             totalCount

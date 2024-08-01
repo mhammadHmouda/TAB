@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.ReviewManagement.AddReview;
 using TAB.Application.Features.ReviewManagement.DeleteReview;
+using TAB.Application.Features.ReviewManagement.GetHotelReviews;
 using TAB.Application.Features.ReviewManagement.UpdateReview;
 using TAB.Contracts.Features.ReviewManagement;
 using TAB.Domain.Core.Errors;
@@ -84,4 +86,30 @@ public class ReviewController : ApiController
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
     }
+
+    /// <summary>
+    /// Gets all reviews for a hotel.
+    /// </summary>
+    /// <param name="hotelId">The ID of the hotel.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name="sorting">The sorting.</param>
+    /// <response code="200">The reviews were retrieved successfully.</response>
+    /// <response code="400">The reviews were not retrieved successfully.</response>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet(ApiRoutes.Review.GetHotelReviews)]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetHotelReviews(
+        int hotelId,
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    ) =>
+        await Result
+            .Create((hotelId, page, pageSize, filters, sorting))
+            .Map(x => new GetHotelReviewsQuery(x.hotelId, x.page, x.pageSize, x.filters, x.sorting))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
 }
