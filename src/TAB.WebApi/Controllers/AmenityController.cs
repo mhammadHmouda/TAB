@@ -27,7 +27,6 @@ public class AmenityController : ApiController
     /// <returns>The updated amenity.</returns>
     /// <response code="200">The amenity was updated successfully.</response>
     /// <response code="400">The request is invalid.</response>
-    /// <returns>The result of the update operation.</returns>
     [HttpPut(ApiRoutes.Amenities.Update)]
     public async Task<IActionResult> UpdateAmenity(int id, UpdateAmenityRequest request) =>
         await Result
@@ -44,7 +43,6 @@ public class AmenityController : ApiController
     /// <returns>The result of the delete operation.</returns>
     /// <response code="200">The amenity was deleted successfully.</response>
     /// <response code="400">The amenity was not found.</response>
-    /// <returns>The result of the delete operation.</returns>
     [HttpDelete(ApiRoutes.Amenities.Delete)]
     public async Task<IActionResult> DeleteAmenity(int id) =>
         await Result
