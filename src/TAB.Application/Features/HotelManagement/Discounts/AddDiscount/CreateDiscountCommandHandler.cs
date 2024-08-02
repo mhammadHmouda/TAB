@@ -42,7 +42,8 @@ public class CreateDiscountCommandHandler
             request.Description,
             request.DiscountPercentage,
             request.StartDate,
-            request.EndDate
+            request.EndDate,
+            request.RoomId
         );
 
         var result = room.AddDiscount(discount);
@@ -60,7 +61,8 @@ public class CreateDiscountCommandHandler
             discount.Description,
             discount.DiscountPercentage,
             discount.StartDate,
-            discount.EndDate
+            discount.EndDate,
+            discount.RoomId
         );
     }
 }

@@ -96,5 +96,6 @@ public static class ApiRoutes
     {
         private const string Base = "discounts";
         public const string Delete = Base + "/{id}";
+        public const string Search = Base + "/search";
     }
 }
