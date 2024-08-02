@@ -4,6 +4,7 @@ using TAB.Application.Features.BookingManagement.AddBooking;
 using TAB.Application.Features.BookingManagement.CancelBooking;
 using TAB.Application.Features.BookingManagement.CheckoutRoom;
 using TAB.Application.Features.BookingManagement.ConfirmBooking;
+using TAB.Application.Features.BookingManagement.SearchBooking;
 using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
@@ -81,4 +82,28 @@ public class BookingController : ApiController
             .Map(x => new CheckoutBookingCommand(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Search bookings.
+    /// </summary>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name="sorting">The sorting.</param>
+    /// <returns>The paged list of bookings.</returns>
+    /// <response code="200">The bookings were found.</response>
+    /// <response code="400">The search request is invalid.</response>
+    [HttpGet(ApiRoutes.Booking.Search)]
+    public async Task<IActionResult> SearchBookings(
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    )
+    {
+        return await Result
+            .Create(new SearchBookingQuery(page, pageSize, filters, sorting))
+            .Bind(query => Mediator.Send(query))
+            .Match(Ok, BadRequest);
+    }
 }
