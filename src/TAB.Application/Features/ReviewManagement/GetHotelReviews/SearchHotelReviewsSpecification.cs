@@ -3,9 +3,9 @@ using TAB.Domain.Features.ReviewManagement.Entities;
 
 namespace TAB.Application.Features.ReviewManagement.GetHotelReviews;
 
-public class ReviewsPaginatedAndOrderedSpecification : BaseSpecification<Review>
+public class SearchHotelReviewsSpecification : BaseSpecification<Review>
 {
-    public ReviewsPaginatedAndOrderedSpecification(
+    public SearchHotelReviewsSpecification(
         int hotelId,
         int page,
         int pageSize,
@@ -15,11 +15,10 @@ public class ReviewsPaginatedAndOrderedSpecification : BaseSpecification<Review>
     {
         ApplyNoTracking();
 
-        AddCriteria(r => r.HotelId == hotelId);
-
         ApplyPaging(page, pageSize);
-
         AddDynamicFilters(filters);
         AddDynamicSorting(sorting);
+
+        AddCriteria(r => r.HotelId == hotelId);
     }
 }

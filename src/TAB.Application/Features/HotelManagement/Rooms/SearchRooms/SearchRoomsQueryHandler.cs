@@ -34,7 +34,7 @@ public class SearchRoomsQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var spec = new RoomsSearchSpecification(
+        var spec = new SearchRoomsSpecification(
             request.Page,
             request.PageSize,
             request.Filters,

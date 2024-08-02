@@ -38,7 +38,7 @@ public class GetHotelReviewsQueryHandler
             return DomainErrors.Hotel.NotFound;
         }
 
-        var spec = new ReviewsPaginatedAndOrderedSpecification(
+        var spec = new SearchHotelReviewsSpecification(
             request.HotelId,
             request.Page,
             request.PageSize,

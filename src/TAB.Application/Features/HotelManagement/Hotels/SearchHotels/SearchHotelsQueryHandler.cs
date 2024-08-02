@@ -34,7 +34,7 @@ public class SearchHotelsQueryHandler
         CancellationToken cancellationToken
     )
     {
-        var spec = new HotelsSearchSpecification(
+        var spec = new SearchHotelsSpecification(
             request.Filters,
             request.Sorting,
             request.Page,

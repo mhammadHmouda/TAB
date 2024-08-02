@@ -22,7 +22,7 @@ public class GetCitiesQueryHandler : IQueryHandler<GetCitiesQuery, Result<PagedL
         CancellationToken cancellationToken
     )
     {
-        var spec = new CitiesSearchSpecification(
+        var spec = new SearchCitiesSpecification(
             request.Filters,
             request.Sorting,
             request.Page,
