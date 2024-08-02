@@ -52,8 +52,8 @@ public class UserController : ApiController
     public async Task<IActionResult> Search(
         string? filters,
         string? sorting,
-        int page,
-        int pageSize
+        int page = 1,
+        int pageSize = 10
     ) =>
         await Result
             .Create(new SearchUsersQuery(page, pageSize, filters, sorting))

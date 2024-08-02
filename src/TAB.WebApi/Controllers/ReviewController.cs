@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.ReviewManagement.AddReview;
 using TAB.Application.Features.ReviewManagement.DeleteReview;
@@ -31,9 +30,9 @@ public class ReviewController : ApiController
     /// <returns>The result of the operation.</returns>
     [HttpPost(ApiRoutes.Review.Create)]
     public async Task<IActionResult> CreateReview(
-        [FromQuery] [Required] int hotelId,
-        [FromQuery] [Required] int userId,
-        [FromBody] CreateReviewRequest request
+        int hotelId,
+        int userId,
+        CreateReviewRequest request
     ) =>
         await Result
             .Create((hotelId, userId, request))

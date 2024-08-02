@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Discounts;
 using TAB.Domain.Core.Errors;
@@ -13,11 +14,17 @@ public class CreateDiscountCommandHandler
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateDiscountCommandHandler(IRoomRepository roomRepository, IUnitOfWork unitOfWork)
+    public CreateDiscountCommandHandler(
+        IRoomRepository roomRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper
+    )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<Result<DiscountResponse>> Handle(
@@ -55,14 +62,6 @@ public class CreateDiscountCommandHandler
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new DiscountResponse(
-            discount.Id,
-            discount.Name,
-            discount.Description,
-            discount.DiscountPercentage,
-            discount.StartDate,
-            discount.EndDate,
-            discount.RoomId
-        );
+        return _mapper.Map<DiscountResponse>(discount);
     }
 }
