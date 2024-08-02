@@ -14,6 +14,7 @@ public class SearchHotelsSpecification : BaseSpecification<Hotel>
         AddDynamicSorting(sorting);
 
         AddInclude(h => h.City);
+        AddInclude(h => h.Owner);
         AddInclude(h => h.Rooms);
     }
 }

@@ -4,4 +4,4 @@ using TAB.Domain.Core.Shared.Result;
 
 namespace TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
 
-public record GetHotelByIdQuery(int Id) : IQuery<Result<HotelSearchResponse>>;
+public record GetHotelByIdQuery(int Id) : IQuery<Result<HotelResponse>>;

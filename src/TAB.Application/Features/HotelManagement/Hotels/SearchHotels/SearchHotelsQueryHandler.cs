@@ -9,7 +9,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 namespace TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 
 public class SearchHotelsQueryHandler
-    : IQueryHandler<SearchHotelsQuery, Result<PagedList<HotelSearchResponse>>>
+    : IQueryHandler<SearchHotelsQuery, Result<PagedList<HotelResponse>>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -29,7 +29,7 @@ public class SearchHotelsQueryHandler
         _amenityRepository = amenityRepository;
     }
 
-    public async Task<Result<PagedList<HotelSearchResponse>>> Handle(
+    public async Task<Result<PagedList<HotelResponse>>> Handle(
         SearchHotelsQuery request,
         CancellationToken cancellationToken
     )
@@ -45,7 +45,7 @@ public class SearchHotelsQueryHandler
 
         var totalCount = await _hotelRepository.CountAsync(spec.ForCounting());
 
-        var hotelsResponse = _mapper.Map<HotelSearchResponse[]>(hotels);
+        var hotelsResponse = _mapper.Map<HotelResponse[]>(hotels);
 
         foreach (var hotel in hotelsResponse)
         {
@@ -56,7 +56,7 @@ public class SearchHotelsQueryHandler
             hotel.Amenities = _mapper.Map<AmenityResponse[]>(amenities);
         }
 
-        return PagedList<HotelSearchResponse>.Create(
+        return PagedList<HotelResponse>.Create(
             hotelsResponse.ToList(),
             request.Page,
             request.PageSize,

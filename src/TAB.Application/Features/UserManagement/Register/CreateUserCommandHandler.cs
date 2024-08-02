@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Cryptography;
 using TAB.Application.Core.Interfaces.Data;
@@ -19,13 +20,15 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
     private readonly IPasswordHasher _passwordHasher;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IGeneratorService _generator;
+    private readonly IMapper _mapper;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IDateTimeProvider dateTimeProvider,
-        IGeneratorService generator
+        IGeneratorService generator,
+        IMapper mapper
     )
     {
         _userRepository = userRepository;
@@ -33,6 +36,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         _passwordHasher = passwordHasher;
         _dateTimeProvider = dateTimeProvider;
         _generator = generator;
+        _mapper = mapper;
     }
 
     public async Task<Result<UserResponse>> Handle(
@@ -79,6 +83,6 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Resul
         await _userRepository.AddAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new UserResponse(user.Id, user.Email.Value, user.FirstName, user.LastName);
+        return _mapper.Map<UserResponse>(user);
     }
 }

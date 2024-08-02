@@ -8,8 +8,7 @@ public class HotelProfile : Profile
 {
     public HotelProfile()
     {
-        CreateMap<Hotel, HotelSearchResponse>()
-            .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
+        CreateMap<Hotel, HotelResponse>()
             .ForMember(
                 dest => dest.NumberOfAvailableRooms,
                 opt => opt.MapFrom(src => src.Rooms.Count(r => r.IsAvailable))
