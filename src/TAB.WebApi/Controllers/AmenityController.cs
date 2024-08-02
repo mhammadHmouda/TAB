@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Amenities.DeleteAmenity;
+using TAB.Application.Features.HotelManagement.Amenities.GetAmenities;
 using TAB.Application.Features.HotelManagement.Amenities.UpdateAmenity;
 using TAB.Contracts.Features.HotelManagement.Amenities;
 using TAB.Domain.Core.Errors;
@@ -18,7 +19,6 @@ namespace TAB.WebApi.Controllers;
 [Authorize(Roles = "Admin")]
 public class AmenityController : ApiController
 {
-    // I need to add endpoint for update amenity
     /// <summary>
     /// Update an amenity.
     /// </summary>
@@ -37,7 +37,6 @@ public class AmenityController : ApiController
             .Bind(command => Mediator.Send(command))
             .Match(Ok, BadRequest);
 
-    // I need to add endpoint for delete amenity
     /// <summary>
     /// Delete an amenity.
     /// </summary>
@@ -53,4 +52,27 @@ public class AmenityController : ApiController
             .Map(i => new DeleteAmenityCommand(i))
             .Bind(command => Mediator.Send(command))
             .Match(() => Ok("The amenity was deleted successfully!"), BadRequest);
+
+    /// <summary>
+    /// Get all amenities.
+    /// </summary>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <param name="filters">The filters to apply.</param>
+    /// <param name="sorting">The sorting to apply.</param>
+    /// <returns>The amenities.</returns>
+    /// <response code="200">The amenities were retrieved successfully.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Amenities.Search)]
+    public async Task<IActionResult> SearchAmenities(
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    ) =>
+        await Result
+            .Create((page, pageSize, filters, sorting))
+            .Map(x => new GetAmenitiesQuery(x.page, pageSize, x.filters, x.sorting))
+            .Bind(query => Mediator.Send(query))
+            .Match(Ok, BadRequest);
 }
