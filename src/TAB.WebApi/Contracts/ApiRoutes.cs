@@ -15,6 +15,7 @@ public static class ApiRoutes
     {
         private const string Base = "users";
         public const string Update = Base + "/{id}";
+        public const string Search = Base + "/search";
     }
 
     public static class Cities
