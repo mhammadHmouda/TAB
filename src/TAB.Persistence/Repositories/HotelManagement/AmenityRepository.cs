@@ -1,5 +1,6 @@
 ﻿using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Features.HotelManagement.Entities;
+using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Persistence.Repositories.Abstractions;
 
@@ -15,7 +16,10 @@ public class AmenityRepository : BaseRepository<Amenity>, IAmenityRepository
         CancellationToken cancellationToken = default
     )
     {
-        return await GetAllAsync(a => a.TypeId == hotelId, cancellationToken);
+        return await GetAllAsync(
+            a => a.TypeId == hotelId && a.Type == AmenityType.Hotel,
+            cancellationToken
+        );
     }
 
     public async Task<IEnumerable<Amenity>> GetByRoomIdAsync(
@@ -23,6 +27,9 @@ public class AmenityRepository : BaseRepository<Amenity>, IAmenityRepository
         CancellationToken cancellationToken = default
     )
     {
-        return await GetAllAsync(a => a.TypeId == roomId, cancellationToken);
+        return await GetAllAsync(
+            a => a.TypeId == roomId && a.Type == AmenityType.Room,
+            cancellationToken
+        );
     }
 }
