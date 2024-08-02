@@ -9,7 +9,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 
 namespace TAB.Application.Features.HotelManagement.Rooms.GetRoomById;
 
-public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, Result<RoomSearchResponse>>
+public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, Result<RoomResponse>>
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IAmenityRepository _amenityRepository;
@@ -29,7 +29,7 @@ public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, Result<Ro
         _imageRepository = imageRepository;
     }
 
-    public async Task<Result<RoomSearchResponse>> Handle(
+    public async Task<Result<RoomResponse>> Handle(
         GetRoomByIdQuery request,
         CancellationToken cancellationToken
     )
@@ -46,7 +46,7 @@ public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, Result<Ro
 
         var room = roomMaybe.Value;
 
-        var roomResponse = _mapper.Map<RoomSearchResponse>(room);
+        var roomResponse = _mapper.Map<RoomResponse>(room);
 
         var amenities = await _amenityRepository.GetByRoomIdAsync(room.Id, cancellationToken);
         var images = await _imageRepository.GetByRoomIdAsync(room.Id, cancellationToken);

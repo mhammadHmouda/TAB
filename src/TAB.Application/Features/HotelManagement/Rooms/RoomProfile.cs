@@ -10,7 +10,6 @@ public class RoomProfile : Profile
     public RoomProfile()
     {
         CreateMap<Room, RoomResponse>();
-        CreateMap<Room, RoomSearchResponse>();
         CreateMap<Discount, DiscountResponse>();
     }
 }
