@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Features.ReviewManagement.AddReview;
@@ -49,10 +50,12 @@ public class CreateReviewCommandTests
         _hotelRepositoryMock = Substitute.For<IHotelRepository>();
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
+        var mapperMock = Substitute.For<IMapper>();
         _sut = new CreateReviewCommandHandler(
             _hotelRepositoryMock,
             _userRepositoryMock,
-            _unitOfWorkMock
+            _unitOfWorkMock,
+            mapperMock
         );
 
         _userRepositoryMock

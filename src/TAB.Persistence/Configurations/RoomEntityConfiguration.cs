@@ -48,7 +48,5 @@ public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
 
         builder.Property(x => x.CreatedAtUtc).IsRequired();
         builder.Property(x => x.UpdatedAtUtc);
-
-        builder.HasMany(x => x.Discounts).WithOne().OnDelete(DeleteBehavior.Cascade);
     }
 }

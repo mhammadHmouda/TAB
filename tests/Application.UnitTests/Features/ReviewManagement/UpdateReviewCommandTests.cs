@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
@@ -28,11 +29,13 @@ public class UpdateReviewCommandTests
         _reviewRepositoryMock = Substitute.For<IReviewRepository>();
         _userContextMock = Substitute.For<IUserContext>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
+        var mapperMock = Substitute.For<IMapper>();
 
         _sut = new UpdateReviewCommandHandler(
             _reviewRepositoryMock,
             _userContextMock,
-            _unitOfWorkMock
+            _unitOfWorkMock,
+            mapperMock
         );
 
         _userContextMock.Id.Returns(1);
