@@ -116,4 +116,20 @@ public class Room : Entity, IAuditableEntity
 
         return Result.Success();
     }
+
+    public Money CalculateTotalPriceNow(DateTime currentDate)
+    {
+        var activeDiscounts = Discounts
+            .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
+            .ToList();
+
+        var totalPrice =
+            activeDiscounts.Count > 0
+                ? activeDiscounts
+                    .Aggregate(Price, (current, discount) => discount.Apply(current))
+                    .Amount
+                : Price.Amount;
+
+        return Money.Create(totalPrice, Price.Currency);
+    }
 }

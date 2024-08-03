@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
+using TAB.Application.Features.HotelManagement.Hotels.GetFeaturedDeals;
 using TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
 using TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
@@ -175,6 +176,21 @@ public class HotelController : ApiController
         await Result
             .Create(id)
             .Map(x => new GetHotelByIdQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get featured deals for hotels.
+    /// </summary>
+    /// <param name="limit">The limit of hotels to get.</param>
+    /// <returns>The featured deals for hotels.</returns>
+    /// <response code="200">The featured deals for hotels.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.GetFeaturedDeals)]
+    public async Task<IActionResult> GetFeaturedDeals(int limit) =>
+        await Result
+            .Create(limit)
+            .Map(x => new GetFeaturedDealsQuery(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

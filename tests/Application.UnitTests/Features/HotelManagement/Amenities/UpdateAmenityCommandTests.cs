@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
@@ -9,7 +10,6 @@ using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
-using TAB.Domain.Features.UserManagement.Enums;
 
 namespace Application.UnitTests.Features.HotelManagement.Amenities;
 
@@ -27,7 +27,11 @@ public class UpdateAmenityCommandTests
         var unitOfWorkMock = Substitute.For<IUnitOfWork>();
         Substitute.For<IUserContext>();
 
-        _sut = new UpdateAmenityCommandHandler(_amenityRepositoryMock, unitOfWorkMock);
+        _sut = new UpdateAmenityCommandHandler(
+            _amenityRepositoryMock,
+            unitOfWorkMock,
+            Substitute.For<IMapper>()
+        );
     }
 
     [Fact]

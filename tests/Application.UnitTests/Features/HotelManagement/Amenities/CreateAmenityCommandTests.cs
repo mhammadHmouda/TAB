@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
@@ -35,7 +36,8 @@ public class CreateAmenityCommandTests
             _amenityRepositoryMock,
             _unitOfWorkMock,
             _userContext,
-            _amenityServiceMock
+            _amenityServiceMock,
+            Substitute.For<IMapper>()
         );
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Common;
@@ -66,7 +67,8 @@ public class CreateUserCommandTests
             _unitOfWorkMock,
             passwordHasherMock,
             dateTimeMock,
-            generatorMock
+            generatorMock,
+            Substitute.For<IMapper>()
         );
     }
 

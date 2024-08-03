@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
@@ -27,7 +28,11 @@ public class CreateDiscountHandlerTests
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         Substitute.For<IDateTimeProvider>();
 
-        _sut = new CreateDiscountCommandHandler(_roomRepositoryMock, _unitOfWorkMock);
+        _sut = new CreateDiscountCommandHandler(
+            _roomRepositoryMock,
+            _unitOfWorkMock,
+            Substitute.For<IMapper>()
+        );
     }
 
     [Fact]
