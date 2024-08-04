@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Interfaces.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
@@ -53,5 +54,20 @@ public class ImageRepository : BaseRepository<Image>, IImageRepository
             i => cityIds.Contains(i.ReferenceId) && i.Type == ImageType.City,
             cancellationToken
         );
+    }
+
+    public async Task<IEnumerable<Image>> GetRoomImagesAsync(
+        List<int> galleryIds,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await DbContext
+            .Set<Image>()
+            .Where(i => galleryIds.Contains(i.ReferenceId) && i.Type == ImageType.Room)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
     }
 }

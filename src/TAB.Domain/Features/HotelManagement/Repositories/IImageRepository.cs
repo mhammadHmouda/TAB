@@ -12,4 +12,10 @@ public interface IImageRepository : IRepository<Image>
         List<int> cityIds,
         CancellationToken cancellationToken
     );
+    Task<IEnumerable<Image>> GetRoomImagesAsync(
+        List<int> galleryIds,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken
+    );
 }
