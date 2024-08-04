@@ -25,6 +25,7 @@ public static class ApiRoutes
         public const string UploadImages = Base + "/{id}/images";
         public const string Search = Base + "/search";
         public const string Get = Base + "/{id}";
+        public const string GetTrendingDestinations = Base + "/trending-destinations";
     }
 
     public static class Hotels

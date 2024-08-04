@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Cities.AddCity;
 using TAB.Application.Features.HotelManagement.Cities.GetCities;
 using TAB.Application.Features.HotelManagement.Cities.GetCityById;
+using TAB.Application.Features.HotelManagement.Cities.GetTrendingDestination;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
 using TAB.Contracts.Features.HotelManagement.Cities;
 using TAB.Domain.Core.Enums;
@@ -94,6 +95,23 @@ public class CityController : ApiController
         return await Result
             .Create(id)
             .Map(x => new GetCityByIdQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+    }
+
+    /// <summary>
+    /// Get the trending destinations.
+    /// </summary>
+    /// <param name="limit">The number of trending destinations to return.</param>
+    /// <returns>The trending destinations.</returns>
+    /// <response code="200">The trending destinations were found.</response>
+    /// <response code="400">The trending destinations were not found.</response>
+    [HttpGet(ApiRoutes.Cities.GetTrendingDestinations)]
+    public async Task<IActionResult> GetTrendingDestinations(int limit = 3)
+    {
+        return await Result
+            .Create(limit)
+            .Map(x => new GetTrendingDestinationQuery(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
     }

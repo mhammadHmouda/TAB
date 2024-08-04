@@ -32,4 +32,26 @@ public class ImageRepository : BaseRepository<Image>, IImageRepository
             cancellationToken
         );
     }
+
+    public async Task<IEnumerable<Image>> GetByCityIdAsync(
+        int cityId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await GetAllAsync(
+            i => i.ReferenceId == cityId && i.Type == ImageType.City,
+            cancellationToken
+        );
+    }
+
+    public async Task<IEnumerable<Image>> GetAllByCityIdsAsync(
+        List<int> cityIds,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await GetAllAsync(
+            i => cityIds.Contains(i.ReferenceId) && i.Type == ImageType.City,
+            cancellationToken
+        );
+    }
 }
