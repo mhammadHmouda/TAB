@@ -4,6 +4,7 @@ using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
 using TAB.Application.Features.HotelManagement.Hotels.GetFeaturedDeals;
 using TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
+using TAB.Application.Features.HotelManagement.Hotels.GetRecentVisits;
 using TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
@@ -191,6 +192,21 @@ public class HotelController : ApiController
         await Result
             .Create(limit)
             .Map(x => new GetFeaturedDealsQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get recent visits for a user.
+    /// </summary>
+    /// <param name="limit">The limit of recent visits to get.</param>
+    /// <returns>The recent visits for a user.</returns>
+    /// <response code="200">The recent visits for a user.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.GetRecentVisits)]
+    public async Task<IActionResult> GetRecentVisits(int limit) =>
+        await Result
+            .Create(limit)
+            .Map(x => new GetRecentVisitsQuery(x))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }
