@@ -35,7 +35,7 @@ public class CreateUserCommandTests
         var passwordHasherMock = Substitute.For<IPasswordHasher>();
         var generatorMock = Substitute.For<IGeneratorService>();
         var emailNotificationServiceMock = Substitute.For<IEmailNotificationService>();
-
+        var mapperMock = Substitute.For<IMapper>();
         var dateTimeMock = Substitute.For<IDateTimeProvider>();
         dateTimeMock.UtcNow.Returns(DateTime.UtcNow);
 
@@ -62,13 +62,17 @@ public class CreateUserCommandTests
             .SendWelcomeEmail(Arg.Any<WelcomeEmail>())
             .Returns(Task.CompletedTask);
 
+        mapperMock
+            .Map<UserResponse>(Arg.Any<User>())
+            .Returns(new UserResponse(1, "email@gmail.com", "mohammad", "Hmoudah"));
+
         _handler = new CreateUserCommandHandler(
             _userRepositoryMock,
             _unitOfWorkMock,
             passwordHasherMock,
             dateTimeMock,
             generatorMock,
-            Substitute.For<IMapper>()
+            mapperMock
         );
     }
 

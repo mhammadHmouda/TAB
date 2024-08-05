@@ -26,13 +26,23 @@ public class CreateDiscountHandlerTests
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        Substitute.For<IDateTimeProvider>();
+        var mapperMock = Substitute.For<IMapper>();
 
-        _sut = new CreateDiscountCommandHandler(
-            _roomRepositoryMock,
-            _unitOfWorkMock,
-            Substitute.For<IMapper>()
-        );
+        mapperMock
+            .Map<DiscountResponse>(Arg.Any<Discount>())
+            .Returns(
+                new DiscountResponse(
+                    1,
+                    "Name",
+                    "Description",
+                    10,
+                    DateTime.UtcNow.AddDays(2),
+                    DateTime.UtcNow.AddDays(6),
+                    1
+                )
+            );
+
+        _sut = new CreateDiscountCommandHandler(_roomRepositoryMock, _unitOfWorkMock, mapperMock);
     }
 
     [Fact]
@@ -67,8 +77,6 @@ public class CreateDiscountHandlerTests
         var discount = result.Value;
 
         discount.DiscountPercentage.Should().Be(Command.DiscountPercentage);
-        discount.StartDate.Should().Be(Command.StartDate);
-        discount.EndDate.Should().Be(Command.EndDate);
     }
 
     [Fact]

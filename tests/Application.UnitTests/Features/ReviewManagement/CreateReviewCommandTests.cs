@@ -10,6 +10,7 @@ using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
+using TAB.Domain.Features.ReviewManagement.Entities;
 using TAB.Domain.Features.UserManagement.Entities;
 using TAB.Domain.Features.UserManagement.Enums;
 using TAB.Domain.Features.UserManagement.Repositories;
@@ -51,6 +52,11 @@ public class CreateReviewCommandTests
         _userRepositoryMock = Substitute.For<IUserRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
         var mapperMock = Substitute.For<IMapper>();
+
+        mapperMock
+            .Map<ReviewResponse>(Arg.Any<Review>())
+            .Returns(new ReviewResponse(1, "Title", "Content", 5, 1, 1));
+
         _sut = new CreateReviewCommandHandler(
             _hotelRepositoryMock,
             _userRepositoryMock,
