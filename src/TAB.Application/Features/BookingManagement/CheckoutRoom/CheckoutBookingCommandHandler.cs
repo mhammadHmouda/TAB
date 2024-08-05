@@ -53,14 +53,14 @@ public class CheckoutBookingCommandHandler
             return DomainErrors.General.Unauthorized;
         }
 
-        if (booking.Status != BookingStatus.Confirmed)
-        {
-            return DomainErrors.Booking.NotConfirmed;
-        }
-
         if (booking.Status == BookingStatus.Paid)
         {
             return DomainErrors.Booking.AlreadyPaid;
+        }
+
+        if (booking.Status != BookingStatus.Confirmed)
+        {
+            return DomainErrors.Booking.NotConfirmed;
         }
 
         var sessionResult = await _sessionService.SaveAsync(command.BookingId, cancellationToken);
