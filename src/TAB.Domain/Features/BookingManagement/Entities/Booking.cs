@@ -16,7 +16,7 @@ public class Booking : AggregateRoot, IAuditableEntity
     public DateTime CheckInDate { get; }
     public DateTime CheckOutDate { get; }
     public Money TotalPrice { get; private set; }
-    public BookingStatus Status { get; private set; }
+    public BookingStatus Status { get; set; }
     public int UserId { get; private set; }
     public int HotelId { get; private set; }
     public int RoomId { get; private set; }
