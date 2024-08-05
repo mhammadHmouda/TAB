@@ -39,14 +39,16 @@ public class GetHotelGalleryQueryHandler
 
         var roomImagesIds = hotel.Rooms.Select(r => r.Id).ToList();
 
+        var hotelImages = (
+            await _imageRepository.GetByHotelIdAsync(request.Id, cancellationToken)
+        ).ToList();
+
         var roomImages = await _imageRepository.GetRoomImagesAsync(
             roomImagesIds,
             request.Page,
-            request.PageSize,
+            request.PageSize - hotelImages.Count,
             cancellationToken
         );
-
-        var hotelImages = await _imageRepository.GetByHotelIdAsync(request.Id, cancellationToken);
 
         var images = roomImages.Concat(hotelImages);
 
