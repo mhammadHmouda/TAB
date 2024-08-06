@@ -14,6 +14,8 @@ public class Image : Entity, IAuditableEntity
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
+    private Image() { }
+
     private Image(string url, ImageType type, int referenceId)
     {
         Url = url;

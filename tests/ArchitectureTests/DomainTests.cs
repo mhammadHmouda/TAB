@@ -1,5 +1,7 @@
-﻿using FluentAssertions;
+﻿using System.Reflection;
+using FluentAssertions;
 using NetArchTest.Rules;
+using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Primitives.Events;
 
 namespace ArchitectureTests;
@@ -48,5 +50,26 @@ public class DomainTests : BaseTest
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Entities_Should_HavePrivateParameterlessConstructor()
+    {
+        IEnumerable<Type> entityTypes = Types
+            .InAssembly(DomainAssembly)
+            .That()
+            .Inherit(typeof(Entity))
+            .GetTypes();
+
+        var failingTypes = (
+            from entityType in entityTypes
+            let constructors = entityType.GetConstructors(
+                BindingFlags.NonPublic | BindingFlags.Instance
+            )
+            where !constructors.Any(c => c.IsPrivate && c.GetParameters().Length == 0)
+            select entityType
+        ).ToList();
+
+        failingTypes.Should().OnlyContain(t => t.Name == nameof(AggregateRoot));
     }
 }

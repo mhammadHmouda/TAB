@@ -9,6 +9,8 @@ public class Token : Entity
     public int UserId { get; }
     public DateTime ExpiresAt { get; }
 
+    private Token() { }
+
     private Token(string value, int userId, DateTime expiresAt)
     {
         Value = value;
