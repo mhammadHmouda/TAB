@@ -3,9 +3,9 @@ using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Payment;
 using TAB.Contracts.Features.Shared;
+using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
-using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.BookingManagement.Repositories;
 
 namespace TAB.Application.Features.BookingManagement.CheckoutRoom;
@@ -14,19 +14,19 @@ public class CheckoutBookingCommandHandler
     : ICommandHandler<CheckoutBookingCommand, Result<Session>>
 {
     private readonly IBookingRepository _bookingRepository;
-    private readonly ISessionService _sessionService;
+    private readonly IPaymentService _paymentService;
     private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
     public CheckoutBookingCommandHandler(
         IBookingRepository bookingRepository,
-        ISessionService sessionService,
+        IPaymentService paymentService,
         IUserContext userContext,
         IUnitOfWork unitOfWork
     )
     {
         _bookingRepository = bookingRepository;
-        _sessionService = sessionService;
+        _paymentService = paymentService;
         _userContext = userContext;
         _unitOfWork = unitOfWork;
     }
@@ -53,26 +53,43 @@ public class CheckoutBookingCommandHandler
             return DomainErrors.General.Unauthorized;
         }
 
-        if (booking.Status == BookingStatus.Paid)
+        var canCheckoutResult = booking.CanCheckout();
+
+        if (canCheckoutResult.IsFailure)
         {
-            return DomainErrors.Booking.AlreadyPaid;
+            return canCheckoutResult.Error;
         }
 
-        if (booking.Status != BookingStatus.Confirmed)
+        var paymentResult = await CreatePaymentSessionAsync(
+            command.PaymentMethod,
+            command.BookingId,
+            cancellationToken
+        );
+
+        if (paymentResult.IsFailure)
         {
-            return DomainErrors.Booking.NotConfirmed;
+            return paymentResult.Error;
         }
 
-        var sessionResult = await _sessionService.SaveAsync(command.BookingId, cancellationToken);
-
-        if (sessionResult.IsFailure)
-        {
-            return sessionResult.Error;
-        }
-
-        booking.AddSessionId(sessionResult.Value.SessionId);
+        booking.AddSessionId(paymentResult.Value.SessionId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return sessionResult.Value;
+        return paymentResult.Value;
+    }
+
+    private async Task<Result<Session>> CreatePaymentSessionAsync(
+        string paymentMethod,
+        int bookingId,
+        CancellationToken cancellationToken
+    )
+    {
+        return paymentMethod.ToLower() switch
+        {
+            var method when method == PaymentMethod.Stripe.ToString().ToLower()
+                => await _paymentService.CreateStripeSessionAsync(bookingId, cancellationToken),
+            var method when method == PaymentMethod.PayPal.ToString().ToLower()
+                => await _paymentService.CreatePayPalSessionAsync(bookingId, cancellationToken),
+            _ => DomainErrors.General.InvalidPaymentMethod
+        };
     }
 }

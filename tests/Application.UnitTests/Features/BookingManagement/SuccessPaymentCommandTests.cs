@@ -88,7 +88,7 @@ public class SuccessPaymentCommandTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Booking.NotConfirmed);
+        result.Error.Should().Be(DomainErrors.Booking.AlreadyPaid);
     }
 
     [Fact]

@@ -5,6 +5,7 @@ using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Payment;
 using TAB.Application.Features.BookingManagement.CheckoutRoom;
 using TAB.Contracts.Features.Shared;
+using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.BookingManagement.Entities;
@@ -18,23 +19,28 @@ namespace Application.UnitTests.Features.BookingManagement;
 public class CheckoutBookingCommandTests
 {
     private readonly IBookingRepository _bookingRepositoryMock;
-    private readonly ISessionService _sessionServiceMock;
+    private readonly IPaymentService _paymentServiceMock;
     private readonly IUserContext _userContextMock;
     private readonly CheckoutBookingCommandHandler _sut;
     private readonly Booking _booking;
 
-    private static readonly CheckoutBookingCommand Command = new(BookingId: 1);
+    private static readonly CheckoutBookingCommand Command =
+        new(BookingId: 1, PaymentMethod: PaymentMethod.Stripe.ToString());
 
     public CheckoutBookingCommandTests()
     {
         _bookingRepositoryMock = Substitute.For<IBookingRepository>();
-        _sessionServiceMock = Substitute.For<ISessionService>();
+        _paymentServiceMock = Substitute.For<IPaymentService>();
         _userContextMock = Substitute.For<IUserContext>();
         var unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
+        _paymentServiceMock
+            .CreateStripeSessionAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(new Session("session_123", "publish_key"));
+
         _sut = new CheckoutBookingCommandHandler(
             _bookingRepositoryMock,
-            _sessionServiceMock,
+            _paymentServiceMock,
             _userContextMock,
             unitOfWorkMock
         );
@@ -121,7 +127,7 @@ public class CheckoutBookingCommandTests
 
         // Assert
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Booking.AlreadyPaid);
+        result.Error.Should().Be(DomainErrors.Booking.IsPaid);
     }
 
     [Fact]
@@ -136,8 +142,8 @@ public class CheckoutBookingCommandTests
 
         _booking.Status = BookingStatus.Confirmed;
 
-        _sessionServiceMock
-            .SaveAsync(Command.BookingId, CancellationToken.None)
+        _paymentServiceMock
+            .CreateStripeSessionAsync(Command.BookingId, CancellationToken.None)
             .Returns(DomainErrors.General.ServerError);
 
         // Act
@@ -162,7 +168,9 @@ public class CheckoutBookingCommandTests
 
         var session = new Session("session_123", "publish_key");
 
-        _sessionServiceMock.SaveAsync(Command.BookingId, CancellationToken.None).Returns(session);
+        _paymentServiceMock
+            .CreateStripeSessionAsync(Command.BookingId, CancellationToken.None)
+            .Returns(session);
 
         // Act
         var result = await _sut.Handle(Command, CancellationToken.None);

@@ -180,8 +180,25 @@ public class Booking : AggregateRoot, IAuditableEntity
         SessionId = sessionId;
     }
 
+    public Result CanCheckout()
+    {
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
+        }
+
+        return Status != BookingStatus.Confirmed
+            ? DomainErrors.Booking.NotConfirmed
+            : Result.Success();
+    }
+
     public Result Pay()
     {
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.AlreadyPaid;
+        }
+
         if (Status != BookingStatus.Confirmed)
         {
             return DomainErrors.Booking.NotConfirmed;

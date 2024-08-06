@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddControllers();
 
-        services.AddHttpContextAccessor().AddSwagger().AddVersioning();
+        services.AddHttpContextAccessor().AddSwagger().AddVersioning().AddCorsPolicies();
 
         return services;
     }
@@ -73,6 +73,22 @@ public static class ServiceCollectionExtensions
             config.DefaultApiVersion = new ApiVersion(1, 0);
             config.AssumeDefaultVersionWhenUnspecified = true;
             config.ReportApiVersions = true;
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection AddCorsPolicies(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(
+                "AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                }
+            );
         });
 
         return services;

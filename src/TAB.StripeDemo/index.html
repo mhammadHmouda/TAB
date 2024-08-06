@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkout Controller Test</title>
-    <script src="https://js.stripe.com/v3/"></script>
-  </head>
-  <body>
     <style>
       body {
         background-color: #f5f5f5;
@@ -30,15 +27,16 @@
       }
 
       button {
-        background-color: #6772e5;
+        background-color: rgb(206, 204, 60);
         border-radius: 7px;
         border: 0;
-        color: #fff;
+        color: black;
         cursor: pointer;
         font-size: 16px;
         font-weight: 600;
         padding: 8px 40px;
         transition: all 0.2s ease;
+        margin-top: 20px;
       }
 
       button:hover {
@@ -55,9 +53,6 @@
         border: 1px solid #d9d9d9;
         border-radius: 4px;
         font-size: 16px;
-        margin-bottom: 12px;
-        padding: 12px 16px;
-        width: 100%;
       }
 
       input:focus {
@@ -73,37 +68,116 @@
 
       h1 {
         margin-bottom: 24px;
+        margin-top: 0;
       }
+
+      .form-group {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-around;
+        margin-bottom: 12px;
+      }
+
+      .radio-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .radio-group label {
+        margin-left: 8px;
+        margin-right: 16px;
+      }
+
+      #error-message {
+        border-radius: 10px;
+        border: 2px solid red;
+        background-color: #fdd;
+        color: red;
+        padding: 10px;
+        display: none;
+        margin-top: 10px;
+       }
+
+       .stripe {
+        background-color: #675DFF;
+        margin-right: 10px;
+        font-size: 16px;
+        font-weight: 600;
+       }
+
+       .paypal {
+        background-color: rgb(60, 206, 172);
+        font-size: 16px;
+        font-weight: 600;
+       }
     </style>
-
+  </head>
+  <body>
     <div>
-      <h1>Stripe Checkout Test</h1>
-      <form>
-        <input type="text" id="sessionId" placeholder="Session ID" />
-        <input type="text" id="publishableKey" placeholder="Publishable Key" />
+      <h1>Payment Checkout Test</h1>
+      <form id="payment-form">
+        <div class="form-group">
+          <label for="bookingId">Booking ID:</label>
+          <input type="text" id="bookingId" placeholder="Booking ID" />
+        </div>
+        <div class="radio-group">
+            <div class="stripe">
+                <label for="stripe">Stripe</label>
+                <input type="radio" id="stripe" name="paymentMethod" value="stripe" />
+            </div>
+            <div class="paypal">
+                <label for="paypal">PayPal</label>
+                <input type="radio" id="paypal" name="paymentMethod" value="paypal" />
+            </div>
+        </div>
 
-        <button onclick="onButtonClick()" type="button">Pay</button>
+        <button type="button" onclick="onButtonClick()">Pay</button>
+        <div id="error-message" class="error-message"></div>
       </form>
     </div>
 
     <script>
-      function onButtonClick() {
-        const sessionId = document.getElementById("sessionId").value;
-        const publishableKey = document.getElementById("publishableKey").value;
+      var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJtaGFtbWFkaG1vdWRhaEBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTcyMzA0NzY2MSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA3Mi8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDcyLyJ9.Vp8nPBq4Y7vDz7a42d1udTJT_o5TYy9GsRvS92F4Lio';
+      
+      async function onButtonClick() {
+        const bookingId = document.getElementById("bookingId").value;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-        console.log("sessionId:", sessionId);
-        console.log("publishableKey:", publishableKey);
-        const stripe = Stripe(publishableKey);
+        await handlePayment(bookingId, paymentMethod);
+      }
 
-        const stripeCheckout = stripe.redirectToCheckout({
-          sessionId,
-        });
+      async function handlePayment(bookingId, paymentMethod) {
+        try {
+          const response = await fetch(`https://localhost:7072/api/v1/bookings/${bookingId}/checkout?paymentMethod=${paymentMethod}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + jwtToken
+            }
+          });
 
-        stripeCheckout.then((result) => {
-          if (result.error) {
-            console.error("Stripe Checkout failed:", result.error);
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.errors[0].message || 'Failed to create session');
           }
-        });
+
+          const { data } = result;
+
+          window.location.href = data.url;
+        } catch (error) {
+            console.error('Error during payment:', error);
+            const errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.textContent = error.message;
+            errorMessageDiv.style.display = 'block';      
+            
+            setTimeout(() => {
+                errorMessageDiv.style.display = 'none';
+            }, 3000);
+        }
       }
     </script>
   </body>

@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthentication(configuration);
         services.AddAzureBlob();
 
-        services.AddStripe(configuration);
+        services.AddPaymentService(configuration);
 
         return services;
     }
@@ -84,22 +84,23 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddStripe(
+    public static IServiceCollection AddPaymentService(
         this IServiceCollection services,
         IConfiguration configuration
     )
     {
         services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
+        services.Configure<PayPalOptions>(configuration.GetSection(PayPalOptions.SectionName));
 
-        var options = services
+        var stripeOptions = services
             .BuildServiceProvider()
             .GetRequiredService<IOptions<StripeOptions>>()
             .Value;
 
-        StripeConfiguration.ApiKey = options.SecretKey;
+        StripeConfiguration.ApiKey = stripeOptions.SecretKey;
 
         services.AddScoped<SessionService>();
-        services.AddScoped<ISessionService, StripeService>();
+        services.AddScoped<IPaymentService, PaymentService>();
 
         return services;
     }

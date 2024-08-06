@@ -72,14 +72,15 @@ public class BookingController : ApiController
     /// Checkout a booking.
     /// </summary>
     /// <param name="id">The booking id.</param>
+    /// <param name="paymentMethod">The payment method specified by the user</param>
     /// <returns>The result of the checkout.</returns>
     /// <response code="200">The booking was checked out.</response>
     /// <response code="400">The booking id is invalid.</response>
     [HttpPost(ApiRoutes.Booking.Checkout)]
-    public async Task<IActionResult> CheckoutBooking(int id) =>
+    public async Task<IActionResult> CheckoutBooking(int id, [FromQuery] string paymentMethod) =>
         await Result
-            .Create(id)
-            .Map(x => new CheckoutBookingCommand(x))
+            .Create((id, paymentMethod))
+            .Map(x => new CheckoutBookingCommand(x.id, x.paymentMethod))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 
