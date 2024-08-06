@@ -3,7 +3,7 @@ using TAB.Domain.Features.HotelManagement.ValueObjects;
 
 namespace TAB.Domain.Features.BookingManagement.Events;
 
-public record BookingCreatedEvent(
+public sealed record BookingCreatedEvent(
     int UserId,
     int HotelId,
     DateTime CheckInDate,

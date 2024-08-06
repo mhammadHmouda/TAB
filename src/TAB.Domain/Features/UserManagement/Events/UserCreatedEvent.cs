@@ -3,4 +3,4 @@ using TAB.Domain.Features.UserManagement.Entities;
 
 namespace TAB.Domain.Features.UserManagement.Events;
 
-public record UserCreatedEvent(User User) : IDomainEvent;
+public sealed record UserCreatedEvent(User User) : IDomainEvent;

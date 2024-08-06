@@ -2,4 +2,4 @@
 
 namespace TAB.Domain.Features.ReviewManagement.Events;
 
-public record ReviewCreatedEvent(int HotelId, int StarRating) : IDomainEvent;
+public sealed record ReviewCreatedEvent(int HotelId, int StarRating) : IDomainEvent;
