@@ -16,6 +16,8 @@ public class Amenity : Entity, IAuditableEntity
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
+    private Amenity() { }
+
     private Amenity(string name, string description, AmenityType type, int typeId)
     {
         Name = name;

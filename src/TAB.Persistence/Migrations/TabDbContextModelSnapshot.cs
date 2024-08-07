@@ -166,7 +166,7 @@ namespace TAB.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -281,9 +281,6 @@ namespace TAB.Persistence.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("DiscountedPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
@@ -484,10 +481,13 @@ namespace TAB.Persistence.Migrations
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Discount", b =>
                 {
-                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", null)
+                    b.HasOne("TAB.Domain.Features.HotelManagement.Entities.Room", "Room")
                         .WithMany("Discounts")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("TAB.Domain.Features.HotelManagement.Entities.Hotel", b =>

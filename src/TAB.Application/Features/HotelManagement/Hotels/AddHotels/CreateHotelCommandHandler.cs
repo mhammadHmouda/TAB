@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Hotels;
 using TAB.Domain.Core.Errors;
@@ -16,18 +17,21 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
     private readonly ICityRepository _cityRepository;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public CreateHotelCommandHandler(
         IHotelRepository hotelRepository,
         ICityRepository cityRepository,
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IMapper mapper
     )
     {
         _hotelRepository = hotelRepository;
         _cityRepository = cityRepository;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<Result<HotelResponse>> Handle(
@@ -68,16 +72,6 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Res
         await _hotelRepository.AddAsync(hotel);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new HotelResponse(
-            hotel.Id,
-            hotel.Name,
-            hotel.Description,
-            hotel.Location.Latitude,
-            hotel.Location.Longitude,
-            city.Value.Name,
-            city.Value.Country,
-            hotel.Type.ToString(),
-            $"{owner.Value.FirstName} {owner.Value.LastName}"
-        );
+        return _mapper.Map<HotelResponse>(hotel);
     }
 }

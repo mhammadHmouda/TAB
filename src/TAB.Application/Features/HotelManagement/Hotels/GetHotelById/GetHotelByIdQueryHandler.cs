@@ -10,7 +10,7 @@ using TAB.Domain.Features.HotelManagement.Repositories;
 namespace TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
 
 public class GetHotelByIdQueryHandler
-    : IQueryHandler<GetHotelByIdQuery, Result<HotelSearchResponse>>
+    : IQueryHandler<GetHotelByIdQuery, Result<HotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -30,7 +30,7 @@ public class GetHotelByIdQueryHandler
         _amenityRepository = amenityRepository;
     }
 
-    public async Task<Result<HotelSearchResponse>> Handle(
+    public async Task<Result<HotelResponse>> Handle(
         GetHotelByIdQuery request,
         CancellationToken cancellationToken
     )
@@ -44,7 +44,7 @@ public class GetHotelByIdQueryHandler
             return DomainErrors.Hotel.NotFound;
         }
 
-        var hotelResponse = _mapper.Map<HotelSearchResponse>(hotelMaybe.Value);
+        var hotelResponse = _mapper.Map<HotelResponse>(hotelMaybe.Value);
 
         var images = await _imageRepository.GetByHotelIdAsync(
             hotelMaybe.Value.Id,

@@ -3,7 +3,6 @@ using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Rooms;
 using TAB.Domain.Core.Errors;
-using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
@@ -14,19 +13,16 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDateTimeProvider _dateTime;
     private readonly IMapper _mapper;
 
     public UpdateRoomCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IDateTimeProvider dateTime,
         IMapper mapper
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
-        _dateTime = dateTime;
         _mapper = mapper;
     }
 
@@ -52,8 +48,7 @@ public class UpdateRoomCommandHandler : ICommandHandler<UpdateRoomCommand, Resul
             Money.Create(request.Price, request.Currency),
             request.Type,
             request.CapacityOfAdults,
-            request.CapacityOfChildren,
-            _dateTime.UtcNow
+            request.CapacityOfChildren
         );
 
         if (result.IsFailure)

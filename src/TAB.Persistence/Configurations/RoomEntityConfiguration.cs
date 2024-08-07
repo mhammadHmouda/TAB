@@ -37,8 +37,6 @@ public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
             }
         );
 
-        builder.Property(x => x.DiscountedPrice).IsRequired();
-
         builder
             .Property(x => x.Type)
             .HasConversion(v => v.ToString(), v => (RoomType)Enum.Parse(typeof(RoomType), v));
@@ -50,7 +48,5 @@ public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
 
         builder.Property(x => x.CreatedAtUtc).IsRequired();
         builder.Property(x => x.UpdatedAtUtc);
-
-        builder.HasMany(x => x.Discounts).WithOne().OnDelete(DeleteBehavior.Cascade);
     }
 }

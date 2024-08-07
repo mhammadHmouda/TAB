@@ -3,9 +3,9 @@ using TAB.Domain.Features.HotelManagement.Entities;
 
 namespace TAB.Application.Features.HotelManagement.Cities.GetCities;
 
-public class CitiesSearchSpecification : BaseSpecification<City>
+public class SearchCitiesSpecification : BaseSpecification<City>
 {
-    public CitiesSearchSpecification(
+    public SearchCitiesSpecification(
         string? requestFilters,
         string? requestSorting,
         int requestPage,
@@ -13,6 +13,7 @@ public class CitiesSearchSpecification : BaseSpecification<City>
     )
     {
         ApplyNoTracking();
+
         ApplyPaging(requestPage, requestPageSize);
         AddDynamicSorting(requestSorting);
         AddDynamicFilters(requestFilters);

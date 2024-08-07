@@ -6,4 +6,5 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TAB.Application.Features.BookingManagement.CheckoutRoom;
 
-public record CheckoutBookingCommand(int BookingId) : ICommand<Result<Session>>;
+public record CheckoutBookingCommand(int BookingId, string PaymentMethod)
+    : ICommand<Result<Session>>;

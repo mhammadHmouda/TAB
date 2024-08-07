@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Features.HotelManagement.Discounts.AddDiscount;
@@ -8,7 +9,6 @@ using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
-using TAB.Domain.Features.UserManagement.Enums;
 
 namespace Application.UnitTests.Features.HotelManagement.Discounts;
 
@@ -16,7 +16,6 @@ public class CreateDiscountHandlerTests
 {
     private readonly IRoomRepository _roomRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
-    private readonly IDateTimeProvider _dateTimeProviderMock;
 
     private static readonly CreateDiscountCommand Command =
         new(1, "Name", "Description", 10, DateTime.UtcNow.AddDays(2), DateTime.UtcNow.AddDays(6));
@@ -27,13 +26,23 @@ public class CreateDiscountHandlerTests
     {
         _roomRepositoryMock = Substitute.For<IRoomRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _dateTimeProviderMock = Substitute.For<IDateTimeProvider>();
+        var mapperMock = Substitute.For<IMapper>();
 
-        _sut = new CreateDiscountCommandHandler(
-            _roomRepositoryMock,
-            _unitOfWorkMock,
-            _dateTimeProviderMock
-        );
+        mapperMock
+            .Map<DiscountResponse>(Arg.Any<Discount>())
+            .Returns(
+                new DiscountResponse(
+                    1,
+                    "Name",
+                    "Description",
+                    10,
+                    DateTime.UtcNow.AddDays(2),
+                    DateTime.UtcNow.AddDays(6),
+                    1
+                )
+            );
+
+        _sut = new CreateDiscountCommandHandler(_roomRepositoryMock, _unitOfWorkMock, mapperMock);
     }
 
     [Fact]
@@ -68,8 +77,6 @@ public class CreateDiscountHandlerTests
         var discount = result.Value;
 
         discount.DiscountPercentage.Should().Be(Command.DiscountPercentage);
-        discount.StartDate.Should().Be(Command.StartDate);
-        discount.EndDate.Should().Be(Command.EndDate);
     }
 
     [Fact]

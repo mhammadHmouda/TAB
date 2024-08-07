@@ -2,4 +2,4 @@
 
 namespace TAB.Domain.Features.BookingManagement.Events;
 
-public record BookingConfirmedEvent(int BookingId) : IDomainEvent;
+public sealed record BookingConfirmedEvent(int BookingId) : IDomainEvent;

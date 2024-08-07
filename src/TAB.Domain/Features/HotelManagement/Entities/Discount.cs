@@ -12,6 +12,8 @@ public class Discount : Entity, IAuditableEntity
     public int DiscountPercentage { get; }
     public DateTime StartDate { get; }
     public DateTime EndDate { get; }
+    public int RoomId { get; private set; }
+    public Room Room { get; internal set; }
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
@@ -22,7 +24,8 @@ public class Discount : Entity, IAuditableEntity
         string description,
         int discountPercentage,
         DateTime start,
-        DateTime end
+        DateTime end,
+        int roomId
     )
     {
         Name = name;
@@ -30,6 +33,7 @@ public class Discount : Entity, IAuditableEntity
         DiscountPercentage = discountPercentage;
         StartDate = start;
         EndDate = end;
+        RoomId = roomId;
     }
 
     public static Discount Create(
@@ -37,7 +41,8 @@ public class Discount : Entity, IAuditableEntity
         string description,
         int discountPercentage,
         DateTime start,
-        DateTime end
+        DateTime end,
+        int roomId
     )
     {
         Ensure.NotEmpty(name, "The discount name is required.", nameof(name));
@@ -57,18 +62,14 @@ public class Discount : Entity, IAuditableEntity
         Ensure.IsTrue(start < end, "The start date must be before the end date.", nameof(start));
         Ensure.NotPast(start, "The start date must be in the future.", nameof(start));
         Ensure.NotPast(end, "The end date must be in the future.", nameof(end));
+        Ensure.NotDefault(roomId, "The room id is required.", nameof(roomId));
 
-        return new Discount(name, description, discountPercentage, start, end);
+        return new Discount(name, description, discountPercentage, start, end, roomId);
     }
 
-    public Money Apply(Money price, DateTime currentDate)
+    public Money Apply(Money price)
     {
-        if (currentDate >= StartDate && currentDate <= EndDate)
-        {
-            var discountedPrice = price.Amount - (price.Amount * DiscountPercentage / 100);
-            return Money.Create(discountedPrice, price.Currency);
-        }
-
-        return price;
+        var discountedPrice = price.Amount - (price.Amount * DiscountPercentage / 100);
+        return Money.Create(discountedPrice, price.Currency);
     }
 }

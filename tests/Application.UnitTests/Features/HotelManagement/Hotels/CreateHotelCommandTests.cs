@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
@@ -27,12 +28,14 @@ public class CreateHotelCommandTests
         var hotelRepositoryMock = Substitute.For<IHotelRepository>();
         _cityRepositoryMock = Substitute.For<ICityRepository>();
         _userRepositoryMock = Substitute.For<IUserRepository>();
+        var mapperMock = Substitute.For<IMapper>();
 
         _handler = new CreateHotelCommandHandler(
             hotelRepositoryMock,
             _cityRepositoryMock,
             _userRepositoryMock,
-            unitOfWorkMock
+            unitOfWorkMock,
+            mapperMock
         );
 
         _command = new CreateHotelCommand("Hotel", "Description", 1, 1, 1, 1, HotelType.Luxury);

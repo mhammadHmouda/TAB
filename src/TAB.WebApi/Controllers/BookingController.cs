@@ -4,6 +4,7 @@ using TAB.Application.Features.BookingManagement.AddBooking;
 using TAB.Application.Features.BookingManagement.CancelBooking;
 using TAB.Application.Features.BookingManagement.CheckoutRoom;
 using TAB.Application.Features.BookingManagement.ConfirmBooking;
+using TAB.Application.Features.BookingManagement.SearchBooking;
 using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Shared.Result;
 using TAB.WebApi.Abstractions;
@@ -71,14 +72,39 @@ public class BookingController : ApiController
     /// Checkout a booking.
     /// </summary>
     /// <param name="id">The booking id.</param>
+    /// <param name="paymentMethod">The payment method specified by the user</param>
     /// <returns>The result of the checkout.</returns>
     /// <response code="200">The booking was checked out.</response>
     /// <response code="400">The booking id is invalid.</response>
     [HttpPost(ApiRoutes.Booking.Checkout)]
-    public async Task<IActionResult> CheckoutBooking(int id) =>
+    public async Task<IActionResult> CheckoutBooking(int id, [FromQuery] string paymentMethod) =>
         await Result
-            .Create(id)
-            .Map(x => new CheckoutBookingCommand(x))
+            .Create((id, paymentMethod))
+            .Map(x => new CheckoutBookingCommand(x.id, x.paymentMethod))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Search bookings.
+    /// </summary>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The page size.</param>
+    /// <param name="filters">The filters.</param>
+    /// <param name="sorting">The sorting.</param>
+    /// <returns>The paged list of bookings.</returns>
+    /// <response code="200">The bookings were found.</response>
+    /// <response code="400">The search request is invalid.</response>
+    [HttpGet(ApiRoutes.Booking.Search)]
+    public async Task<IActionResult> SearchBookings(
+        string? filters,
+        string? sorting,
+        int page = 1,
+        int pageSize = 10
+    )
+    {
+        return await Result
+            .Create(new SearchBookingQuery(page, pageSize, filters, sorting))
+            .Bind(query => Mediator.Send(query))
+            .Match(Ok, BadRequest);
+    }
 }

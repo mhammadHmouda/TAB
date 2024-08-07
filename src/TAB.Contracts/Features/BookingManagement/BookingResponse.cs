@@ -9,5 +9,6 @@ public record BookingResponse(
     int UserId,
     DateTime CheckInDate,
     DateTime CheckOutDate,
-    Money TotalPrice
+    Money TotalPrice,
+    string Status
 );

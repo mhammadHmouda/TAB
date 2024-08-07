@@ -118,4 +118,9 @@ public class Hotel : AggregateRoot, IAuditableEntity
     {
         StarRating = Reviews.Any() ? (int)Math.Round(Reviews.Average(x => x.Rating), 0) : 0;
     }
+
+    public int? CalculateMaxDiscountPercentage() =>
+        Rooms.SelectMany(r => r.Discounts).MaxBy(d => d.DiscountPercentage)?.DiscountPercentage;
+
+    public Money? CalculateMinPrice() => Rooms.MinBy(r => r.Price.Amount)?.Price;
 }

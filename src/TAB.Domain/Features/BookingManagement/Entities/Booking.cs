@@ -16,7 +16,7 @@ public class Booking : AggregateRoot, IAuditableEntity
     public DateTime CheckInDate { get; }
     public DateTime CheckOutDate { get; }
     public Money TotalPrice { get; private set; }
-    public BookingStatus Status { get; private set; }
+    public BookingStatus Status { get; set; }
     public int UserId { get; private set; }
     public int HotelId { get; private set; }
     public int RoomId { get; private set; }
@@ -35,8 +35,7 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight,
-        string currency
+        Money totalPrice
     )
     {
         CheckInDate = checkInDate;
@@ -45,11 +44,10 @@ public class Booking : AggregateRoot, IAuditableEntity
         HotelId = hotelId;
         RoomId = roomId;
         Status = BookingStatus.Pending;
-
-        CalculateTotalPrice(pricePerNight, currency);
+        TotalPrice = totalPrice;
 
         AddDomainEvent(
-            new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice!)
+            new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice)
         );
     }
 
@@ -59,8 +57,7 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        decimal pricePerNight,
-        string currency
+        Money totalPrice
     )
     {
         Ensure.NotPast(
@@ -79,25 +76,14 @@ public class Booking : AggregateRoot, IAuditableEntity
             "The check out date must be greater than the check in date.",
             nameof(checkOutDate)
         );
-        Ensure.NotDefault(pricePerNight, "The price per night is required.", nameof(pricePerNight));
-
-        return new Booking(
-            checkInDate,
-            checkOutDate,
-            userId,
-            hotelId,
-            roomId,
-            pricePerNight,
-            currency
+        Ensure.GreaterThan(
+            totalPrice.Amount,
+            0,
+            "The total price must be greater than zero.",
+            nameof(totalPrice)
         );
-    }
 
-    private void CalculateTotalPrice(decimal pricePerNight, string currency)
-    {
-        var totalNights = (CheckOutDate - CheckInDate).Days;
-        var totalAmount = pricePerNight * totalNights;
-
-        TotalPrice = Money.Create(totalAmount, currency);
+        return new Booking(checkInDate, checkOutDate, userId, hotelId, roomId, totalPrice);
     }
 
     public Result Confirm()
@@ -159,8 +145,25 @@ public class Booking : AggregateRoot, IAuditableEntity
         SessionId = sessionId;
     }
 
+    public Result CanCheckout()
+    {
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.IsPaid;
+        }
+
+        return Status != BookingStatus.Confirmed
+            ? DomainErrors.Booking.NotConfirmed
+            : Result.Success();
+    }
+
     public Result Pay()
     {
+        if (Status == BookingStatus.Paid)
+        {
+            return DomainErrors.Booking.AlreadyPaid;
+        }
+
         if (Status != BookingStatus.Confirmed)
         {
             return DomainErrors.Booking.NotConfirmed;

@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using TAB.Application.Features.HotelManagement.Amenities.AddAmenity;
 using TAB.Application.Features.HotelManagement.Hotels.AddHotels;
+using TAB.Application.Features.HotelManagement.Hotels.GetFeaturedDeals;
 using TAB.Application.Features.HotelManagement.Hotels.GetHotelById;
+using TAB.Application.Features.HotelManagement.Hotels.GetHotelGallery;
+using TAB.Application.Features.HotelManagement.Hotels.GetRecentVisits;
 using TAB.Application.Features.HotelManagement.Hotels.SearchHotels;
 using TAB.Application.Features.HotelManagement.Hotels.UpdateHotels;
 using TAB.Application.Features.HotelManagement.Images.UploadImages;
@@ -175,6 +178,53 @@ public class HotelController : ApiController
         await Result
             .Create(id)
             .Map(x => new GetHotelByIdQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get featured deals for hotels.
+    /// </summary>
+    /// <param name="limit">The limit of hotels to get.</param>
+    /// <returns>The featured deals for hotels.</returns>
+    /// <response code="200">The featured deals for hotels.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.FeaturedDeals)]
+    public async Task<IActionResult> GetFeaturedDeals(int limit) =>
+        await Result
+            .Create(limit)
+            .Map(x => new GetFeaturedDealsQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Get recent visits for a user.
+    /// </summary>
+    /// <param name="limit">The limit of recent visits to get.</param>
+    /// <returns>The recent visits for a user.</returns>
+    /// <response code="200">The recent visits for a user.</response>
+    /// <response code="400">The request is invalid.</response>
+    [HttpGet(ApiRoutes.Hotels.RecentVisits)]
+    public async Task<IActionResult> GetRecentVisits(int limit) =>
+        await Result
+            .Create(limit)
+            .Map(x => new GetRecentVisitsQuery(x))
+            .Bind(x => Mediator.Send(x))
+            .Match(Ok, BadRequest);
+
+    /// <summary>
+    /// Gets the gallery of a hotel.
+    /// </summary>
+    /// <param name="id">The ID of the hotel.</param>
+    /// <param name="page">The page number of the gallery.</param>
+    /// <param name="pageSize">The page size of the gallery.</param>
+    /// <response code="200">The gallery of the hotel was retrieved successfully.</response>
+    /// <response code="400">The gallery of the hotel was not retrieved successfully.</response>
+    /// <returns>The gallery of the hotel.</returns>
+    [HttpGet(ApiRoutes.Hotels.Gallery)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetGallery(int id, int page = 1, int pageSize = 10) =>
+        await Result
+            .Create(new GetHotelGalleryQuery(id, page, pageSize))
             .Bind(x => Mediator.Send(x))
             .Match(Ok, BadRequest);
 }

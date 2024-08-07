@@ -1,8 +1,10 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using NSubstitute;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Features.ReviewManagement.UpdateReview;
+using TAB.Contracts.Features.ReviewManagement;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.ReviewManagement.Entities;
@@ -28,11 +30,17 @@ public class UpdateReviewCommandTests
         _reviewRepositoryMock = Substitute.For<IReviewRepository>();
         _userContextMock = Substitute.For<IUserContext>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
+        var mapperMock = Substitute.For<IMapper>();
+
+        mapperMock
+            .Map<ReviewResponse>(Arg.Any<Review>())
+            .Returns(new ReviewResponse(1, "Title", "Content", 5, 1, 1));
 
         _sut = new UpdateReviewCommandHandler(
             _reviewRepositoryMock,
             _userContextMock,
-            _unitOfWorkMock
+            _unitOfWorkMock,
+            mapperMock
         );
 
         _userContextMock.Id.Returns(1);

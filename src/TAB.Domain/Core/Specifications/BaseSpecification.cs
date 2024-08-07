@@ -6,7 +6,7 @@ namespace TAB.Domain.Core.Specifications;
 public class BaseSpecification<T> : ISpecification<T>
 {
     public Expression<Func<T, bool>>? Criteria { get; private set; }
-    public List<Expression<Func<T, object>>> Includes { get; private init; } = new();
+    public List<Expression<Func<T, object>>> Includes { get; } = new();
     public List<string> IncludeStrings { get; } = new();
     public Expression<Func<T, object>>? OrderBy { get; private set; }
     public Expression<Func<T, object>>? OrderByDescending { get; private set; }
@@ -15,7 +15,7 @@ public class BaseSpecification<T> : ISpecification<T>
     public bool IsPagingEnabled { get; private set; }
     public bool IsNoTracking { get; private set; }
 
-    protected void AddCriteria(Expression<Func<T, bool>> criteria)
+    public BaseSpecification<T> AddCriteria(Expression<Func<T, bool>> criteria)
     {
         if (Criteria == null)
         {
@@ -27,61 +27,77 @@ public class BaseSpecification<T> : ISpecification<T>
                 Expression.AndAlso(Criteria.Body, criteria.Body),
                 Criteria.Parameters.First()
             );
+
             Criteria = newCriteria;
         }
+
+        return this;
     }
 
-    protected void AddInclude(Expression<Func<T, object>> includeExpression)
+    public BaseSpecification<T> AddInclude(Expression<Func<T, object>> includeExpression)
     {
         Includes.Add(includeExpression);
+
+        return this;
     }
 
-    protected void AddInclude(string includeString)
+    public BaseSpecification<T> AddInclude(string includeString)
     {
         IncludeStrings.Add(includeString);
+
+        return this;
     }
 
-    protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
+    public BaseSpecification<T> AddOrderBy(Expression<Func<T, object>> orderByExpression)
     {
         OrderBy = orderByExpression;
+
+        return this;
     }
 
-    protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescExpression)
+    public BaseSpecification<T> AddOrderByDescending(
+        Expression<Func<T, object>> orderByDescExpression
+    )
     {
         OrderByDescending = orderByDescExpression;
+
+        return this;
     }
 
-    protected void ApplyPaging(int page, int pageSize)
+    public BaseSpecification<T> ApplyPaging(int page, int pageSize)
     {
         Skip = (page - 1) * pageSize;
         Take = pageSize;
         IsPagingEnabled = true;
+
+        return this;
     }
 
-    protected void ApplyNoTracking()
+    public BaseSpecification<T> ApplyNoTracking()
     {
         IsNoTracking = true;
+
+        return this;
     }
 
-    protected void AddDynamicFilters(string? filterString)
+    public BaseSpecification<T> AddDynamicFilters(string? filterString)
     {
         if (!string.IsNullOrEmpty(filterString))
         {
             var filter = FilterParser<T>.Parse(filterString);
-
             if (filter != null)
             {
                 AddCriteria(filter);
             }
         }
+        return this;
     }
 
-    protected void AddDynamicSorting(string? sortString)
+    public BaseSpecification<T> AddDynamicSorting(string? sortString)
     {
         if (!string.IsNullOrEmpty(sortString))
         {
             var (orderBy, isDescending) = SortsParser<T>.Parse(sortString);
-
             if (orderBy != null)
             {
                 if (isDescending)
@@ -94,17 +110,14 @@ public class BaseSpecification<T> : ISpecification<T>
                 }
             }
         }
+        return this;
     }
 
-    public ISpecification<T> ForCounting()
-    {
-        var countSpec = new BaseSpecification<T>
+    public ISpecification<T> ForCounting() =>
+        new BaseSpecification<T>
         {
             Criteria = Criteria,
             IsPagingEnabled = false,
             IsNoTracking = true
         };
-
-        return countSpec;
-    }
 }

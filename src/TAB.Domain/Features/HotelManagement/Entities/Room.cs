@@ -12,7 +12,6 @@ public class Room : Entity, IAuditableEntity
     public int Number { get; private set; }
     public string Description { get; private set; }
     public Money Price { get; set; }
-    public decimal DiscountedPrice { get; private set; }
     public RoomType Type { get; private set; }
     public int AdultsCapacity { get; private set; }
     public int ChildrenCapacity { get; private set; }
@@ -43,8 +42,6 @@ public class Room : Entity, IAuditableEntity
         IsAvailable = isAvailable;
         AdultsCapacity = capacityOfAdults;
         ChildrenCapacity = capacityOfChildren;
-
-        DiscountedPrice = price.Amount;
     }
 
     public static Room Create(
@@ -68,7 +65,7 @@ public class Room : Entity, IAuditableEntity
             capacityOfChildren
         );
 
-    public Result AddDiscount(Discount discount, DateTime currentDate)
+    public Result AddDiscount(Discount discount)
     {
         if (Discounts.Any(x => x.Name == discount.Name))
         {
@@ -76,19 +73,8 @@ public class Room : Entity, IAuditableEntity
         }
 
         Discounts.Add(discount);
-        UpdateDiscountedPrice(currentDate);
 
         return Result.Success();
-    }
-
-    private void UpdateDiscountedPrice(DateTime currentDate)
-    {
-        var discountedPrice = Discounts.Aggregate(
-            Price,
-            (current, discount) => discount.Apply(current, currentDate)
-        );
-
-        DiscountedPrice = discountedPrice.Amount;
     }
 
     public Result Update(
@@ -96,8 +82,7 @@ public class Room : Entity, IAuditableEntity
         Money price,
         RoomType type,
         int adultsCapacity,
-        int childrenCapacity,
-        DateTime currentDate
+        int childrenCapacity
     )
     {
         if (
@@ -117,8 +102,6 @@ public class Room : Entity, IAuditableEntity
         AdultsCapacity = adultsCapacity;
         ChildrenCapacity = childrenCapacity;
 
-        UpdateDiscountedPrice(currentDate);
-
         return Result.Success();
     }
 
@@ -132,5 +115,46 @@ public class Room : Entity, IAuditableEntity
         IsAvailable = isAvailable;
 
         return Result.Success();
+    }
+
+    public Money CalculateTotalPriceNow(DateTime currentDate)
+    {
+        var activeDiscounts = Discounts
+            .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
+            .ToList();
+
+        var totalPrice =
+            activeDiscounts.Count > 0
+                ? activeDiscounts
+                    .Aggregate(Price, (current, discount) => discount.Apply(current))
+                    .Amount
+                : Price.Amount;
+
+        return Money.Create(totalPrice, Price.Currency);
+    }
+
+    public Money CalculateTotalPrice(DateTime checkInDate, DateTime checkOutDate)
+    {
+        var totalNights = (checkOutDate - checkInDate).Days;
+
+        var totalPrice = 0m;
+
+        for (var i = 0; i < totalNights; i++)
+        {
+            var currentDate = checkInDate.AddDays(i);
+
+            var activeDiscounts = Discounts
+                .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
+                .ToList();
+
+            totalPrice +=
+                activeDiscounts.Count > 0
+                    ? activeDiscounts
+                        .Aggregate(Price, (current, discount) => discount.Apply(current))
+                        .Amount
+                    : Price.Amount;
+        }
+
+        return Money.Create(totalPrice, Price.Currency);
     }
 }

@@ -8,6 +8,7 @@ public class BookingProfile : Profile
 {
     public BookingProfile()
     {
-        CreateMap<Booking, BookingResponse>();
+        CreateMap<Booking, BookingResponse>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
     }
 }

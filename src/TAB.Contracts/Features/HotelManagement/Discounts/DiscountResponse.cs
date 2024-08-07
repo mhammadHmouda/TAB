@@ -6,5 +6,6 @@ public record DiscountResponse(
     string Description,
     decimal DiscountPercentage,
     DateTime StartDate,
-    DateTime EndDate
+    DateTime EndDate,
+    int RoomId
 );

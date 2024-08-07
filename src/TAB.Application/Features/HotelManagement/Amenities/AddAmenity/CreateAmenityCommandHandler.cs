@@ -1,4 +1,5 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Amenities;
@@ -16,18 +17,21 @@ public class CreateAmenityCommandHandler
     private readonly IAmenityService _amenityService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserContext _userContext;
+    private readonly IMapper _mapper;
 
     public CreateAmenityCommandHandler(
         IAmenityRepository amenityRepository,
         IUnitOfWork unitOfWork,
         IUserContext userContext,
-        IAmenityService amenityService
+        IAmenityService amenityService,
+        IMapper mapper
     )
     {
         _amenityRepository = amenityRepository;
         _unitOfWork = unitOfWork;
         _userContext = userContext;
         _amenityService = amenityService;
+        _mapper = mapper;
     }
 
     public async Task<Result<AmenityResponse>> Handle(
@@ -57,6 +61,6 @@ public class CreateAmenityCommandHandler
         await _amenityRepository.AddAsync(amenity);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new AmenityResponse(amenity.Id, amenity.Name, amenity.Description);
+        return _mapper.Map<AmenityResponse>(amenity);
     }
 }

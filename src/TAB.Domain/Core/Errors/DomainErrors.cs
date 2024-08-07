@@ -87,6 +87,8 @@ public static class DomainErrors
             new("General.LessThan", "The value is not less than the specified value.");
         public static Error GreaterThan =>
             new("General.GreaterThan", "The value is not greater than the specified value.");
+        public static Error InvalidPaymentMethod =>
+            new("General.InvalidPaymentMethod", "The payment method is invalid.");
     }
 
     public static class Location
@@ -145,6 +147,7 @@ public static class DomainErrors
     {
         public static Error AlreadyExists =>
             new("Discount.AlreadyExists", "The discount already exists.");
+        public static Error NotFound => new("Discount.NotFound", "Discount not found.");
     }
 
     public static class Room
@@ -178,10 +181,5 @@ public static class DomainErrors
         public static Error AlreadyPaid =>
             new("Booking.AlreadyPaid", "The booking is already paid.");
         public static Error IsPaid => new("Booking.IsPaid", "The booking is paid.");
-    }
-
-    public static class Session
-    {
-        public static Error NotFound => new("Session.NotFound", "Session not found.");
     }
 }

@@ -27,6 +27,8 @@ public class User : AggregateRoot, IAuditableEntity
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
+    private User() { }
+
     private User(Email email, string firstName, string lastName, string password, UserRole role)
     {
         Email = email;

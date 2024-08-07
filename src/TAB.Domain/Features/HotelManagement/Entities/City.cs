@@ -13,6 +13,8 @@ public class City : Entity, IAuditableEntity
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
 
+    private City() { }
+
     private City(string name, string country, string postOffice)
     {
         Name = name;

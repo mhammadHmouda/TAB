@@ -1,8 +1,8 @@
-﻿using TAB.Application.Core.Contracts;
+﻿using AutoMapper;
+using TAB.Application.Core.Contracts;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.HotelManagement.Discounts;
 using TAB.Domain.Core.Errors;
-using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
@@ -14,17 +14,17 @@ public class CreateDiscountCommandHandler
 {
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IMapper _mapper;
 
     public CreateDiscountCommandHandler(
         IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IDateTimeProvider dateTimeProvider
+        IMapper mapper
     )
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
-        _dateTimeProvider = dateTimeProvider;
+        _mapper = mapper;
     }
 
     public async Task<Result<DiscountResponse>> Handle(
@@ -49,10 +49,11 @@ public class CreateDiscountCommandHandler
             request.Description,
             request.DiscountPercentage,
             request.StartDate,
-            request.EndDate
+            request.EndDate,
+            request.RoomId
         );
 
-        var result = room.AddDiscount(discount, _dateTimeProvider.UtcNow);
+        var result = room.AddDiscount(discount);
 
         if (result.IsFailure)
         {
@@ -61,13 +62,6 @@ public class CreateDiscountCommandHandler
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new DiscountResponse(
-            discount.Id,
-            discount.Name,
-            discount.Description,
-            discount.DiscountPercentage,
-            discount.StartDate,
-            discount.EndDate
-        );
+        return _mapper.Map<DiscountResponse>(discount);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Domain.Core.Shared.Maybe;
+using TAB.Domain.Core.Specifications;
 using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Persistence.Repositories.Abstractions;
@@ -22,4 +23,9 @@ public class RoomRepository : BaseRepository<Room>, IRoomRepository
                 .Include(x => x.Discounts)
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken) ?? Maybe<Room>.None;
     }
+
+    public async Task<IEnumerable<Room>> SearchRoomsAsync(
+        ISpecification<Room> spec,
+        CancellationToken cancellationToken
+    ) => await GetAllAsync(spec, cancellationToken);
 }
