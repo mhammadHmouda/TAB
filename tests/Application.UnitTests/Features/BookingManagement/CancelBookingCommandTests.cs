@@ -40,7 +40,7 @@ public class CancelBookingCommandTests
         _dateTimeProviderMock.UtcNow.Returns(DateTime.Now);
 
         _booking = Booking.Create(
-            _dateTimeProviderMock.UtcNow,
+            _dateTimeProviderMock.UtcNow.AddDays(1),
             _dateTimeProviderMock.UtcNow.AddDays(2),
             1,
             1,

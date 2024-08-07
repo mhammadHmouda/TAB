@@ -26,7 +26,7 @@ public class BookingRoomCommandTests
     private readonly IRoomRepository _roomRepositoryMock;
 
     private static readonly BookingRoomCommand Command =
-        new(DateTime.Now, DateTime.Now.AddDays(1), 1);
+        new(DateTime.Now.AddDays(1), DateTime.Now.AddDays(2), 1);
 
     private static readonly User User = User.Create(
         Email.From("test@example.com"),
