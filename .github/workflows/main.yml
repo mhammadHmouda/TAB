@@ -27,11 +27,15 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker buildx build --platform linux/amd64,linux/arm64 -f ./src/TAB.WebApi/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} --push .
+        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} -f ./src/TAB.WebApi/Dockerfile .
 
     - name: Run Unit Tests
       run: |
         docker run --rm ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} dotnet test ./tests/Application.UnitTests/Application.UnitTests.csproj --configuration Release
+
+    - name: Push Docker image
+      run: |
+        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} --push -f ./src/TAB.WebApi/Dockerfile .
 
     - name: Azure Login
       uses: azure/login@v1
