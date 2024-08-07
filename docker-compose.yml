@@ -12,10 +12,11 @@ services:
       - tab
     ports:
       - "7194:80"
+      - "443:443" 
     depends_on:
       - tab.sqlserver
     volumes:
-      - tap.api:/app/wwwroot
+      - tab.api:/app/wwwroot  
 
   tab.sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -31,7 +32,7 @@ services:
 
 volumes:
   tab.sqlserver:
-  tap.api:
+  tab.api:
 
 networks:
   tab:
