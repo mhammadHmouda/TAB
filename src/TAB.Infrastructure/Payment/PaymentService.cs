@@ -7,7 +7,6 @@ using TAB.Application.Features.BookingManagement.CancelBooking;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Repositories;
-using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Infrastructure.Payment.Options;
 using Session = TAB.Contracts.Features.Shared.Session;
 
@@ -16,7 +15,6 @@ namespace TAB.Infrastructure.Payment;
 public class PaymentService : IPaymentService
 {
     private readonly IBookingRepository _bookingRepository;
-    private readonly IImageRepository _imageRepository;
     private readonly StripeOptions _stripeOptions;
     private readonly PayPalOptions _payPalOptions;
     private readonly SessionService _sessionService;
@@ -28,13 +26,11 @@ public class PaymentService : IPaymentService
         IOptions<StripeOptions> stripeOptions,
         IOptions<PayPalOptions> payPalOptions,
         SessionService sessionService,
-        IBookingRepository bookingRepository,
-        IImageRepository imageRepository
+        IBookingRepository bookingRepository
     )
     {
         _sessionService = sessionService;
         _bookingRepository = bookingRepository;
-        _imageRepository = imageRepository;
         _stripeOptions = stripeOptions.Value;
         _payPalOptions = payPalOptions.Value;
     }
@@ -56,13 +52,6 @@ public class PaymentService : IPaymentService
 
         var booking = bookingMaybe.Value;
 
-        var images = await _imageRepository.GetByRoomIdAsync(
-            bookingMaybe.Value.RoomId,
-            cancellation
-        );
-
-        var imagesUrl = images.Select(i => i.Url).DefaultIfEmpty(DefaultImageUrl).ToList();
-
         var options = new SessionCreateOptions
         {
             SuccessUrl = _stripeOptions.SuccessUrl,
@@ -81,16 +70,23 @@ public class PaymentService : IPaymentService
                         {
                             Name = $"{booking.Room.Type} Room - {booking.Room.Number}",
                             Description = $"""
-                                Secure your stay in the exquisite {booking
+                                    Book a {booking
+                                    .Room.Type.ToString()
+                                    .ToLower()} room, room number {booking
                                     .Room
-                                    .Type} Room at {booking.Hotel.Name},
-                                nestled in the heart of {booking
-                                    .Hotel
-                                    .City
-                                    .Name}. Your booking awaits in Room
-                                {booking.Room.Number}—indulge in unparalleled comfort and style.
+                                    .Number}, at our esteemed hotel.
+                                    This room accommodates up to {booking
+                                    .Room
+                                    .AdultsCapacity} adults and {booking
+                                    .Room
+                                    .ChildrenCapacity} children,
+                                    providing a comfortable and luxurious stay. The room features {booking
+                                    .Room
+                                    .Description},
+                                    ensuring you have everything you need for a relaxing visit.
+                                    Enjoy our exclusive discounts available for your booking period.
                                 """,
-                            Images = imagesUrl
+                            Images = new List<string> { DefaultImageUrl }
                         }
                     },
                     Quantity = 1

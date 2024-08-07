@@ -132,4 +132,29 @@ public class Room : Entity, IAuditableEntity
 
         return Money.Create(totalPrice, Price.Currency);
     }
+
+    public Money CalculateTotalPrice(DateTime checkInDate, DateTime checkOutDate)
+    {
+        var totalNights = (checkOutDate - checkInDate).Days;
+
+        var totalPrice = 0m;
+
+        for (var i = 0; i < totalNights; i++)
+        {
+            var currentDate = checkInDate.AddDays(i);
+
+            var activeDiscounts = Discounts
+                .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
+                .ToList();
+
+            totalPrice +=
+                activeDiscounts.Count > 0
+                    ? activeDiscounts
+                        .Aggregate(Price, (current, discount) => discount.Apply(current))
+                        .Amount
+                    : Price.Amount;
+        }
+
+        return Money.Create(totalPrice, Price.Currency);
+    }
 }

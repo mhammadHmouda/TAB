@@ -115,11 +115,6 @@
         font-size: 16px;
         font-weight: 700;
        }
-
-       #paypal {
-        
-       }
-
     </style>
   </head>
   <body>
@@ -133,7 +128,7 @@
         <div class="radio-group">
             <div class="stripe">
                 <label for="stripe">Stripe</label>
-                <input type="radio" id="stripe" name="paymentMethod" value="stripe" />
+                <input type="radio" id="stripe" name="paymentMethod" value="stripe" checked/>
             </div>
             <div class="paypal">
                 <label for="paypal">PayPal</label>
@@ -147,7 +142,7 @@
     </div>
 
     <script>
-      var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJtaGFtbWFkaG1vdWRhaEBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTcyMzA0NzY2MSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA3Mi8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDcyLyJ9.Vp8nPBq4Y7vDz7a42d1udTJT_o5TYy9GsRvS92F4Lio';
+      var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJtaGFtbWFkaG1vdWRhaEBnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTcyMzExMzgyMywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA3Mi8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDcyLyJ9.ORfE8NkGMeJke3g6qxEqMJOf_5BTCKJ_wB5OpRXOLfQ';
       
       async function onButtonClick() {
         const bookingId = document.getElementById("bookingId").value;

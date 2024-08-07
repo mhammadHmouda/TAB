@@ -8,7 +8,6 @@ using TAB.Domain.Core.Shared.Maybe;
 using TAB.Domain.Features.BookingManagement.Entities;
 using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.BookingManagement.Repositories;
-using TAB.Domain.Features.HotelManagement.Entities;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 
 namespace Application.UnitTests.Features.BookingManagement;
@@ -35,8 +34,7 @@ public class SuccessPaymentCommandTests
             1,
             1,
             1,
-            Money.Create(120, "USD"),
-            new List<Discount>()
+            Money.Create(2800, "USD")
         );
         _booking.AddSessionId(Command.SessionId);
     }

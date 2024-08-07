@@ -35,8 +35,7 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        Money pricePerNight,
-        IReadOnlyCollection<Discount> discounts
+        Money totalPrice
     )
     {
         CheckInDate = checkInDate;
@@ -45,11 +44,10 @@ public class Booking : AggregateRoot, IAuditableEntity
         HotelId = hotelId;
         RoomId = roomId;
         Status = BookingStatus.Pending;
-
-        CalculateTotalPrice(pricePerNight, discounts);
+        TotalPrice = totalPrice;
 
         AddDomainEvent(
-            new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice!)
+            new BookingCreatedEvent(userId, hotelId, CheckInDate, CheckOutDate, TotalPrice)
         );
     }
 
@@ -59,8 +57,7 @@ public class Booking : AggregateRoot, IAuditableEntity
         int userId,
         int hotelId,
         int roomId,
-        Money pricePerNight,
-        IReadOnlyCollection<Discount> discounts
+        Money totalPrice
     )
     {
         Ensure.NotPast(
@@ -79,46 +76,14 @@ public class Booking : AggregateRoot, IAuditableEntity
             "The check out date must be greater than the check in date.",
             nameof(checkOutDate)
         );
-        Ensure.NotDefault(pricePerNight, "The price per night is required.", nameof(pricePerNight));
-
-        return new Booking(
-            checkInDate,
-            checkOutDate,
-            userId,
-            hotelId,
-            roomId,
-            pricePerNight,
-            discounts
+        Ensure.GreaterThan(
+            totalPrice.Amount,
+            0,
+            "The total price must be greater than zero.",
+            nameof(totalPrice)
         );
-    }
 
-    private void CalculateTotalPrice(Money pricePerNight, IReadOnlyCollection<Discount> discounts)
-    {
-        var totalNights = (CheckOutDate - CheckInDate).Days;
-
-        var totalPrice = 0m;
-
-        for (var i = 0; i < totalNights; i++)
-        {
-            var currentDate = CheckInDate.AddDays(i);
-
-            var activeDiscounts = discounts
-                .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
-                .ToList();
-
-            if (activeDiscounts.Count > 0)
-            {
-                totalPrice += activeDiscounts
-                    .Aggregate(pricePerNight, (current, discount) => discount.Apply(current))
-                    .Amount;
-            }
-            else
-            {
-                totalPrice += pricePerNight.Amount;
-            }
-        }
-
-        TotalPrice = Money.Create(totalPrice, pricePerNight.Currency);
+        return new Booking(checkInDate, checkOutDate, userId, hotelId, roomId, totalPrice);
     }
 
     public Result Confirm()

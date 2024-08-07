@@ -79,14 +79,15 @@ public class BookingRoomCommandHandler
 
         var hotelId = room.HotelId;
 
+        var totalPrice = room.CalculateTotalPrice(request.CheckInDate, request.CheckOutDate);
+
         var booking = Booking.Create(
             request.CheckInDate,
             request.CheckOutDate,
             userId,
             hotelId,
             request.RoomId,
-            room.Price,
-            room.Discounts.ToList()
+            totalPrice
         );
 
         await _bookingRepository.AddAsync(booking);
