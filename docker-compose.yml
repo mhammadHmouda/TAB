@@ -14,6 +14,8 @@ services:
       - "7194:80"
     depends_on:
       - tab.sqlserver
+    volumes:
+      - tap.api:/app/wwwroot
 
   tab.sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -23,12 +25,13 @@ services:
       - tab
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Hamood123!
+      - SA_PASSWORD=Password123
     volumes:  
       - tab.sqlserver:/var/opt/mssql
 
 volumes:
   tab.sqlserver:
+  tap.api:
 
 networks:
   tab:
