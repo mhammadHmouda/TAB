@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>a71f505c-d1e9-49ce-af5f-9c8accca1ac9</ProjectGuid>
+    <ProjectGuid>6518a448-0888-4b5c-b3b1-dd7d7fff20a3</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>tab.webapi</DockerServiceName>
