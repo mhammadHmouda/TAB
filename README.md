@@ -39,7 +39,7 @@ You should find a file with `appsettings.json` name in the `src/TAB.WebApi` dire
 
 ## API Documentation
 
-You can find the API documentation Swagger UI for Development at [http://localhost:7072/swagger/index.html](http://localhost:7072/swagger/index.html) OR for Production at [https://foothill-tab.azurewebsites.net/swagger/index.html](https://foothill-tab.azurewebsites.net/swagger/index.html). You can also find the Postman collection directly from ([here](https://documenter.getpostman.com/view/29769959/2sA3s1nrqm)). You can also find my postman collection via my public workspace [here](https://www.postman.com/hmoudah/workspace/tab-api-s/collection/29769959-1da9a23c-9247-4ede-9737-957b0224bea9?action=share&creator=29769959&active-environment=29769959-9df2b079-d9a6-477d-8817-54ba8ac7ba41).
+You can find the API documentation Swagger UI for Development at ([http://localhost:7072/swagger/index.html](http://localhost:7072/swagger/index.html)) OR for Production at ([https://foothill-tab.azurewebsites.net/swagger/index.html](https://foothill-tab.azurewebsites.net/swagger/index.html)). You can also find the Postman collection directly from ([here](https://documenter.getpostman.com/view/29769959/2sA3s1nrqm)). You can also find my postman collection via my public workspace ([here](https://www.postman.com/hmoudah/workspace/tab-api-s/collection/29769959-1da9a23c-9247-4ede-9737-957b0224bea9?action=share&creator=29769959&active-environment=29769959-9df2b079-d9a6-477d-8817-54ba8ac7ba41)).
 
 ## Database Diagram
 
