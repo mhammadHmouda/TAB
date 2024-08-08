@@ -64,9 +64,8 @@ This Project used the Clean Architecture approach to structure the project into 
 ## Notes
 
 - To check the payment feature demo, just go through these steps:
-
     - Create booking from book room api to be the booking status `Pending`.
     - Yhe admin should confirm this booking from confirm booking api to be the booking status `Confirmed` and the use recieved email with checkout link.
     - Then use the checkout API, which will return a url for payment session page.
     - I've set up a demo for testing the payment feature. You can utilize the card number `4242 4242 4242 4242` with any future date and any CVC code.
-    - Locate the HTML page in the src/PaymentDemo directory of the project. Open it, enter the id for booking confirmed and ready for checkout then choose the payment method you need (Stripe, Paypal), then press the "Pay" button.
+    - Locate the HTML page in the src/PaymentDemo directory of the project replace the jwtToken hardcoded via new token. Open page, enter the id for booking confirmed and ready for checkout then choose the payment method you need (Stripe, Paypal), then press the "Pay" button.
