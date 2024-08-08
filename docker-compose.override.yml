@@ -5,6 +5,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_ConnectionStrings__Database=${Db_ConnectionString}
+      - ASPNETCORE_ConnectionStrings__AzureBlob=${AzureBlob_ConnectionString}
+      - ASPNETCORE_AzureBlob__ContainerName=${AzureBlob_ContainerName}
+      - ASPNETCORE_Mail__SenderEmail=${SenderEmail}
+      - ASPNETCORE_Mail__SmtpPassword=${SmtpPassword}
+      - ASPNETCORE_Authentication__Schemes__Bearer__SecretKey=${Jwt_SecretKey}
+      - ASPNETCORE_Stripe__SecretKey=${Stripe_SecretKey}
+      - ASPNETCORE_Stripe__PublishableKey=${Stripe_PublishableKey}
+      - ASPNETCORE_PayPal__ClientId=${PayPal_ClientId}
+      - ASPNETCORE_PayPal__ClientSecret=${PayPal_ClientSecret}
     ports:
       - "80"
       - "443"
