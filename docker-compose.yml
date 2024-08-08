@@ -11,7 +11,7 @@ services:
     networks:
       - tab
     ports:
-      - "7194:80"
+      - "7072:80"
       - "443:443" 
     depends_on:
       - tab.sqlserver
