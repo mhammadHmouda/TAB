@@ -24,7 +24,7 @@ To ensure that the project runs smoothly, you'll need to include the correct env
 **Steps to Obtain and Use the `.env` File:**
 
 1. **Request the `.env` File:**
-   - Contact me at ([Email](mhammadhmoudah@gmail.com)) or ([LinkedIn](https://www.linkedin.com/in/mhammad-hmouda)) to request the `.env` file.
+   - Contact me at ([Email](mailto:mhammadhmoudah@gmail.com)) or ([LinkedIn](https://www.linkedin.com/in/mhammad-hmouda)) to request the `.env` file.
   
 2. **Place the `.env` File in the Project:**
    - Once you receive the `.env` file, place it in the root directory of your project.
