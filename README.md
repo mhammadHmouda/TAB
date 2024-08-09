@@ -15,6 +15,20 @@ This project is not just about coding; it's an opportunity for you to engage in 
 - ASP.NET Core 7 SDK installed
 - Docker installed
 
+## Environment Setup
+
+### Getting the Environment Variables
+
+To ensure that the project runs smoothly, you'll need to include the correct environment variables. These are stored in a `.env` file, which you can send message to give you this file. This file contains sensitive information and should not be committed to version control.
+
+**Steps to Obtain and Use the `.env` File:**
+
+1. **Request the `.env` File:**
+   - Contact me at ([Email](mhammadhmoudah@gmail.com)) or ([LinkedIn](https://www.linkedin.com/in/mhammad-hmouda)) to request the `.env` file.
+  
+2. **Place the `.env` File in the Project:**
+   - Once you receive the `.env` file, place it in the root directory of your project.
+
 ## Setup Guide
 
 1. **Clone the Project**: Clone the project repository to your local machine using Git.
