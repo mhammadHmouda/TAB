@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Serilog;
 using TAB.Application;
 using TAB.Infrastructure;
@@ -7,6 +8,14 @@ using TAB.WebApi.Extensions;
 using TAB.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri(builder.Configuration["KeyVault:Endpoint"]!),
+        new DefaultAzureCredential()
+    );
+}
 
 builder.Host.UseSerilog(
     (context, configuration) =>
