@@ -5,7 +5,6 @@ using TAB.Application.Core.Interfaces.Data;
 using TAB.Contracts.Features.BookingManagement;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
-using TAB.Domain.Features.BookingManagement.Entities;
 using TAB.Domain.Features.BookingManagement.Repositories;
 using TAB.Domain.Features.HotelManagement.Repositories;
 using TAB.Domain.Features.UserManagement.Repositories;
@@ -63,36 +62,20 @@ public class BookingRoomCommandHandler
             return DomainErrors.Room.NotFound;
         }
 
-        var room = roomMaybe.Value;
-
-        if (!room.IsAvailable)
-        {
-            return DomainErrors.Room.NotAvailable;
-        }
-
-        var result = room.UpdateAvailability(false);
-
-        if (result.IsFailure)
-        {
-            return result.Error;
-        }
-
-        var hotelId = room.HotelId;
-
-        var totalPrice = room.CalculateTotalPrice(request.CheckInDate, request.CheckOutDate);
-
-        var booking = Booking.Create(
-            request.CheckInDate,
-            request.CheckOutDate,
+        var bookingResult = roomMaybe.Value.BookRoom(
             userId,
-            hotelId,
-            request.RoomId,
-            totalPrice
+            request.CheckInDate,
+            request.CheckOutDate
         );
 
-        await _bookingRepository.AddAsync(booking);
+        if (bookingResult.IsFailure)
+        {
+            return bookingResult.Error;
+        }
+
+        await _bookingRepository.AddAsync(bookingResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<BookingResponse>(booking);
+        return _mapper.Map<BookingResponse>(bookingResult.Value);
     }
 }

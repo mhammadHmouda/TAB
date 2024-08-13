@@ -2,6 +2,7 @@
 using TAB.Domain.Core.Interfaces;
 using TAB.Domain.Core.Primitives;
 using TAB.Domain.Core.Shared.Result;
+using TAB.Domain.Features.BookingManagement.Entities;
 using TAB.Domain.Features.HotelManagement.Enums;
 using TAB.Domain.Features.HotelManagement.ValueObjects;
 
@@ -16,7 +17,7 @@ public class Room : Entity, IAuditableEntity
     public int AdultsCapacity { get; private set; }
     public int ChildrenCapacity { get; private set; }
     public bool IsAvailable { get; private set; }
-    public int HotelId { get; private set; }
+    public int HotelId { get; }
     public ICollection<Discount> Discounts { get; } = new List<Discount>();
     public DateTime CreatedAtUtc { get; internal set; }
     public DateTime? UpdatedAtUtc { get; internal set; }
@@ -65,16 +66,18 @@ public class Room : Entity, IAuditableEntity
             capacityOfChildren
         );
 
-    public Result AddDiscount(Discount discount)
+    public Result<Booking> BookRoom(int userId, DateTime checkInDate, DateTime checkOutDate)
     {
-        if (Discounts.Any(x => x.Name == discount.Name))
-        {
-            return DomainErrors.Discount.AlreadyExists;
-        }
+        if (!IsAvailable)
+            return DomainErrors.Room.NotAvailable;
 
-        Discounts.Add(discount);
+        var totalPrice = CalculateTotalPrice(checkInDate, checkOutDate);
 
-        return Result.Success();
+        var booking = Booking.Create(checkInDate, checkOutDate, userId, HotelId, Id, totalPrice);
+
+        UpdateAvailability(false);
+
+        return booking;
     }
 
     public Result Update(
@@ -117,42 +120,41 @@ public class Room : Entity, IAuditableEntity
         return Result.Success();
     }
 
-    public Money CalculateTotalPriceNow(DateTime currentDate)
+    public Result AddDiscount(Discount discount)
     {
-        var activeDiscounts = Discounts
-            .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
-            .ToList();
+        if (Discounts.Any(x => x.Name == discount.Name))
+        {
+            return DomainErrors.Discount.AlreadyExists;
+        }
 
-        var totalPrice =
-            activeDiscounts.Count > 0
-                ? activeDiscounts
-                    .Aggregate(Price, (current, discount) => discount.Apply(current))
-                    .Amount
-                : Price.Amount;
+        Discounts.Add(discount);
 
-        return Money.Create(totalPrice, Price.Currency);
+        return Result.Success();
     }
 
-    public Money CalculateTotalPrice(DateTime checkInDate, DateTime checkOutDate)
+    public Money CalculatePrice(DateTime date)
+    {
+        var activeDiscounts = Discounts
+            .Where(d => d.StartDate <= date && d.EndDate >= date)
+            .ToList();
+
+        var discountedPrice = activeDiscounts.Aggregate(
+            Price,
+            (current, discount) => discount.Apply(current)
+        );
+
+        return discountedPrice;
+    }
+
+    private Money CalculateTotalPrice(DateTime checkInDate, DateTime checkOutDate)
     {
         var totalNights = (checkOutDate - checkInDate).Days;
-
         var totalPrice = 0m;
 
         for (var i = 0; i < totalNights; i++)
         {
             var currentDate = checkInDate.AddDays(i);
-
-            var activeDiscounts = Discounts
-                .Where(d => d.StartDate <= currentDate && d.EndDate >= currentDate)
-                .ToList();
-
-            totalPrice +=
-                activeDiscounts.Count > 0
-                    ? activeDiscounts
-                        .Aggregate(Price, (current, discount) => discount.Apply(current))
-                        .Amount
-                    : Price.Amount;
+            totalPrice += CalculatePrice(currentDate).Amount;
         }
 
         return Money.Create(totalPrice, Price.Currency);

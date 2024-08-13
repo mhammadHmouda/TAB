@@ -9,6 +9,14 @@ public class TokenValidationAttribute : AuthorizeAttribute, IAsyncAuthorizationF
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
+        var endpoint = context.ActionDescriptor.EndpointMetadata;
+        var allowAnonymous = endpoint.OfType<AllowAnonymousAttribute>().Any();
+
+        if (allowAnonymous)
+        {
+            return;
+        }
+
         var tokenValue = context.HttpContext.Request.Headers["Authorization"];
 
         var token = tokenValue.ToString().Split(" ").Last();

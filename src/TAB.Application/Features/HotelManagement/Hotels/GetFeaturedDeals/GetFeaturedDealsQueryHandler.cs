@@ -101,7 +101,7 @@ public class GetFeaturedDealsQueryHandler
             room.Number,
             room.Type.ToString(),
             room.Price,
-            room.CalculateTotalPriceNow(_dateTimeProvider.UtcNow),
+            room.CalculatePrice(_dateTimeProvider.UtcNow),
             _mapper.Map<List<DiscountResponse>>(room.Discounts.ToList())
         );
 }
