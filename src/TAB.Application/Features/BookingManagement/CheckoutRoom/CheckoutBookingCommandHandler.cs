@@ -3,7 +3,6 @@ using TAB.Application.Core.Interfaces.Common;
 using TAB.Application.Core.Interfaces.Data;
 using TAB.Application.Core.Interfaces.Payment;
 using TAB.Contracts.Features.Shared;
-using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Repositories;
@@ -14,21 +13,21 @@ public class CheckoutBookingCommandHandler
     : ICommandHandler<CheckoutBookingCommand, Result<Session>>
 {
     private readonly IBookingRepository _bookingRepository;
-    private readonly IPaymentService _paymentService;
+    private readonly IPaymentServiceFactory _paymentServiceFactory;
     private readonly IUserContext _userContext;
     private readonly IUnitOfWork _unitOfWork;
 
     public CheckoutBookingCommandHandler(
         IBookingRepository bookingRepository,
-        IPaymentService paymentService,
         IUserContext userContext,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IPaymentServiceFactory paymentServiceFactory
     )
     {
         _bookingRepository = bookingRepository;
-        _paymentService = paymentService;
         _userContext = userContext;
         _unitOfWork = unitOfWork;
+        _paymentServiceFactory = paymentServiceFactory;
     }
 
     public async Task<Result<Session>> Handle(
@@ -48,21 +47,22 @@ public class CheckoutBookingCommandHandler
 
         var booking = bookingMaybe.Value;
 
-        if (booking.UserId != _userContext.Id)
+        var checkoutResult = booking.CanBeCheckedOutBy(_userContext.Id);
+
+        if (checkoutResult.IsFailure)
         {
-            return DomainErrors.General.Unauthorized;
+            return checkoutResult.Error;
         }
 
-        var canCheckoutResult = booking.CanCheckout();
+        var paymentServiceResult = _paymentServiceFactory.Create(command.PaymentMethod);
 
-        if (canCheckoutResult.IsFailure)
+        if (paymentServiceResult.IsFailure)
         {
-            return canCheckoutResult.Error;
+            return paymentServiceResult.Error;
         }
 
-        var paymentResult = await CreatePaymentSessionAsync(
-            command.PaymentMethod,
-            command.BookingId,
+        var paymentResult = await paymentServiceResult.Value.CreateSessionAsync(
+            booking.Id,
             cancellationToken
         );
 
@@ -75,21 +75,5 @@ public class CheckoutBookingCommandHandler
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return paymentResult.Value;
-    }
-
-    private async Task<Result<Session>> CreatePaymentSessionAsync(
-        string paymentMethod,
-        int bookingId,
-        CancellationToken cancellationToken
-    )
-    {
-        return paymentMethod.ToLower() switch
-        {
-            var method when method == PaymentMethod.Stripe.ToString().ToLower()
-                => await _paymentService.CreateStripeSessionAsync(bookingId, cancellationToken),
-            var method when method == PaymentMethod.PayPal.ToString().ToLower()
-                => await _paymentService.CreatePayPalSessionAsync(bookingId, cancellationToken),
-            _ => DomainErrors.General.InvalidPaymentMethod
-        };
     }
 }

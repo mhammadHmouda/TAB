@@ -100,7 +100,11 @@ public static class ServiceCollectionExtensions
         StripeConfiguration.ApiKey = stripeOptions.SecretKey;
 
         services.AddScoped<SessionService>();
-        services.AddScoped<IPaymentService, PaymentService>();
+
+        services.AddScoped<IPaymentService, StripeService>();
+        services.AddScoped<IPaymentService, PayPalService>();
+
+        services.AddScoped<IPaymentServiceFactory, PaymentServiceFactory>();
 
         return services;
     }

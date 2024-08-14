@@ -145,8 +145,13 @@ public class Booking : AggregateRoot, IAuditableEntity
         SessionId = sessionId;
     }
 
-    public Result CanCheckout()
+    public Result CanBeCheckedOutBy(int userId)
     {
+        if (UserId != userId)
+        {
+            return DomainErrors.General.Unauthorized;
+        }
+
         if (Status == BookingStatus.Paid)
         {
             return DomainErrors.Booking.IsPaid;

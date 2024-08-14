@@ -8,6 +8,7 @@ using TAB.Contracts.Features.Shared;
 using TAB.Domain.Core.Enums;
 using TAB.Domain.Core.Errors;
 using TAB.Domain.Core.Shared.Maybe;
+using TAB.Domain.Core.Shared.Result;
 using TAB.Domain.Features.BookingManagement.Entities;
 using TAB.Domain.Features.BookingManagement.Enums;
 using TAB.Domain.Features.BookingManagement.Repositories;
@@ -29,19 +30,24 @@ public class CheckoutBookingCommandTests
     public CheckoutBookingCommandTests()
     {
         _bookingRepositoryMock = Substitute.For<IBookingRepository>();
+        var paymentServiceFactoryMock = Substitute.For<IPaymentServiceFactory>();
         _paymentServiceMock = Substitute.For<IPaymentService>();
         _userContextMock = Substitute.For<IUserContext>();
         var unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
+        paymentServiceFactoryMock
+            .Create(Arg.Any<string>())
+            .Returns(Result<IPaymentService>.Success(_paymentServiceMock));
+
         _paymentServiceMock
-            .CreateStripeSessionAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .CreateSessionAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(new Session("session_123", "publish_key"));
 
         _sut = new CheckoutBookingCommandHandler(
             _bookingRepositoryMock,
-            _paymentServiceMock,
             _userContextMock,
-            unitOfWorkMock
+            unitOfWorkMock,
+            paymentServiceFactoryMock
         );
 
         _booking = Booking.Create(
@@ -141,7 +147,7 @@ public class CheckoutBookingCommandTests
         _booking.Status = BookingStatus.Confirmed;
 
         _paymentServiceMock
-            .CreateStripeSessionAsync(Command.BookingId, CancellationToken.None)
+            .CreateSessionAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(DomainErrors.General.ServerError);
 
         // Act
@@ -167,7 +173,7 @@ public class CheckoutBookingCommandTests
         var session = new Session("session_123", "publish_key");
 
         _paymentServiceMock
-            .CreateStripeSessionAsync(Command.BookingId, CancellationToken.None)
+            .CreateSessionAsync(Command.BookingId, CancellationToken.None)
             .Returns(session);
 
         // Act
