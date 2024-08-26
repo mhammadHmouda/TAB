@@ -32,8 +32,11 @@ builder
     .AddInfrastructure(configuration)
     .AddPersistence(configuration);
 
+builder.Services.AddScoped<RateLimitingResponseMiddleware>();
+
 var app = builder.Build();
 
+app.UseMiddleware<RateLimitingResponseMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
@@ -48,6 +51,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
