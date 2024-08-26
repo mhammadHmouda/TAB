@@ -6,13 +6,29 @@ public class PropertyConverter
 {
     public static object ConvertPropertyValue(PropertyInfo property, string valueString)
     {
-        if (property.PropertyType.IsEnum)
+        var propertyType = property.PropertyType;
+
+        if (Nullable.GetUnderlyingType(propertyType) != null)
         {
-            if (Enum.TryParse(property.PropertyType, valueString, true, out var enumValue))
+            propertyType = Nullable.GetUnderlyingType(propertyType);
+        }
+
+        if (propertyType == null)
+            throw new ArgumentException("Invalid property type.");
+
+        if (propertyType == typeof(string))
+            return valueString;
+
+        if (propertyType.IsEnum)
+        {
+            if (Enum.TryParse(propertyType, valueString, true, out var enumValue))
                 return enumValue;
             throw new ArgumentException("Invalid enum value.");
         }
 
-        return Convert.ChangeType(valueString, property.PropertyType);
+        if (propertyType.IsClass)
+            throw new ArgumentException("Unsupported type.");
+
+        return Convert.ChangeType(valueString, propertyType);
     }
 }
