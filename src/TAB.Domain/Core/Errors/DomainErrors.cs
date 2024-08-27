@@ -89,6 +89,8 @@ public static class DomainErrors
             new("General.GreaterThan", "The value is not greater than the specified value.");
         public static Error InvalidPaymentMethod =>
             new("General.InvalidPaymentMethod", "The payment method is invalid.");
+        public static readonly Error RequestLimitExceeded =
+            new("General.RequestLimitExceeded", "Request limit exceeded");
     }
 
     public static class Location

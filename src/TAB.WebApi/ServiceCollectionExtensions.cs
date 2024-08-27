@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
+using System.Threading.RateLimiting;
 using Asp.Versioning;
 using Microsoft.OpenApi.Models;
+using TAB.WebApi.Middlewares;
 
 namespace TAB.WebApi;
 
@@ -10,7 +13,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddControllers();
 
-        services.AddHttpContextAccessor().AddSwagger().AddVersioning().AddCorsPolicies();
+        services
+            .AddHttpContextAccessor()
+            .AddSwagger()
+            .AddVersioning()
+            .AddCorsPolicies()
+            .AddRateLimiting();
 
         return services;
     }
@@ -89,6 +97,33 @@ public static class ServiceCollectionExtensions
                     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 }
             );
+        });
+
+        return services;
+    }
+
+    private static IServiceCollection AddRateLimiting(this IServiceCollection services)
+    {
+        services.AddScoped<RateLimitingResponseMiddleware>();
+
+        services.AddRateLimiter(options =>
+        {
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
+                httpContext =>
+                    RateLimitPartition.GetFixedWindowLimiter(
+                        partitionKey: httpContext.User.Identity?.Name
+                            ?? httpContext.Request.Headers.Host.ToString(),
+                        factory: _ => new FixedWindowRateLimiterOptions
+                        {
+                            AutoReplenishment = true,
+                            PermitLimit = 10,
+                            QueueLimit = 0,
+                            Window = TimeSpan.FromMinutes(1)
+                        }
+                    )
+            );
+
+            options.RejectionStatusCode = (int)HttpStatusCode.TooManyRequests;
         });
 
         return services;
